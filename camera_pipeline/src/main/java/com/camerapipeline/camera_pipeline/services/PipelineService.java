@@ -1,7 +1,6 @@
 package com.camerapipeline.camera_pipeline.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 

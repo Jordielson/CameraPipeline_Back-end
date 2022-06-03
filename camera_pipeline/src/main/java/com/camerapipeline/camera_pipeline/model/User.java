@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -24,6 +26,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 public class User implements UserDetails{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Email(message="invalid email")
     private String email;
     @NotBlank
@@ -34,7 +39,7 @@ public class User implements UserDetails{
 	@JoinTable(name = "role_user", 
 		joinColumns = @JoinColumn(
 			name = "user_id", 
-			referencedColumnName = "email"
+			referencedColumnName = "id"
 		),
 		inverseJoinColumns = @JoinColumn(
 			name = "role_id",
@@ -56,10 +61,21 @@ public class User implements UserDetails{
     public User() {
     }
 
-    public User(String email, String password, List<Role> roles) {
+    public User(Integer id, String email, String password, List<Role> roles, List<GroupPipeline> groupPipeline, List<GroupPipeline> cameras) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.groupPipeline = groupPipeline;
+        this.cameras = cameras;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -69,7 +85,6 @@ public class User implements UserDetails{
     public void setEmail(String email) {
         this.email = email;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -80,6 +95,27 @@ public class User implements UserDetails{
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<GroupPipeline> getGroupPipeline() {
+        return this.groupPipeline;
+    }
+
+    public void setGroupPipeline(List<GroupPipeline> groupPipeline) {
+        this.groupPipeline = groupPipeline;
+    }
+
+    public List<GroupPipeline> getCameras() {
+        return this.cameras;
+    }
+
+    public void setCameras(List<GroupPipeline> cameras) {
+        this.cameras = cameras;
+    }
+
+    public User id(int id) {
+        setId(id);
+        return this;
     }
 
     public User email(String email) {
@@ -97,6 +133,16 @@ public class User implements UserDetails{
         return this;
     }
 
+    public User groupPipeline(List<GroupPipeline> groupPipeline) {
+        setGroupPipeline(groupPipeline);
+        return this;
+    }
+
+    public User cameras(List<GroupPipeline> cameras) {
+        setCameras(cameras);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -105,22 +151,25 @@ public class User implements UserDetails{
             return false;
         }
         User user = (User) o;
-        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+        return id == user.id && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles) && Objects.equals(groupPipeline, user.groupPipeline) && Objects.equals(cameras, user.cameras);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, roles);
+        return Objects.hash(id, email, password, roles, groupPipeline, cameras);
     }
 
     @Override
     public String toString() {
         return "{" +
-            " email='" + getEmail() + "'" +
+            " id='" + getId() + "'" +
+            ", email='" + getEmail() + "'" +
             ", password='" + getPassword() + "'" +
             ", roles='" + getRoles() + "'" +
+            ", groupPipeline='" + getGroupPipeline() + "'" +
+            ", cameras='" + getCameras() + "'" +
             "}";
-    }
+    }    
 
     @Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

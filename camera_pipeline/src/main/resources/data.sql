@@ -1,6 +1,6 @@
 INSERT INTO camera_pipeline.`user`
-(email, `password`)
-VALUES('joao@gmail.com', '123456')
+(id, email, `password`)
+VALUES(1, 'joao@gmail.com', '123456')
 ON DUPLICATE KEY UPDATE `password` = `password`;
 
 INSERT INTO camera_pipeline.`role`
@@ -13,12 +13,12 @@ ON DUPLICATE KEY UPDATE `role` = `role`;
 
 INSERT INTO camera_pipeline.role_user
 (user_id, role_id)
-VALUES('joao@gmail.com', 'ROLE_USER')
+VALUES(1, 'ROLE_USER')
 ON DUPLICATE KEY UPDATE role_id = role_id;
 
 INSERT INTO camera_pipeline.group_pipeline
-(id, name, user_email)
-VALUES(1, 'Deteccao de objetos', 'joao@gmail.com')
+(id, name, user_id)
+VALUES(1, 'Deteccao de objetos', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
 INSERT INTO camera_pipeline.pipeline
@@ -29,7 +29,7 @@ VALUES(1, '2022-06-26 14:30:30',
 ON DUPLICATE KEY UPDATE name = name;
 
 INSERT INTO camera_pipeline.camera
-(ip, fps, heigth, is_colored, manufacturer, model, name, night_vision, view_angle, width, user_email)
-VALUES('192.168.0.10', 100, 20, 1, 'Intelbras', 'Bullet HD', 'Camera Garagem', 1, 360, 15, 'joao@gmail.com')
+(ip, fps, heigth, is_colored, manufacturer, model, name, night_vision, view_angle, width, user_id)
+VALUES('192.168.0.10', 100, 20, 1, 'Intelbras', 'Bullet HD', 'Camera Garagem', 1, 360, 15, 1)
 ON DUPLICATE KEY UPDATE name = name;
 
