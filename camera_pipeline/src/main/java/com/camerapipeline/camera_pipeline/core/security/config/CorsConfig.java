@@ -23,10 +23,15 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        if (cors.getAllowedOrigins() != null && !cors.getAllowedOrigins().isEmpty()) {
-            logger.debug("Registering CORS filter");
-            source.registerCorsConfiguration("/api/**", cors);
-        }
+
+        logger.debug("Registering CORS filter");
+        cors.addAllowedOrigin("*");
+        cors.addAllowedHeader("*");
+        cors.addAllowedMethod("GET");
+        cors.addAllowedMethod("PUT");
+        cors.addAllowedMethod("POST");
+
+        source.registerCorsConfiguration("/api/**", cors);
         return new CorsFilter(source);
     }
 }

@@ -1,26 +1,32 @@
 package com.camerapipeline.camera_pipeline.controller;
 
-import com.camerapipeline.camera_pipeline.dto.LoginDto;
-import com.camerapipeline.camera_pipeline.dto.UserDto;
-import com.camerapipeline.camera_pipeline.model.User;
-import com.camerapipeline.camera_pipeline.services.UserService;
+import java.net.URI;
+import java.security.Principal;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.security.Principal;
+import com.camerapipeline.camera_pipeline.dto.LoginDto;
+import com.camerapipeline.camera_pipeline.dto.UserDto;
+import com.camerapipeline.camera_pipeline.model.User;
+import com.camerapipeline.camera_pipeline.services.UserService;
 
 @RestController
 @RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,6 +41,7 @@ public class UserController {
             loginRequest.getLogin(), 
             loginRequest.getPassword()
         );
+
         return ResponseEntity.ok(
             userDetails
         );
