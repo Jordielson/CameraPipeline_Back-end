@@ -58,7 +58,6 @@ public class TokenProvider {
     }
 
     public String generateToken(Authentication authentication) {
-
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, getAuthorities(authentication))

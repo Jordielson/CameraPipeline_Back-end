@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/group-pipeline")
+@RequestMapping("/api/group-pipeline")
 public class GroupPipelineController {
     @Autowired
     GroupPipelineService gPipelineService;

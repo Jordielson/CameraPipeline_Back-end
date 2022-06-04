@@ -1,7 +1,9 @@
 INSERT INTO camera_pipeline.`user`
 (id, email, `password`)
-VALUES(1, 'joao@gmail.com', '123456')
+VALUES(1, 'joao@gmail.com', 
+'$2a$10$gBWh9jv/DCCz5Wqtih8xSuie0UJokYjbHEauxMUg63riMt7zM37Ry')
 ON DUPLICATE KEY UPDATE `password` = `password`;
+-- Passwort -> 123456
 
 INSERT INTO camera_pipeline.`role`
 (`role`)

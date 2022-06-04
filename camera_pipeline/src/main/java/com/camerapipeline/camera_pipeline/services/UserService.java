@@ -1,11 +1,14 @@
 package com.camerapipeline.camera_pipeline.services;
 
 import com.camerapipeline.camera_pipeline.core.security.config.TokenProvider;
+import com.camerapipeline.camera_pipeline.dto.UserDto;
 import com.camerapipeline.camera_pipeline.exception.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.model.User;
 import com.camerapipeline.camera_pipeline.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,20 +19,41 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
     private TokenProvider tokenProvider;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String authenticateUserAndGetToken(String login, String password) {
-
-        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, password));
+    public UserDto authenticateUserAndGetToken(String login, String password) {
+        final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(login, password));
+                
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return tokenProvider.generateToken(authentication);
+        String jwt = tokenProvider.generateToken(authentication);
+
+        // User userDetails = (User) authentication.getPrincipal();		
+        User userDetails = userRepository.findByEmail(login).get();		
+		List<String> roles = userDetails.getAuthorities().stream()
+				.map(item -> item.getAuthority())
+				.collect(Collectors.toList());
+        
+        UserDto userDto = new UserDto(
+            jwt,
+            userDetails.getId(),
+            userDetails.getEmail(),
+            roles
+        );
+
+        return userDto;
     }
 
     public User changePassword(String oldPassword, String newPassword, Principal principal) {

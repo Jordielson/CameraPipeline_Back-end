@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/pipeline")
+@RequestMapping("/api/pipeline")
 public class PipelineController {
     @Autowired
     PipelineService pipelineService;

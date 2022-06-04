@@ -55,13 +55,13 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "user")
     private List<GroupPipeline> groupPipeline;
     @OneToMany(mappedBy = "user")
-    private List<GroupPipeline> cameras;
+    private List<Camera> cameras;
 
 
     public User() {
     }
 
-    public User(Integer id, String email, String password, List<Role> roles, List<GroupPipeline> groupPipeline, List<GroupPipeline> cameras) {
+    public User(Integer id, String email, String password, List<Role> roles, List<GroupPipeline> groupPipeline, List<Camera> cameras) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -105,11 +105,11 @@ public class User implements UserDetails{
         this.groupPipeline = groupPipeline;
     }
 
-    public List<GroupPipeline> getCameras() {
+    public List<Camera> getCameras() {
         return this.cameras;
     }
 
-    public void setCameras(List<GroupPipeline> cameras) {
+    public void setCameras(List<Camera> cameras) {
         this.cameras = cameras;
     }
 
@@ -138,7 +138,7 @@ public class User implements UserDetails{
         return this;
     }
 
-    public User cameras(List<GroupPipeline> cameras) {
+    public User cameras(List<Camera> cameras) {
         setCameras(cameras);
         return this;
     }
