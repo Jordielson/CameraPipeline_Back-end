@@ -3,6 +3,8 @@ package com.camerapipeline.camera_pipeline.model;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
@@ -11,50 +13,49 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Camera {
     @Id
-    private String ip;
-    @NotBlank
-    private String name;
-    @NotNull
-    private int heigth;
-    @NotNull
-    private int width;
-    @NotNull
-    private boolean isColored;
-    private String model;
-    private int viewAngle;
-    @NotNull
-    private boolean nightVision;
-    private String manufacturer;
-    @NotNull
-    private int fps;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @NotNull
     @ManyToOne
     private User user;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String URL;
+    @NotNull
+    private boolean isPrivate;
+
+    private Double[] coordinates;
+    private int fpsLimiter;
 
 
     public Camera() {
     }
 
-    public Camera(String ip, String name, int heigth, int width, boolean isColored, String model, int viewAngle, boolean nightVision, String manufacturer, int fps, User user) {
-        this.ip = ip;
-        this.name = name;
-        this.heigth = heigth;
-        this.width = width;
-        this.isColored = isColored;
-        this.model = model;
-        this.viewAngle = viewAngle;
-        this.nightVision = nightVision;
-        this.manufacturer = manufacturer;
-        this.fps = fps;
+    public Camera(int id, User user, String name, String URL, boolean isPrivate, Double[] coordinates, int fpsLimiter) {
+        this.id = id;
         this.user = user;
+        this.name = name;
+        this.URL = URL;
+        this.isPrivate = isPrivate;
+        this.coordinates = coordinates;
+        this.fpsLimiter = fpsLimiter;
     }
 
-    public String getIp() {
-        return this.ip;
+    public int getId() {
+        return this.id;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -65,80 +66,49 @@ public class Camera {
         this.name = name;
     }
 
-    public int getHeigth() {
-        return this.heigth;
+    public String getURL() {
+        return this.URL;
     }
 
-    public void setHeigth(int heigth) {
-        this.heigth = heigth;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
-    public int getWidth() {
-        return this.width;
+    public boolean isIsPrivate() {
+        return this.isPrivate;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public boolean getIsPrivate() {
+        return this.isPrivate;
     }
 
-    public boolean isIsColored() {
-        return this.isColored;
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
-    public boolean getIsColored() {
-        return this.isColored;
+    public Double[] getCoordinates() {
+        return this.coordinates;
     }
 
-    public void setIsColored(boolean isColored) {
-        this.isColored = isColored;
+    public void setCoordinates(Double[] coordinates) {
+        this.coordinates = coordinates;
     }
 
-    public String getModel() {
-        return this.model;
+    public int getFpsLimiter() {
+        return this.fpsLimiter;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setFpsLimiter(int fpsLimiter) {
+        this.fpsLimiter = fpsLimiter;
     }
 
-    public int getViewAngle() {
-        return this.viewAngle;
+    public Camera id(int id) {
+        setId(id);
+        return this;
     }
 
-    public void setViewAngle(int viewAngle) {
-        this.viewAngle = viewAngle;
-    }
-
-    public boolean isNightVision() {
-        return this.nightVision;
-    }
-
-    public boolean getNightVision() {
-        return this.nightVision;
-    }
-
-    public void setNightVision(boolean nightVision) {
-        this.nightVision = nightVision;
-    }
-
-    public String getManufacturer() {
-        return this.manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public int getFps() {
-        return this.fps;
-    }
-
-    public void setFps(int fps) {
-        this.fps = fps;
-    }
-
-    public Camera ip(String ip) {
-        setIp(ip);
+    public Camera user(User user) {
+        setUser(user);
         return this;
     }
 
@@ -147,43 +117,23 @@ public class Camera {
         return this;
     }
 
-    public Camera heigth(int heigth) {
-        setHeigth(heigth);
+    public Camera URL(String URL) {
+        setURL(URL);
         return this;
     }
 
-    public Camera width(int width) {
-        setWidth(width);
+    public Camera isPrivate(boolean isPrivate) {
+        setIsPrivate(isPrivate);
         return this;
     }
 
-    public Camera isColored(boolean isColored) {
-        setIsColored(isColored);
+    public Camera coordinates(Double[] coordinates) {
+        setCoordinates(coordinates);
         return this;
     }
 
-    public Camera model(String model) {
-        setModel(model);
-        return this;
-    }
-
-    public Camera viewAngle(int viewAngle) {
-        setViewAngle(viewAngle);
-        return this;
-    }
-
-    public Camera nightVision(boolean nightVision) {
-        setNightVision(nightVision);
-        return this;
-    }
-
-    public Camera manufacturer(String manufacturer) {
-        setManufacturer(manufacturer);
-        return this;
-    }
-
-    public Camera fps(int fps) {
-        setFps(fps);
+    public Camera fpsLimiter(int fpsLimiter) {
+        setFpsLimiter(fpsLimiter);
         return this;
     }
 
@@ -195,41 +145,24 @@ public class Camera {
             return false;
         }
         Camera camera = (Camera) o;
-        return ip == camera.ip && Objects.equals(name, camera.name) && heigth == camera.heigth && width == camera.width && isColored == camera.isColored && Objects.equals(model, camera.model) && viewAngle == camera.viewAngle && nightVision == camera.nightVision && Objects.equals(manufacturer, camera.manufacturer) && fps == camera.fps;
+        return id == camera.id && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && Objects.equals(coordinates, camera.coordinates) && fpsLimiter == camera.fpsLimiter;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ip, name, heigth, width, isColored, model, viewAngle, nightVision, manufacturer, fps);
+        return Objects.hash(id, user, name, URL, isPrivate, coordinates, fpsLimiter);
     }
 
     @Override
     public String toString() {
         return "{" +
-            " ip='" + getIp() + "'" +
+            " id='" + getId() + "'" +
+            ", user='" + getUser() + "'" +
             ", name='" + getName() + "'" +
-            ", heigth='" + getHeigth() + "'" +
-            ", width='" + getWidth() + "'" +
-            ", isColored='" + isIsColored() + "'" +
-            ", model='" + getModel() + "'" +
-            ", viewAngle='" + getViewAngle() + "'" +
-            ", nightVision='" + isNightVision() + "'" +
-            ", manufacturer='" + getManufacturer() + "'" +
-            ", fps='" + getFps() + "'" +
+            ", URL='" + getURL() + "'" +
+            ", isPrivate='" + isIsPrivate() + "'" +
+            ", coordinates='" + getCoordinates() + "'" +
+            ", fpsLimiter='" + getFpsLimiter() + "'" +
             "}";
     }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Camera user(User user) {
-        setUser(user);
-        return this;
-    }
-
 }

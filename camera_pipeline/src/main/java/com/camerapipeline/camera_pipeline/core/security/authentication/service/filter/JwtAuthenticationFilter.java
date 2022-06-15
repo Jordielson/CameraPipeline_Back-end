@@ -1,7 +1,6 @@
 package com.camerapipeline.camera_pipeline.core.security.authentication.service.filter;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -62,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.error("An error occurred during while getting username from token.", e);
         } catch (ExpiredJwtException e) {
             logger.warn("The token is expired and not valid anymore.", e);
-        } catch (SignatureException e) {
+        } catch (Exception e) {
             logger.error("Authentication Failed. Username or Password not valid.");
         }
     }

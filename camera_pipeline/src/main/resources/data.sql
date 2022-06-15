@@ -30,8 +30,8 @@ VALUES(1, '2022-06-26 14:30:30',
     0, '2022-06-26 14:30:30', 'Reduzir o tamanho da imagem', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
-INSERT INTO camera_pipeline.camera
-(ip, fps, heigth, is_colored, manufacturer, model, name, night_vision, view_angle, width, user_id)
-VALUES('192.168.0.10', 100, 20, 1, 'Intelbras', 'Bullet HD', 'Camera Garagem', 1, 360, 15, 1)
-ON DUPLICATE KEY UPDATE name = name;
+-- INSERT INTO camera_pipeline.camera
+-- (id, name, URL, isPrivate, model, name, night_vision, view_angle, width, user_id)
+-- VALUES(1, 100, "Camera 01",'http://localhost:5000/api', 'Bullet HD', 'Camera Garagem', 1, 360, 15, 1)
+-- ON DUPLICATE KEY UPDATE name = name;
 

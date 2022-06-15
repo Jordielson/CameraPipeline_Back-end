@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -35,11 +37,14 @@ public class Pipeline {
     @ManyToOne
     private GroupPipeline groupPipeline;
 
+    @OneToMany(mappedBy = "pipeline")
+    private List<PDI> PDIList;
+
 
     public Pipeline() {
     }
 
-    public Pipeline(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, GroupPipeline groupPipeline) {
+    public Pipeline(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, GroupPipeline groupPipeline, List<PDI> PDIList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -47,6 +52,7 @@ public class Pipeline {
         this.modificationTime = modificationTime;
         this.isActive = isActive;
         this.groupPipeline = groupPipeline;
+        this.PDIList = PDIList;
     }
 
     public int getId() {
@@ -109,6 +115,14 @@ public class Pipeline {
         this.groupPipeline = groupPipeline;
     }
 
+    public List<PDI> getPDIList() {
+        return this.PDIList;
+    }
+
+    public void setPDIList(List<PDI> PDIList) {
+        this.PDIList = PDIList;
+    }
+
     public Pipeline id(int id) {
         setId(id);
         return this;
@@ -144,6 +158,11 @@ public class Pipeline {
         return this;
     }
 
+    public Pipeline PDIList(List<PDI> PDIList) {
+        setPDIList(PDIList);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -152,12 +171,12 @@ public class Pipeline {
             return false;
         }
         Pipeline pipeline = (Pipeline) o;
-        return id == pipeline.id && Objects.equals(name, pipeline.name) && Objects.equals(description, pipeline.description) && Objects.equals(creationDate, pipeline.creationDate) && Objects.equals(modificationTime, pipeline.modificationTime) && isActive == pipeline.isActive && Objects.equals(groupPipeline, pipeline.groupPipeline);
+        return id == pipeline.id && Objects.equals(name, pipeline.name) && Objects.equals(description, pipeline.description) && Objects.equals(creationDate, pipeline.creationDate) && Objects.equals(modificationTime, pipeline.modificationTime) && isActive == pipeline.isActive && Objects.equals(groupPipeline, pipeline.groupPipeline) && Objects.equals(PDIList, pipeline.PDIList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, creationDate, modificationTime, isActive, groupPipeline);
+        return Objects.hash(id, name, description, creationDate, modificationTime, isActive, groupPipeline, PDIList);
     }
 
     @Override
@@ -170,7 +189,7 @@ public class Pipeline {
             ", modificationTime='" + getModificationTime() + "'" +
             ", isActive='" + isIsActive() + "'" +
             ", groupPipeline='" + getGroupPipeline() + "'" +
+            ", PDIList='" + getPDIList() + "'" +
             "}";
     }
-
 }

@@ -6,8 +6,6 @@ import com.camerapipeline.camera_pipeline.exception.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.model.User;
 import com.camerapipeline.camera_pipeline.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
