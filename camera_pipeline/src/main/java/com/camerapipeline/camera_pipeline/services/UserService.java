@@ -1,7 +1,7 @@
 package com.camerapipeline.camera_pipeline.services;
 
 import com.camerapipeline.camera_pipeline.core.security.config.TokenProvider;
-import com.camerapipeline.camera_pipeline.dto.UserDto;
+import com.camerapipeline.camera_pipeline.dto.UserDTO;
 import com.camerapipeline.camera_pipeline.exception.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.model.User;
 import com.camerapipeline.camera_pipeline.repository.UserRepository;
@@ -31,7 +31,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserDto authenticateUserAndGetToken(String login, String password) {
+    public UserDTO authenticateUserAndGetToken(String login, String password) {
         final Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(login, password));
                 
@@ -44,7 +44,7 @@ public class UserService {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
         
-        UserDto userDto = new UserDto(
+        UserDTO userDto = new UserDTO(
             jwt,
             userDetails.getId(),
             userDetails.getEmail(),

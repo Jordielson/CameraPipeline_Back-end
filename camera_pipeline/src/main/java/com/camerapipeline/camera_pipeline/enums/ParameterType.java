@@ -1,13 +1,13 @@
 package com.camerapipeline.camera_pipeline.enums;
 
-public enum ParameterTypes {
-    STRING(1),
-    NUMBER(2),
-    BOOL(3);
+public enum ParameterType {
+    STRING(0),
+    NUMBER(1),
+    BOOL(2);
 
     private int value;
 
-    ParameterTypes(int value) {
+    ParameterType(int value) {
         this.value = value;
     }
 

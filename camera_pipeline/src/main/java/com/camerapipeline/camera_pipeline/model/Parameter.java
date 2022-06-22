@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
-import com.camerapipeline.camera_pipeline.enums.ParameterTypes;
+import com.camerapipeline.camera_pipeline.enums.ParameterType;
 
 @Entity
 public class Parameter {
@@ -23,7 +23,7 @@ public class Parameter {
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
-    private ParameterTypes type;
+    private ParameterType type;
 
     @ManyToOne
     private ModelPDI modelPdi;
@@ -32,7 +32,7 @@ public class Parameter {
     public Parameter() {
     }
 
-    public Parameter(int id, String name, ParameterTypes type, ModelPDI modelPdi) {
+    public Parameter(int id, String name, ParameterType type, ModelPDI modelPdi) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -55,11 +55,11 @@ public class Parameter {
         this.name = name;
     }
 
-    public ParameterTypes getType() {
+    public ParameterType getType() {
         return this.type;
     }
 
-    public void setType(ParameterTypes type) {
+    public void setType(ParameterType type) {
         this.type = type;
     }
 
@@ -81,7 +81,7 @@ public class Parameter {
         return this;
     }
 
-    public Parameter type(ParameterTypes type) {
+    public Parameter type(ParameterType type) {
         setType(type);
         return this;
     }

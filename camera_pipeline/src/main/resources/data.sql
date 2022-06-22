@@ -30,8 +30,29 @@ VALUES(1, '2022-06-26 14:30:30',
     0, '2022-06-26 14:30:30', 'Reduzir o tamanho da imagem', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
--- INSERT INTO camera_pipeline.camera
--- (id, name, URL, isPrivate, model, name, night_vision, view_angle, width, user_id)
--- VALUES(1, 100, "Camera 01",'http://localhost:5000/api', 'Bullet HD', 'Camera Garagem', 1, 360, 15, 1)
--- ON DUPLICATE KEY UPDATE name = name;
+INSERT INTO camera_pipeline.camera
+(id, url, fps_limiter, is_private, name, user_id)
+VALUES(1, 'http://localhost:5000/api', 60, 1, 'Camera 01', 1)
+ON DUPLICATE KEY UPDATE url = url;
+
+INSERT INTO camera_pipeline.model_pdi
+(id, url, category, name)
+VALUES(1, 'http://localhost:5000/api', 1, 'Redimensionar imagem')
+ON DUPLICATE KEY UPDATE id = id;
+
+INSERT INTO camera_pipeline.pdi
+(id, model_pdi_id, pipeline_id)
+VALUES(1, 1, 1)
+ON DUPLICATE KEY UPDATE id = id;
+
+INSERT INTO camera_pipeline.`parameter`
+(id, name, `type`, model_pdi_id)
+VALUES(1, 'Tamanho da imagem', 0, 1)
+ON DUPLICATE KEY UPDATE id = id;
+
+INSERT INTO camera_pipeline.value_parameter
+(id, value, parameter_id, pdi_id)
+VALUES(1, '25x30', 1, 1)
+ON DUPLICATE KEY UPDATE id = id;
+
 

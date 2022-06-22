@@ -91,6 +91,13 @@
             <artifactId>java-jwt</artifactId>
             <version>3.16.0</version>
         </dependency>
+
+		<!-- Model Mapper -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -99,6 +106,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

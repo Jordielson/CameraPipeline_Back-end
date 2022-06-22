@@ -23,20 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.camerapipeline.camera_pipeline.dto.LoginDto;
-import com.camerapipeline.camera_pipeline.dto.UserDto;
+import com.camerapipeline.camera_pipeline.dto.LoginDTO;
+import com.camerapipeline.camera_pipeline.dto.UserDTO;
 import com.camerapipeline.camera_pipeline.model.User;
 import com.camerapipeline.camera_pipeline.services.UserService;
 
 @RestController
-@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     @Autowired
     private UserService userService;
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> authenticateUser(@Valid @RequestBody LoginDto loginRequest) {
-        UserDto userDetails = userService
+    public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
+        UserDTO userDetails = userService
         .authenticateUserAndGetToken(
             loginRequest.getLogin(), 
             loginRequest.getPassword()

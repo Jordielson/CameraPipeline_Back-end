@@ -3,17 +3,20 @@ package com.camerapipeline.camera_pipeline.dto;
 import java.util.List;
 import java.util.Objects;
 
-public class UserDto {
+import lombok.Data;
+
+@Data
+public class UserDTO {
     private String token;
     private String type = "Bearer";
 	private Integer id;
 	private String login;
     private List<String> roles;
 
-    public UserDto() {
+    public UserDTO() {
     }
 
-    public UserDto(String token, Integer id, String login, List<String> roles) {
+    public UserDTO(String token, Integer id, String login, List<String> roles) {
         this.token = token;
         this.id = id;
         this.login = login;
@@ -60,27 +63,27 @@ public class UserDto {
         this.roles = roles;
     }
 
-    public UserDto token(String token) {
+    public UserDTO token(String token) {
         setToken(token);
         return this;
     }
 
-    public UserDto type(String type) {
+    public UserDTO type(String type) {
         setType(type);
         return this;
     }
 
-    public UserDto id(Integer id) {
+    public UserDTO id(Integer id) {
         setId(id);
         return this;
     }
 
-    public UserDto login(String login) {
+    public UserDTO login(String login) {
         setLogin(login);
         return this;
     }
 
-    public UserDto roles(List<String> roles) {
+    public UserDTO roles(List<String> roles) {
         setRoles(roles);
         return this;
     }
@@ -89,10 +92,10 @@ public class UserDto {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof UserDto)) {
+        if (!(o instanceof UserDTO)) {
             return false;
         }
-        UserDto userDto = (UserDto) o;
+        UserDTO userDto = (UserDTO) o;
         return Objects.equals(token, userDto.token) && Objects.equals(type, userDto.type) && Objects.equals(id, userDto.id) && Objects.equals(login, userDto.login) && Objects.equals(roles, userDto.roles);
     }
 

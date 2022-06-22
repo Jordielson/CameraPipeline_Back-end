@@ -1,60 +1,34 @@
-package com.camerapipeline.camera_pipeline.model;
+package com.camerapipeline.camera_pipeline.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.Data;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-@Entity
-public class Pipeline {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Data
+public class PipelineDTO {
     private int id;
-    @NotBlank
     private String name;
     private String description;
-    @CreatedDate
-    @Column(name = "creation_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime creationDate;
-    @LastModifiedDate
-    @Column(name = "last_change", columnDefinition = "TIMESTAMP")
     private LocalDateTime modificationTime;
-    @NotNull
     private boolean isActive;
-    @JsonBackReference
-    @NotNull
-    @ManyToOne
-    private GroupPipeline groupPipeline;
-
-    @OneToMany(mappedBy = "pipeline")
-    private List<PDI> PDIList;
+    private int groupPipelineId;
+    private List<PdiDTO> PDIList;
 
 
-    public Pipeline() {
+    public PipelineDTO() {
     }
 
-    public Pipeline(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, GroupPipeline groupPipeline, List<PDI> PDIList) {
+    public PipelineDTO(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, int groupPipelineId, List<PdiDTO> PDIList) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.creationDate = creationDate;
         this.modificationTime = modificationTime;
         this.isActive = isActive;
-        this.groupPipeline = groupPipeline;
+        this.groupPipelineId = groupPipelineId;
         this.PDIList = PDIList;
     }
 
@@ -110,58 +84,58 @@ public class Pipeline {
         this.isActive = isActive;
     }
 
-    public GroupPipeline getGroupPipeline() {
-        return this.groupPipeline;
+    public int getGroupPipelineId() {
+        return this.groupPipelineId;
     }
 
-    public void setGroupPipeline(GroupPipeline groupPipeline) {
-        this.groupPipeline = groupPipeline;
+    public void setGroupPipelineId(int groupPipelineId) {
+        this.groupPipelineId = groupPipelineId;
     }
 
-    public List<PDI> getPDIList() {
+    public List<PdiDTO> getPDIList() {
         return this.PDIList;
     }
 
-    public void setPDIList(List<PDI> PDIList) {
+    public void setPDIList(List<PdiDTO> PDIList) {
         this.PDIList = PDIList;
     }
 
-    public Pipeline id(int id) {
+    public PipelineDTO id(int id) {
         setId(id);
         return this;
     }
 
-    public Pipeline name(String name) {
+    public PipelineDTO name(String name) {
         setName(name);
         return this;
     }
 
-    public Pipeline description(String description) {
+    public PipelineDTO description(String description) {
         setDescription(description);
         return this;
     }
 
-    public Pipeline creationDate(LocalDateTime creationDate) {
+    public PipelineDTO creationDate(LocalDateTime creationDate) {
         setCreationDate(creationDate);
         return this;
     }
 
-    public Pipeline modificationTime(LocalDateTime modificationTime) {
+    public PipelineDTO modificationTime(LocalDateTime modificationTime) {
         setModificationTime(modificationTime);
         return this;
     }
 
-    public Pipeline isActive(boolean isActive) {
+    public PipelineDTO isActive(boolean isActive) {
         setIsActive(isActive);
         return this;
     }
 
-    public Pipeline groupPipeline(GroupPipeline groupPipeline) {
-        setGroupPipeline(groupPipeline);
+    public PipelineDTO groupPipelineId(int groupPipelineId) {
+        setGroupPipelineId(groupPipelineId);
         return this;
     }
 
-    public Pipeline PDIList(List<PDI> PDIList) {
+    public PipelineDTO PDIList(List<PdiDTO> PDIList) {
         setPDIList(PDIList);
         return this;
     }
@@ -170,16 +144,16 @@ public class Pipeline {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Pipeline)) {
+        if (!(o instanceof PipelineDTO)) {
             return false;
         }
-        Pipeline pipeline = (Pipeline) o;
-        return id == pipeline.id && Objects.equals(name, pipeline.name) && Objects.equals(description, pipeline.description) && Objects.equals(creationDate, pipeline.creationDate) && Objects.equals(modificationTime, pipeline.modificationTime) && isActive == pipeline.isActive && Objects.equals(groupPipeline, pipeline.groupPipeline) && Objects.equals(PDIList, pipeline.PDIList);
+        PipelineDTO pipelineDTO = (PipelineDTO) o;
+        return id == pipelineDTO.id && Objects.equals(name, pipelineDTO.name) && Objects.equals(description, pipelineDTO.description) && Objects.equals(creationDate, pipelineDTO.creationDate) && Objects.equals(modificationTime, pipelineDTO.modificationTime) && isActive == pipelineDTO.isActive && groupPipelineId == pipelineDTO.groupPipelineId && Objects.equals(PDIList, pipelineDTO.PDIList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, creationDate, modificationTime, isActive, groupPipeline, PDIList);
+        return Objects.hash(id, name, description, creationDate, modificationTime, isActive, groupPipelineId, PDIList);
     }
 
     @Override
@@ -191,7 +165,7 @@ public class Pipeline {
             ", creationDate='" + getCreationDate() + "'" +
             ", modificationTime='" + getModificationTime() + "'" +
             ", isActive='" + isIsActive() + "'" +
-            ", groupPipeline='" + getGroupPipeline() + "'" +
+            ", groupPipelineId='" + getGroupPipelineId() + "'" +
             ", PDIList='" + getPDIList() + "'" +
             "}";
     }

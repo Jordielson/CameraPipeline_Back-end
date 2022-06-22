@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "security.jwt")
 public class JwtConfig {
     private String clientSecret;
-    private int tokenValidityInSeconds;
+    private int tokenValidityInSeconds = 6000;
 
 
     public JwtConfig() {

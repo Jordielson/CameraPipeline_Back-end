@@ -2,7 +2,10 @@ package com.camerapipeline.camera_pipeline.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class LoginDto {
+import lombok.Data;
+
+@Data
+public class LoginDTO {
     @NotBlank
 	public String login;
 	
