@@ -25,7 +25,6 @@ public class PDI {
     @ManyToOne
     private Pipeline pipeline;
 
-    @NotNull
     @OneToMany(mappedBy = "pdi")
     private List<ValueParameter> valueParameters;
 

@@ -32,7 +32,7 @@ public class ParameterService {
         return repository.save(parameter);
     }
 
-    public void deleteParameter(Parameter parameter) {
-        repository.delete(parameter);
+    public void deleteParameter(int id) {
+        repository.delete(getParameter(id));
     }
 }

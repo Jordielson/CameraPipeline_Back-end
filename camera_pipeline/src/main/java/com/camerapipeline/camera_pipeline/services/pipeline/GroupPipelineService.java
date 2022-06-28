@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.services.pipeline;
 
 import com.camerapipeline.camera_pipeline.model.GroupPipeline;
 import com.camerapipeline.camera_pipeline.repository.GroupPipelineRepository;
+import com.camerapipeline.camera_pipeline.services.UserService;
 
 import java.util.List;
 
@@ -14,8 +15,11 @@ import org.springframework.stereotype.Service;
 public class GroupPipelineService {
     @Autowired
     GroupPipelineRepository groupRepository;
+    @Autowired
+    UserService userService;
 
     public GroupPipeline saveGroupPipeline(GroupPipeline groupPipeline) {
+        groupPipeline.setUser(userService.getUser(1));
         return groupRepository.save(groupPipeline);
     }
 
@@ -28,11 +32,12 @@ public class GroupPipelineService {
         .orElseThrow(() -> new EntityNotFoundException(Integer.toString(id)));
     }
 
-    public GroupPipeline updateGroupPipeline(GroupPipeline groupPipeline) {
+    public GroupPipeline updateGroupPipeline(int id, GroupPipeline groupPipeline) {
+        groupPipeline.setUser(userService.getUser(1));
         return groupRepository.save(groupPipeline);
     }
 
-    public void deleteGroupPipeline(GroupPipeline groupPipeline) {
-        groupRepository.delete(groupPipeline);
+    public void deleteGroupPipeline(int id) {
+        groupRepository.delete(getGroupPipeline(id));
     }
 }

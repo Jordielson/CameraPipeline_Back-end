@@ -10,14 +10,16 @@ public class PdiDTO {
     private int id;
     private String name;
     private List<ValueParameterDTO> valueParameters;
+    private int pipelineId;
 
     public PdiDTO() {
     }
 
-    public PdiDTO(int id, String name, List<ValueParameterDTO> valueParameters) {
+    public PdiDTO(int id, String name, List<ValueParameterDTO> valueParameters, int pipelineId) {
         this.id = id;
         this.name = name;
         this.valueParameters = valueParameters;
+        this.pipelineId = pipelineId;
     }
 
     public int getId() {
@@ -44,6 +46,14 @@ public class PdiDTO {
         this.valueParameters = valueParameters;
     }
 
+    public int getPipelineId() {
+        return this.pipelineId;
+    }
+
+    public void setPipelineId(int pipelineId) {
+        this.pipelineId = pipelineId;
+    }
+
     public PdiDTO id(int id) {
         setId(id);
         return this;
@@ -59,6 +69,11 @@ public class PdiDTO {
         return this;
     }
 
+    public PdiDTO pipelineId(int pipelineId) {
+        setPipelineId(pipelineId);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -67,12 +82,12 @@ public class PdiDTO {
             return false;
         }
         PdiDTO pdiDTO = (PdiDTO) o;
-        return id == pdiDTO.id && Objects.equals(name, pdiDTO.name) && Objects.equals(valueParameters, pdiDTO.valueParameters);
+        return id == pdiDTO.id && Objects.equals(name, pdiDTO.name) && Objects.equals(valueParameters, pdiDTO.valueParameters) && pipelineId == pdiDTO.pipelineId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, valueParameters);
+        return Objects.hash(id, name, valueParameters, pipelineId);
     }
 
     @Override
@@ -81,6 +96,7 @@ public class PdiDTO {
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             ", valueParameters='" + getValueParameters() + "'" +
+            ", pipelineId='" + getPipelineId() + "'" +
             "}";
     }
 }

@@ -1,0 +1,87 @@
+package com.camerapipeline.camera_pipeline.mapper.pipeline;
+
+import java.util.List;
+
+import org.modelmapper.Converter;
+import org.modelmapper.TypeMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.camerapipeline.camera_pipeline.dto.PdiDTO;
+import com.camerapipeline.camera_pipeline.dto.PipelineDTO;
+import com.camerapipeline.camera_pipeline.mapper.core.Mapper;
+import com.camerapipeline.camera_pipeline.mapper.pdi.PdiMapper;
+import com.camerapipeline.camera_pipeline.model.GroupPipeline;
+import com.camerapipeline.camera_pipeline.model.PDI;
+import com.camerapipeline.camera_pipeline.model.Pipeline;
+import com.camerapipeline.camera_pipeline.services.pipeline.GroupPipelineService;
+
+@Component
+public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
+    @Autowired
+    PdiMapper pdiMapper;
+    @Autowired
+    GroupPipelineService gPipelineService;
+
+    @Override
+    public PipelineDTO toDTO(Pipeline model) {
+        TypeMap<Pipeline, PipelineDTO> typeMap = getTypeMap(
+            Pipeline.class, 
+            PipelineDTO.class
+        );
+        Converter<List<PDI>, List<PdiDTO>> converterPDIList =
+            ctx -> ctx.getSource() == null ? null : pdiMapper.toDTOList(ctx.getSource());
+        typeMap.addMappings(
+            mapper -> {
+                mapper.map(
+                    src -> src.getGroupPipeline().getId(), 
+                    PipelineDTO::setGroupPipelineId
+                );
+                mapper.using(converterPDIList)
+                    .map(
+                        Pipeline::getPDIList,
+                        PipelineDTO::setPDIList
+                    );
+            }
+        );
+        PipelineDTO dto = modelMapper.map(
+            model, 
+            PipelineDTO.class
+        );
+        return dto;
+    }
+
+    @Override
+    public Pipeline fromDTO(PipelineDTO dto) {
+        TypeMap<PipelineDTO, Pipeline> typeMap = getTypeMap(
+            PipelineDTO.class, 
+            Pipeline.class
+        );
+        Converter<List<PdiDTO>, List<PDI>> converterPDIList =
+            ctx -> ctx.getSource() == null ? null : pdiMapper.fromDTOList(ctx.getSource());
+        Converter<Integer, GroupPipeline> converterGroupPipeline =
+            ctx -> ctx.getSource() == null ? 
+                null : 
+                gPipelineService.getGroupPipeline(ctx.getSource());
+            
+        typeMap.addMappings(
+            mapper -> {
+                mapper.using(converterGroupPipeline)
+                    .map(
+                        src -> src.getGroupPipelineId(), 
+                        Pipeline::setGroupPipeline
+                    );
+                mapper.using(converterPDIList)
+                    .map(
+                        PipelineDTO::getPDIList,
+                        Pipeline::setPDIList
+                    );
+            }
+        );
+        Pipeline model = modelMapper.map(
+            dto, 
+            Pipeline.class
+        );
+        return model;
+    }
+}

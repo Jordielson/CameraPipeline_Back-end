@@ -1,7 +1,4 @@
-package com.camerapipeline.camera_pipeline.mapper;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.camerapipeline.camera_pipeline.mapper.pdi;
 
 import org.modelmapper.Converter;
 import org.modelmapper.TypeMap;
@@ -19,16 +16,12 @@ public class ValueParameterMapper extends Mapper<ValueParameter, ValueParameterD
     @Autowired
     ParameterMapper parameterMapper;
 
-    public TypeMap<ValueParameter, ValueParameterDTO> getTypeMap() {
-        return super.getTypeMap(
+    @Override
+    public ValueParameterDTO toDTO(ValueParameter model) {
+        TypeMap<ValueParameter, ValueParameterDTO> typeMap = getTypeMap(
             ValueParameter.class, 
             ValueParameterDTO.class
         );
-    }
-
-    @Override
-    public ValueParameterDTO toDTO(ValueParameter model) {
-        TypeMap<ValueParameter, ValueParameterDTO> typeMap = getTypeMap();
         Converter<Parameter, ParameterDTO> converterListParameter =
             ctx -> ctx.getSource() == null ? 
                 null : 
@@ -54,21 +47,30 @@ public class ValueParameterMapper extends Mapper<ValueParameter, ValueParameterD
 
     @Override
     public ValueParameter fromDTO(ValueParameterDTO dto) {
-        return null;
-    }
+        TypeMap<ValueParameterDTO, ValueParameter> typeMap = getTypeMap(
+            ValueParameterDTO.class, 
+            ValueParameter.class
+        );
+        Converter<ParameterDTO, Parameter> converterListParameter =
+            ctx -> ctx.getSource() == null ? 
+                null : 
+                parameterMapper.fromDTO(
+                    ctx.getSource()
+                );
+        typeMap.addMappings(
+            mapper -> {
+                mapper.using(converterListParameter)
+                    .map(
+                        ValueParameterDTO::getParameter,
+                        ValueParameter::setParameter
+                    );
+            }
+        );
 
-    @Override
-    public List<ValueParameterDTO> toDTOList(List<ValueParameter> modelList) {
-        List<ValueParameterDTO> list = new ArrayList<ValueParameterDTO>();
-        for (ValueParameter value : modelList) {
-            list.add(toDTO(value));
-        }
-        return list;
+        ValueParameter value = modelMapper.map(
+            dto, 
+            ValueParameter.class
+        );
+        return value;
     }
-
-    @Override
-    public List<ValueParameter> toModelList(List<ValueParameterDTO> modelList) {
-        return null;
-    }
-
 }

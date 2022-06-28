@@ -28,11 +28,12 @@ public class PipelineService {
             .orElseThrow(() -> new EntityNotFoundException(Integer.toString(id)));
     }
 
-    public Pipeline updatePipeline(Pipeline pipeline) {
+    public Pipeline updatePipeline(int id, Pipeline pipeline) {
         return pipelineRepository.save(pipeline);
     }
 
-    public void deletePipeline(Pipeline pipeline) {
+    public void deletePipeline(int id) {
+        Pipeline pipeline = getPipeline(id);
         pipelineRepository.delete(pipeline);
     }
 }

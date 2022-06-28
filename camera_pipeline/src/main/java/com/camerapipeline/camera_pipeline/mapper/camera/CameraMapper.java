@@ -1,6 +1,4 @@
-package com.camerapipeline.camera_pipeline.mapper;
-
-import java.util.List;
+package com.camerapipeline.camera_pipeline.mapper.camera;
 
 import org.springframework.stereotype.Component;
 
@@ -13,22 +11,19 @@ public class CameraMapper extends Mapper<Camera, CameraDTO> {
 
     @Override
     public CameraDTO toDTO(Camera model) {
-        return null;
+        CameraDTO dto = modelMapper.map(
+            model, 
+            CameraDTO.class
+        );
+        return dto;
     }
 
     @Override
     public Camera fromDTO(CameraDTO dto) {
-        return null;
+        Camera model = modelMapper.map(
+            dto, 
+            Camera.class
+        );
+        return model;
     }
-
-    @Override
-    public List<CameraDTO> toDTOList(List<Camera> modelList) {
-        return null;
-    }
-
-    @Override
-    public List<Camera> toModelList(List<CameraDTO> modelList) {
-        return null;
-    }
-    
 }
