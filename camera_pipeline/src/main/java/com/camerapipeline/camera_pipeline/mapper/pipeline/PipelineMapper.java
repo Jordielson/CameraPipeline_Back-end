@@ -7,19 +7,24 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.camerapipeline.camera_pipeline.dto.PdiDTO;
-import com.camerapipeline.camera_pipeline.dto.PipelineDTO;
+import com.camerapipeline.camera_pipeline.dto.camera.CameraDTO;
+import com.camerapipeline.camera_pipeline.dto.pdi.PdiDTO;
+import com.camerapipeline.camera_pipeline.dto.pipeline.PipelineDTO;
+import com.camerapipeline.camera_pipeline.mapper.camera.CameraMapper;
 import com.camerapipeline.camera_pipeline.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.mapper.pdi.PdiMapper;
-import com.camerapipeline.camera_pipeline.model.GroupPipeline;
-import com.camerapipeline.camera_pipeline.model.PDI;
-import com.camerapipeline.camera_pipeline.model.Pipeline;
+import com.camerapipeline.camera_pipeline.model.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.pdi.PDI;
+import com.camerapipeline.camera_pipeline.model.pipeline.GroupPipeline;
+import com.camerapipeline.camera_pipeline.model.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.services.pipeline.GroupPipelineService;
 
 @Component
 public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
     @Autowired
     PdiMapper pdiMapper;
+    @Autowired
+    CameraMapper cameraMapper;
     @Autowired
     GroupPipelineService gPipelineService;
 
@@ -31,6 +36,8 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
         );
         Converter<List<PDI>, List<PdiDTO>> converterPDIList =
             ctx -> ctx.getSource() == null ? null : pdiMapper.toDTOList(ctx.getSource());
+        Converter<List<Camera>, List<CameraDTO>> converterCameraList =
+            ctx -> ctx.getSource() == null ? null : cameraMapper.toDTOList(ctx.getSource());
         typeMap.addMappings(
             mapper -> {
                 mapper.map(
@@ -41,6 +48,11 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
                     .map(
                         Pipeline::getPDIList,
                         PipelineDTO::setPDIList
+                    );
+                mapper.using(converterCameraList)
+                    .map(
+                        Pipeline::getCameraList, 
+                        PipelineDTO::setCameraList
                     );
             }
         );
@@ -63,7 +75,8 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
             ctx -> ctx.getSource() == null ? 
                 null : 
                 gPipelineService.getGroupPipeline(ctx.getSource());
-            
+        Converter<List<CameraDTO>, List<Camera>> converterCameraList =
+            ctx -> ctx.getSource() == null ? null : cameraMapper.fromDTOList(ctx.getSource());
         typeMap.addMappings(
             mapper -> {
                 mapper.using(converterGroupPipeline)
@@ -75,6 +88,11 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
                     .map(
                         PipelineDTO::getPDIList,
                         Pipeline::setPDIList
+                    );
+                mapper.using(converterCameraList)
+                    .map(
+                        PipelineDTO::getCameraList,
+                        Pipeline::setCameraList
                     );
             }
         );

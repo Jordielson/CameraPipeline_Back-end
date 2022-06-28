@@ -5,11 +5,11 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.camerapipeline.camera_pipeline.dto.ParameterDTO;
-import com.camerapipeline.camera_pipeline.dto.ValueParameterDTO;
+import com.camerapipeline.camera_pipeline.dto.pdi.ParameterDTO;
+import com.camerapipeline.camera_pipeline.dto.pdi.ValueParameterDTO;
 import com.camerapipeline.camera_pipeline.mapper.core.Mapper;
-import com.camerapipeline.camera_pipeline.model.Parameter;
-import com.camerapipeline.camera_pipeline.model.ValueParameter;
+import com.camerapipeline.camera_pipeline.model.pdi.Parameter;
+import com.camerapipeline.camera_pipeline.model.pdi.ValueParameter;
 
 @Component
 public class ValueParameterMapper extends Mapper<ValueParameter, ValueParameterDTO> {

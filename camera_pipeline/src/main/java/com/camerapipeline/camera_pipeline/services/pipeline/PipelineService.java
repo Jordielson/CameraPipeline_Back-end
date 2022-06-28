@@ -7,8 +7,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.camerapipeline.camera_pipeline.model.Pipeline;
-import com.camerapipeline.camera_pipeline.repository.PipelineRepository;
+import com.camerapipeline.camera_pipeline.model.pipeline.Pipeline;
+import com.camerapipeline.camera_pipeline.repository.pipeline.PipelineRepository;
 
 @Service
 public class PipelineService {

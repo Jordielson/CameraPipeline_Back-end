@@ -2,9 +2,9 @@ package com.camerapipeline.camera_pipeline.mapper.camera;
 
 import org.springframework.stereotype.Component;
 
-import com.camerapipeline.camera_pipeline.dto.CameraDTO;
+import com.camerapipeline.camera_pipeline.dto.camera.CameraDTO;
 import com.camerapipeline.camera_pipeline.mapper.core.Mapper;
-import com.camerapipeline.camera_pipeline.model.Camera;
+import com.camerapipeline.camera_pipeline.model.camera.Camera;
 
 @Component
 public class CameraMapper extends Mapper<Camera, CameraDTO> {

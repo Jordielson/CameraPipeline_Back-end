@@ -7,8 +7,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.camerapipeline.camera_pipeline.model.ValueParameter;
-import com.camerapipeline.camera_pipeline.repository.ValueParameterRepository;
+import com.camerapipeline.camera_pipeline.model.pdi.ValueParameter;
+import com.camerapipeline.camera_pipeline.repository.pdi.ValueParameterRepository;
 
 @Service
 public class ValueParameterService {

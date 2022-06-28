@@ -35,6 +35,11 @@ INSERT INTO camera_pipeline.camera
 VALUES(1, 'http://localhost:5000/api', 60, 1, 'Camera 01', 1)
 ON DUPLICATE KEY UPDATE url = url;
 
+INSERT INTO camera_pipeline.camera_pipeline
+(pipeline_id, camera_id)
+VALUES(1, 1)
+ON DUPLICATE KEY UPDATE pipeline_id = pipeline_id;
+
 INSERT INTO camera_pipeline.model_pdi
 (id, url, category, name)
 VALUES(1, 'http://localhost:5000/api', 1, 'Redimensionar imagem')

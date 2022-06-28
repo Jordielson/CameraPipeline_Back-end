@@ -1,8 +1,8 @@
 package com.camerapipeline.camera_pipeline.services.camera;
 
-import com.camerapipeline.camera_pipeline.model.Camera;
-import com.camerapipeline.camera_pipeline.repository.CameraRepository;
-import com.camerapipeline.camera_pipeline.services.UserService;
+import com.camerapipeline.camera_pipeline.model.camera.Camera;
+import com.camerapipeline.camera_pipeline.repository.camera.CameraRepository;
+import com.camerapipeline.camera_pipeline.services.user.UserService;
 
 import java.util.List;
 

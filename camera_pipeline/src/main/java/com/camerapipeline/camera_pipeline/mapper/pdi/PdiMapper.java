@@ -7,13 +7,13 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.camerapipeline.camera_pipeline.dto.PdiDTO;
-import com.camerapipeline.camera_pipeline.dto.ValueParameterDTO;
+import com.camerapipeline.camera_pipeline.dto.pdi.PdiDTO;
+import com.camerapipeline.camera_pipeline.dto.pdi.ValueParameterDTO;
 import com.camerapipeline.camera_pipeline.mapper.core.Mapper;
-import com.camerapipeline.camera_pipeline.model.ModelPDI;
-import com.camerapipeline.camera_pipeline.model.PDI;
-import com.camerapipeline.camera_pipeline.model.Pipeline;
-import com.camerapipeline.camera_pipeline.model.ValueParameter;
+import com.camerapipeline.camera_pipeline.model.pdi.ModelPDI;
+import com.camerapipeline.camera_pipeline.model.pdi.PDI;
+import com.camerapipeline.camera_pipeline.model.pdi.ValueParameter;
+import com.camerapipeline.camera_pipeline.model.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.services.pdi.ModelPDIService;
 import com.camerapipeline.camera_pipeline.services.pipeline.PipelineService;
 

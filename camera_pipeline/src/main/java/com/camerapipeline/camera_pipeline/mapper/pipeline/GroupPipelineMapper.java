@@ -7,11 +7,11 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.camerapipeline.camera_pipeline.dto.GroupPipelineDTO;
-import com.camerapipeline.camera_pipeline.dto.PipelineDTO;
+import com.camerapipeline.camera_pipeline.dto.pipeline.GroupPipelineDTO;
+import com.camerapipeline.camera_pipeline.dto.pipeline.PipelineDTO;
 import com.camerapipeline.camera_pipeline.mapper.core.Mapper;
-import com.camerapipeline.camera_pipeline.model.GroupPipeline;
-import com.camerapipeline.camera_pipeline.model.Pipeline;
+import com.camerapipeline.camera_pipeline.model.pipeline.GroupPipeline;
+import com.camerapipeline.camera_pipeline.model.pipeline.Pipeline;
 
 @Component
 public class GroupPipelineMapper extends Mapper<GroupPipeline, GroupPipelineDTO> {
