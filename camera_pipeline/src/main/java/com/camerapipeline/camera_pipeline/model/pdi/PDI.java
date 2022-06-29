@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.pipeline.Pipeline;
+import com.camerapipeline.camera_pipeline.model.user.User;
 
 @Entity
 public class PDI implements ModelAbstract<Integer>{
@@ -117,5 +118,10 @@ public class PDI implements ModelAbstract<Integer>{
             ", pipeline='" + getPipeline() + "'" +
             ", valueParameters='" + getValueParameters() + "'" +
             "}";
+    }
+    
+    @Override
+    public User getUser() {
+        return pipeline.getUser();
     }
 }

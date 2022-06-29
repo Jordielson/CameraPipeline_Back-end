@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.services.pdi;
 
+import java.security.Principal;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,8 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
     }
 
     @Override
-    public ModelPDI create(ModelPDI model) {
+    public ModelPDI create(ModelPDI model, Principal principal) {
+        model.setUser(super.userService.loadUserByUsername(principal.getName()));
         ModelPDI modelPDI = super.create(model);
         for (Parameter param : model.getParameters()) {
             param.setModelPdi(modelPDI);
@@ -31,11 +34,13 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
 
     public ModelPDI getByName(String name) {
         return ((ModelPDIRepository) repository).findByName(name)
-            .orElseThrow(() -> new EntityNotFoundException(name));
+        .orElseThrow(() -> new EntityNotFoundException(name));
     }
-
+    
     @Override
-    public ModelPDI update(Integer id, ModelPDI model) {
+    public ModelPDI update(Integer id, ModelPDI model, Principal principal) {
+        model.setUser(super.userService.loadUserByUsername(principal.getName()));
+        
         ModelPDI oldModelPDI = this.repository.findById(id)
                 .map(existing -> existing
                 ).orElseThrow(() -> new EntityNotFoundException(id.toString()));
@@ -45,7 +50,7 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
             param.setModelPdi(model);
             if(param.getId() != null && param.getId() != 0 &&
                id.equals(paramService.getById(param.getId()).getModelPdi().getId())) {
-                paramService.update(param.getId(), param);
+                paramService.update(param.getId(), param, principal);
             } else {
                 paramService.create(param);
             }
@@ -53,7 +58,7 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
 
         oldModelPDI.getParameters().forEach(oldParam -> {
             if(!model.getParameters().contains(oldParam)) {
-                paramService.delete(oldParam.getId());
+                paramService.delete(oldParam.getId(), principal);
             }
         });
 
@@ -61,11 +66,11 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
     }
 
     @Override
-    public ModelPDI delete(Integer id) {
+    public ModelPDI delete(Integer id, Principal principal) {
         ModelPDI modelPDI = getById(id);
         for (Parameter param : modelPDI.getParameters()) {
-            paramService.delete(param.getId());
+            paramService.delete(param.getId(), principal);
         }
-        return super.delete(id);
+        return super.delete(id, principal);
     }
 }

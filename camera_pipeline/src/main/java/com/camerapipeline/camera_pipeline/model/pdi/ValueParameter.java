@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.camerapipeline.camera_pipeline.model.ModelAbstract;
+import com.camerapipeline.camera_pipeline.model.user.User;
 
 @Entity
 public class ValueParameter implements ModelAbstract<Integer> {
@@ -132,5 +133,10 @@ public class ValueParameter implements ModelAbstract<Integer> {
             ", parameter='" + getParameter() + "'" +
             ", pdi='" + getPdi() + "'" +
             "}";
+    }
+
+    @Override
+    public User getUser() {
+        return pdi.getUser();
     }
 }

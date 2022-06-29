@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.camerapipeline.camera_pipeline.enums.ParameterType;
 import com.camerapipeline.camera_pipeline.model.ModelAbstract;
+import com.camerapipeline.camera_pipeline.model.user.User;
 
 @Entity
 public class Parameter implements ModelAbstract<Integer>{
@@ -116,5 +117,10 @@ public class Parameter implements ModelAbstract<Integer>{
             ", type='" + getType() + "'" +
             ", modelPdi='" + getModelPdi() + "'" +
             "}";
+    }
+
+    @Override
+    public User getUser() {
+        return modelPdi.getUser();
     }
 }

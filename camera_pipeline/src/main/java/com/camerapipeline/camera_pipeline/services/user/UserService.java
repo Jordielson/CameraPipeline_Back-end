@@ -75,16 +75,12 @@ public class UserService extends ServiceAbstract<User, Integer> {
     }
 
     @Override
-    public User update(Integer id, User u) {
+    public User update(Integer id, User u, Principal principal) {
         return super.repository.findById(id)
                 .map(existing -> {
                     u.setId(id);
                     u.setPassword(existing.getPassword());
                     return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
-    }
-
-    public User loadUserByUsername(String name) {
-        return ((UserRepository) super.repository).findByEmail(name).get();
     }
 }

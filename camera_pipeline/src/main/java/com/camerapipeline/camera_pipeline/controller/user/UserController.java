@@ -6,8 +6,6 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,13 +57,6 @@ public class UserController {
         );
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<Page<User>> getAllUsers(Pageable pageable) {
-        return ResponseEntity.ok(
-            this.userService.getAll(pageable)
-        );
-    }
-
     @GetMapping("users/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(
@@ -82,16 +73,16 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Integer id, @Valid @RequestBody User u) {
-        User user = this.userService.update(id, u);
+    public ResponseEntity<User> updateUser(@PathVariable("id") Integer id, @Valid @RequestBody User u, Principal principal) {
+        User user = this.userService.update(id, u, principal);
         URI selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
         return ResponseEntity.created(selfLink).body(user);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
-        this.userService.delete(id);
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id, Principal principal) {
+        this.userService.delete(id, principal);
         return ResponseEntity.noContent().build();
     }
 }

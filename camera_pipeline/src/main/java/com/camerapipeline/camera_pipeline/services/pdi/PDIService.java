@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.services.pdi;
 
+import java.security.Principal;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
     }
 
     @Override
-    public PDI update(Integer id, PDI model) {
+    public PDI update(Integer id, PDI model, Principal principal) {
         PDI oldPDI = this.repository.findById(id)
                 .map(existing -> existing
                 ).orElseThrow(() -> new EntityNotFoundException(id.toString()));
@@ -40,7 +42,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
             value.setPdi(model);
             if(value.getId() != null && value.getId() != 0 &&
                id.equals(valueService.getById(value.getId()).getPdi().getId())) {
-                valueService.update(value.getId(), value);
+                valueService.update(value.getId(), value, principal);
             } else {
                 valueService.create(value);
             }
@@ -48,7 +50,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
 
         oldPDI.getValueParameters().forEach(oldParam -> {
             if(!model.getValueParameters().contains(oldParam)) {
-                valueService.delete(oldParam.getId());
+                valueService.delete(oldParam.getId(), principal);
             }
         });
 
@@ -56,10 +58,10 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
     }
 
     @Override
-    public PDI delete(Integer id) {
+    public PDI delete(Integer id, Principal principal) {
         for (ValueParameter value : getById(id).getValueParameters()) {
-            valueService.delete(value.getId());
+            valueService.delete(value.getId(), principal);
         }
-        return super.delete(id);
+        return super.delete(id, principal);
     }
 }

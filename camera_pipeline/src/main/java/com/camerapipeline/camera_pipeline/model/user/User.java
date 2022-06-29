@@ -209,5 +209,10 @@ public class User implements UserDetails, ModelAbstract<Integer> {
 	public boolean isEnabled() {
 		return true;
 	}
+
+    @Override
+    public User getUser() {
+        return this;
+    }
     
 }

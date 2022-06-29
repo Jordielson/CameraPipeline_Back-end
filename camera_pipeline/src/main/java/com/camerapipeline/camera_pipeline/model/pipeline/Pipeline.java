@@ -25,6 +25,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.pdi.PDI;
+import com.camerapipeline.camera_pipeline.model.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -233,5 +234,10 @@ public class Pipeline implements ModelAbstract<Integer> {
             ", PDIList='" + getPDIList() + "'" +
             ", cameraList='" + getCameraList() + "'" +
             "}";
+    }
+
+    @Override
+    public User getUser() {
+        return groupPipeline.getUser();
     }
 }
