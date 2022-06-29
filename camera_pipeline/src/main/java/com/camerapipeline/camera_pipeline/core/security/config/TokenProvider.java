@@ -35,10 +35,6 @@ public class TokenProvider {
         }
     }
 
-    public int getExpiration() {
-        return jwtConfig.getTokenValidityInSeconds();
-    }
-
     public Optional<String> getUsernameFromToken(String token) {
         return Optional.ofNullable(getAllClaimsFromToken(token).getSubject());
     }

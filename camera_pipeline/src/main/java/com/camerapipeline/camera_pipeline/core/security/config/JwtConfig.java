@@ -12,7 +12,6 @@ public class JwtConfig {
     @Value("${CameraPipeline.jwtExpirationMs}")
     private int tokenValidityInSeconds;
 
-
     public JwtConfig() {
     }
 

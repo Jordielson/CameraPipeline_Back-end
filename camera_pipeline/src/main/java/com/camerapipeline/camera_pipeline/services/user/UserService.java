@@ -45,7 +45,6 @@ public class UserService extends ServiceAbstract<User, Integer> {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
         
-        System.out.println(tokenProvider.getExpiration());
         UserDTO userDto = new UserDTO(
             jwt,
             "Bearer",
@@ -83,5 +82,9 @@ public class UserService extends ServiceAbstract<User, Integer> {
                     u.setPassword(existing.getPassword());
                     return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    public User loadUserByUsername(String name) {
+        return ((UserRepository) super.repository).findByEmail(name).get();
     }
 }

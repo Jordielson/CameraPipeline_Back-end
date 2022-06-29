@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.controller.camera;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -46,21 +47,23 @@ public class CameraController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<CameraDTO> add(@Valid @RequestBody CameraDTO dto) {
+    public ResponseEntity<CameraDTO> add(@Valid @RequestBody CameraDTO dto, Principal principal) {
         CameraDTO groupDTO = mapper.toDTO(
             cameraService.create(
-                mapper.fromDTO(dto)
+                mapper.fromDTO(dto), 
+                principal
             )
         );
         return new ResponseEntity<CameraDTO>(groupDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CameraDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody CameraDTO dto) {
+    public ResponseEntity<CameraDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody CameraDTO dto, Principal principal) {
         CameraDTO groupDTO = mapper.toDTO(
             cameraService.update(
                 id,
-                mapper.fromDTO(dto)
+                mapper.fromDTO(dto), 
+                principal
             )
         );
         return new ResponseEntity<CameraDTO>(
