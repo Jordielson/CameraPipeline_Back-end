@@ -23,11 +23,12 @@ import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.pipeline.GroupPipeline;
 
 @Entity
-public class User implements UserDetails{
+public class User implements UserDetails, ModelAbstract<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

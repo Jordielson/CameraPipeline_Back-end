@@ -14,12 +14,13 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import com.camerapipeline.camera_pipeline.enums.Category;
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 
 @Entity(name = "model_pdi")
-public class ModelPDI {
+public class ModelPDI implements ModelAbstract<Integer>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Column(unique=true)
@@ -37,7 +38,7 @@ public class ModelPDI {
     public ModelPDI() {
     }
 
-    public ModelPDI(int id, String name, String URL, List<Parameter> parameters, Category category) {
+    public ModelPDI(Integer id, String name, String URL, List<Parameter> parameters, Category category) {
         this.id = id;
         this.name = name;
         this.URL = URL;
@@ -45,11 +46,11 @@ public class ModelPDI {
         this.category = category;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -85,7 +86,7 @@ public class ModelPDI {
         this.category = category;
     }
 
-    public ModelPDI id(int id) {
+    public ModelPDI id(Integer id) {
         setId(id);
         return this;
     }

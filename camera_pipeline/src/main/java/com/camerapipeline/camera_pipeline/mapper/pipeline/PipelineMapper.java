@@ -74,7 +74,7 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
         Converter<Integer, GroupPipeline> converterGroupPipeline =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                gPipelineService.getGroupPipeline(ctx.getSource());
+                gPipelineService.getById(ctx.getSource());
         Converter<List<CameraDTO>, List<Camera>> converterCameraList =
             ctx -> ctx.getSource() == null ? null : cameraMapper.fromDTOList(ctx.getSource());
         typeMap.addMappings(

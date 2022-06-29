@@ -42,7 +42,7 @@ public class ParameterMapper extends Mapper<Parameter, ParameterDTO>{
         Converter<Integer, ModelPDI> converter =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                modelService.getModelPDI(
+                modelService.getById(
                     ctx.getSource()
                 );
         typeMap.addMappings(

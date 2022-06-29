@@ -5,10 +5,9 @@ import com.camerapipeline.camera_pipeline.dto.user.UserDTO;
 import com.camerapipeline.camera_pipeline.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.model.user.User;
 import com.camerapipeline.camera_pipeline.repository.user.UserRepository;
+import com.camerapipeline.camera_pipeline.services.ServiceAbstract;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,16 +20,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+public class UserService extends ServiceAbstract<User, Integer> {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    
+    public UserService(UserRepository repository) {
+        super(repository);
+    }
+    
     public UserDTO authenticateUserAndGetToken(String login, String password) {
         final Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(login, password));
@@ -39,7 +40,7 @@ public class UserService {
         String jwt = tokenProvider.generateToken(authentication);
 
         // User userDetails = (User) authentication.getPrincipal();		
-        User userDetails = userRepository.findByEmail(login).get();		
+        User userDetails = ((UserRepository) super.repository).findByEmail(login).get();		
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -59,43 +60,27 @@ public class UserService {
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(principal.getName(), oldPassword));
 
         if (authentication.isAuthenticated()) {
-            return this.userRepository.findByEmail(principal.getName()).map(existing -> {
+            return ((UserRepository) super.repository).findByEmail(principal.getName()).map(existing -> {
                 existing.setPassword(passwordEncoder.encode(newPassword));
-                return this.userRepository.save(existing);
+                return this.repository.save(existing);
             }).orElseThrow(SecurityException::new);
         }
         throw new SecurityException();
     }
 
-    public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
-
-    public User getUser(Integer id) {
-        return this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-    }
-
-    public User createUser(User u) {
-        u.setId(null);
+    @Override
+    public User create(User u) {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
-        return this.userRepository.save(u);
+        return super.create(u);
     }
 
-    public User updateUser(Integer id, User u) {
-        return this.userRepository.findById(id)
+    @Override
+    public User update(Integer id, User u) {
+        return super.repository.findById(id)
                 .map(existing -> {
                     u.setId(id);
                     u.setPassword(existing.getPassword());
-                    return this.userRepository.save(u);
+                    return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
-    }
-
-    public User deleteUser(Integer id) {
-        return this.userRepository.findById(id)
-                .map(user -> {
-                    userRepository.delete(user);
-                    return user;
-                }).orElseThrow(() -> new UserNotFoundException(id));
-    }
-    
+    }    
 }

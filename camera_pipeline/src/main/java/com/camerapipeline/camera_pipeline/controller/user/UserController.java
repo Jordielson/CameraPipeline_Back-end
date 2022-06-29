@@ -62,28 +62,28 @@ public class UserController {
     @GetMapping("/all")
     public ResponseEntity<Page<User>> getAllUsers(Pageable pageable) {
         return ResponseEntity.ok(
-            this.userService.getAllUsers(pageable)
+            this.userService.getAll(pageable)
         );
     }
 
     @GetMapping("users/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(
-            this.userService.getUser(id)
+            this.userService.getById(id)
         );
     }
 
     @PostMapping("/register")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<User> createUser(@RequestBody @Valid User u) {
-        User user = this.userService.createUser(u);
+        User user = this.userService.create(u);
         URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Integer id, @Valid @RequestBody User u) {
-        User user = this.userService.updateUser(id, u);
+        User user = this.userService.update(id, u);
         URI selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
         return ResponseEntity.created(selfLink).body(user);
     }
@@ -91,7 +91,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
-        this.userService.deleteUser(id);
+        this.userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

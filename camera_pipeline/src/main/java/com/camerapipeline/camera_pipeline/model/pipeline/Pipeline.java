@@ -22,15 +22,16 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.pdi.PDI;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Pipeline {
+public class Pipeline implements ModelAbstract<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotBlank
     private String name;
     private String description;
@@ -70,7 +71,7 @@ public class Pipeline {
     public Pipeline() {
     }
 
-    public Pipeline(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, GroupPipeline groupPipeline, List<PDI> PDIList, List<Camera> cameraList) {
+    public Pipeline(Integer id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, GroupPipeline groupPipeline, List<PDI> PDIList, List<Camera> cameraList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -82,11 +83,11 @@ public class Pipeline {
         this.cameraList = cameraList;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -158,7 +159,7 @@ public class Pipeline {
         this.cameraList = cameraList;
     }
 
-    public Pipeline id(int id) {
+    public Pipeline id(Integer id) {
         setId(id);
         return this;
     }

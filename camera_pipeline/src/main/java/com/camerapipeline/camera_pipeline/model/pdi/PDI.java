@@ -11,13 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.pipeline.Pipeline;
 
 @Entity
-public class PDI {
+public class PDI implements ModelAbstract<Integer>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     @NotNull
     @ManyToOne
@@ -33,18 +34,18 @@ public class PDI {
     public PDI() {
     }
 
-    public PDI(int id, ModelPDI modelPdi, Pipeline pipeline, List<ValueParameter> valueParameters) {
+    public PDI(Integer id, ModelPDI modelPdi, Pipeline pipeline, List<ValueParameter> valueParameters) {
         this.id = id;
         this.modelPdi = modelPdi;
         this.pipeline = pipeline;
         this.valueParameters = valueParameters;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -72,7 +73,7 @@ public class PDI {
         this.valueParameters = valueParameters;
     }
 
-    public PDI id(int id) {
+    public PDI id(Integer id) {
         setId(id);
         return this;
     }

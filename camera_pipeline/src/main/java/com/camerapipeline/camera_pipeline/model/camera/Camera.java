@@ -11,13 +11,14 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.user.User;
 
 @Entity
-public class Camera {
+public class Camera implements ModelAbstract<Integer>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotNull
     @ManyToOne
     private User user;
@@ -37,7 +38,7 @@ public class Camera {
     public Camera() {
     }
 
-    public Camera(int id, User user, String name, String URL, boolean isPrivate, Double[] coordinates, int fpsLimiter) {
+    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, Double[] coordinates, int fpsLimiter) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -47,11 +48,11 @@ public class Camera {
         this.fpsLimiter = fpsLimiter;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -107,7 +108,7 @@ public class Camera {
         this.fpsLimiter = fpsLimiter;
     }
 
-    public Camera id(int id) {
+    public Camera id(Integer id) {
         setId(id);
         return this;
     }

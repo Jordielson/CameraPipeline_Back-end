@@ -1,38 +1,14 @@
 package com.camerapipeline.camera_pipeline.services.pdi;
 
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.camerapipeline.camera_pipeline.model.pdi.Parameter;
 import com.camerapipeline.camera_pipeline.repository.pdi.ParameterRepository;
+import com.camerapipeline.camera_pipeline.services.ServiceAbstract;
 
 @Service
-public class ParameterService {
-    @Autowired
-    private ParameterRepository repository;
-
-    public Parameter saveParameter(Parameter parameter) {
-        return repository.save(parameter);
-    }
-
-    public List<Parameter> getParameterList() {
-        return repository.findAll();
-    }
-
-    public Parameter getParameter(Integer id) {
-        return repository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(Integer.toString(id)));
-    }
-
-    public Parameter updateParameter(Parameter parameter) {
-        return repository.save(parameter);
-    }
-
-    public void deleteParameter(int id) {
-        repository.delete(getParameter(id));
+public class ParameterService extends ServiceAbstract<Parameter, Integer>{
+    public ParameterService(ParameterRepository repository) {
+        super(repository);
     }
 }

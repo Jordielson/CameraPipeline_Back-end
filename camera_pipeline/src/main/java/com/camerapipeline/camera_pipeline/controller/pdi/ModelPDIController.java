@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,9 +31,9 @@ public class ModelPDIController {
     ModelPDIMapper mapper;
 
     @GetMapping("/all")
-    public ResponseEntity<List<ModelPdiDTO>> getAll() {
+    public ResponseEntity<List<ModelPdiDTO>> getAll(Pageable pageable) {
         List<ModelPdiDTO> list = mapper.toDTOList(
-            modelPDIService.getModelPDIList()
+            modelPDIService.getAll(pageable).toList()
         );
         return new ResponseEntity<List<ModelPdiDTO>>(list, HttpStatus.OK);
     }
@@ -40,7 +41,7 @@ public class ModelPDIController {
     @GetMapping("/{id}")
     public ResponseEntity<ModelPdiDTO> get(@PathVariable("id") Integer id) {
         ModelPdiDTO dto = mapper.toDTO(
-            modelPDIService.getModelPDI(id)
+            modelPDIService.getById(id)
         );
         return new ResponseEntity<ModelPdiDTO>(dto, HttpStatus.OK);
     }
@@ -48,7 +49,7 @@ public class ModelPDIController {
     @PostMapping("/register")
     public ResponseEntity<ModelPdiDTO> add(@Valid @RequestBody ModelPdiDTO dto) {
         ModelPdiDTO groupDTO = mapper.toDTO(
-            modelPDIService.saveModelPDI(
+            modelPDIService.create(
                 mapper.fromDTO(dto)
             )
         );
@@ -58,7 +59,7 @@ public class ModelPDIController {
     @PutMapping("/{id}")
     public ResponseEntity<ModelPdiDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody ModelPdiDTO dto) {
         ModelPdiDTO groupDTO = mapper.toDTO(
-            modelPDIService.updateModelPDI(
+            modelPDIService.update(
                 id,
                 mapper.fromDTO(dto)
             )
@@ -71,7 +72,7 @@ public class ModelPDIController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
-        modelPDIService.deleteModelPDI(id);
+        modelPDIService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

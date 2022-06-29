@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             authorizeRequests()
             .antMatchers("/user/login").permitAll()
             .antMatchers("/user/register").permitAll()
-            .antMatchers("/model-pdi/**").permitAll()
+            .antMatchers("/pdi/**").permitAll()
             .antMatchers("/pipeline/**").permitAll()
             .antMatchers("/camera/**").permitAll()
             .anyRequest().authenticated()

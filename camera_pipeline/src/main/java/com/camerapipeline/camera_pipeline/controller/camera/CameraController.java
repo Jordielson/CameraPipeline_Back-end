@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +30,9 @@ public class CameraController {
     CameraMapper mapper;
 
     @GetMapping("/all")
-    public ResponseEntity<List<CameraDTO>> getAll() {
+    public ResponseEntity<List<CameraDTO>> getAll(Pageable pageable) {
         List<CameraDTO> list = mapper.toDTOList(
-            cameraService.getCameraList()
+            cameraService.getAll(pageable).toList()
         );
         return new ResponseEntity<List<CameraDTO>>(list, HttpStatus.OK);
     }
@@ -39,7 +40,7 @@ public class CameraController {
     @GetMapping("/{id}")
     public ResponseEntity<CameraDTO> get(@PathVariable("id") Integer id) {
         CameraDTO dto = mapper.toDTO(
-            cameraService.getCamera(id)
+            cameraService.getById(id)
         );
         return new ResponseEntity<CameraDTO>(dto, HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class CameraController {
     @PostMapping("/register")
     public ResponseEntity<CameraDTO> add(@Valid @RequestBody CameraDTO dto) {
         CameraDTO groupDTO = mapper.toDTO(
-            cameraService.saveCamera(
+            cameraService.create(
                 mapper.fromDTO(dto)
             )
         );
@@ -57,7 +58,7 @@ public class CameraController {
     @PutMapping("/{id}")
     public ResponseEntity<CameraDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody CameraDTO dto) {
         CameraDTO groupDTO = mapper.toDTO(
-            cameraService.updateCamera(
+            cameraService.update(
                 id,
                 mapper.fromDTO(dto)
             )
@@ -70,7 +71,7 @@ public class CameraController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
-        cameraService.deleteCamera(id);
+        cameraService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

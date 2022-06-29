@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +30,9 @@ public class GroupPipelineController {
     GroupPipelineMapper mapper;
 
     @GetMapping("/all")
-    public ResponseEntity<List<GroupPipelineDTO>> getAll() {
+    public ResponseEntity<List<GroupPipelineDTO>> getAll(Pageable pageable) {
         List<GroupPipelineDTO> list = mapper.toDTOList(
-            groupService.getGroupPipelineList()
+            groupService.getAll(pageable).toList()
         );
         return new ResponseEntity<List<GroupPipelineDTO>>(list, HttpStatus.OK);
     }
@@ -39,7 +40,7 @@ public class GroupPipelineController {
     @GetMapping("/{id}")
     public ResponseEntity<GroupPipelineDTO> getGroup(@PathVariable("id") Integer id) {
         GroupPipelineDTO dto = mapper.toDTO(
-            groupService.getGroupPipeline(id)
+            groupService.getById(id)
         );
         return new ResponseEntity<GroupPipelineDTO>(dto, HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class GroupPipelineController {
     @PostMapping("/register")
     public ResponseEntity<GroupPipelineDTO> addGroup(@Valid @RequestBody GroupPipelineDTO dto) {
         GroupPipelineDTO groupDTO = mapper.toDTO(
-            groupService.saveGroupPipeline(
+            groupService.create(
                 mapper.fromDTO(dto)
             )
         );
@@ -57,7 +58,7 @@ public class GroupPipelineController {
     @PutMapping("/{id}")
     public ResponseEntity<GroupPipelineDTO> updateGroup(@PathVariable("id") Integer id, @Valid @RequestBody GroupPipelineDTO dto) {
         GroupPipelineDTO groupDTO = mapper.toDTO(
-            groupService.updateGroupPipeline(
+            groupService.update(
                 id,
                 mapper.fromDTO(dto)
             )
@@ -70,7 +71,7 @@ public class GroupPipelineController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGroup(@PathVariable("id") Integer id) {
-        groupService.deleteGroupPipeline(id);
+        groupService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

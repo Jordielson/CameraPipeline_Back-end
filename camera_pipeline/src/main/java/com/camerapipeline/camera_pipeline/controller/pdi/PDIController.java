@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +30,9 @@ public class PDIController {
     PdiMapper mapper;
 
     @GetMapping("/all")
-    public ResponseEntity<List<PdiDTO>> getAll() {
+    public ResponseEntity<List<PdiDTO>> getAll(Pageable pageable) {
         List<PdiDTO> list = mapper.toDTOList(
-            pdiService.getPDIList()
+            pdiService.getAll(pageable).toList()
         );
         return new ResponseEntity<List<PdiDTO>>(list, HttpStatus.OK);
     }
@@ -39,7 +40,7 @@ public class PDIController {
     @GetMapping("/{id}")
     public ResponseEntity<PdiDTO> getPDI(@PathVariable("id") Integer id) {
         PdiDTO dto = mapper.toDTO(
-            pdiService.getPDI(id)
+            pdiService.getById(id)
         );
         return new ResponseEntity<PdiDTO>(dto, HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class PDIController {
     @PostMapping("/register")
     public ResponseEntity<PdiDTO> addPDI(@Valid @RequestBody PdiDTO dto) {
         PdiDTO groupDTO = mapper.toDTO(
-            pdiService.savePDI(
+            pdiService.create(
                 mapper.fromDTO(dto)
             )
         );
@@ -57,7 +58,7 @@ public class PDIController {
     @PutMapping("/{id}")
     public ResponseEntity<PdiDTO> updatePDI(@PathVariable("id") Integer id, @Valid @RequestBody PdiDTO dto) {
         PdiDTO groupDTO = mapper.toDTO(
-            pdiService.updatePDI(
+            pdiService.update(
                 id,
                 mapper.fromDTO(dto)
             )
@@ -70,7 +71,7 @@ public class PDIController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePDI(@PathVariable("id") Integer id) {
-        pdiService.deletePDI(id);
+        pdiService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

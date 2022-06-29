@@ -9,6 +9,7 @@ import com.camerapipeline.camera_pipeline.mapper.pipeline.PipelineMapper;
 import com.camerapipeline.camera_pipeline.services.pipeline.PipelineService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +30,9 @@ public class PipelineController {
     PipelineMapper mapper;
 
     @GetMapping("/all")
-    public ResponseEntity<List<PipelineDTO>> getAll() {
+    public ResponseEntity<List<PipelineDTO>> getAll(Pageable pageable) {
         List<PipelineDTO> pipelines = mapper.toDTOList(
-            pipelineService.getPipelineList()
+            pipelineService.getAll(pageable).toList()
         );
         return new ResponseEntity<List<PipelineDTO>>(pipelines, HttpStatus.OK);
     }
@@ -39,7 +40,7 @@ public class PipelineController {
     @GetMapping("/{id}")
     public ResponseEntity<PipelineDTO> getPipeline(@PathVariable("id") Integer id) {
         PipelineDTO dto = mapper.toDTO(
-            pipelineService.getPipeline(id)
+            pipelineService.getById(id)
         );
         return new ResponseEntity<PipelineDTO>(dto, HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class PipelineController {
     @PostMapping("/register")
     public ResponseEntity<PipelineDTO> addPipeline(@Valid @RequestBody PipelineDTO dto) {
         PipelineDTO pipelineDTO = mapper.toDTO(
-            pipelineService.savePipeline(
+            pipelineService.create(
                 mapper.fromDTO(dto)
             )
         );
@@ -57,7 +58,7 @@ public class PipelineController {
     @PutMapping("/{id}")
     public ResponseEntity<PipelineDTO> updatePipeline(@PathVariable("id") Integer id, @Valid @RequestBody PipelineDTO dto) {
         PipelineDTO pipelineDTO = mapper.toDTO(
-            pipelineService.updatePipeline(
+            pipelineService.update(
                 id,
                 mapper.fromDTO(dto)
             )
@@ -70,7 +71,7 @@ public class PipelineController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePipeline(@PathVariable("id") Integer id) {
-        pipelineService.deletePipeline(id);
+        pipelineService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

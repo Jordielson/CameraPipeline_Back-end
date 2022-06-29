@@ -12,12 +12,13 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 import com.camerapipeline.camera_pipeline.enums.ParameterType;
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 
 @Entity
-public class Parameter {
+public class Parameter implements ModelAbstract<Integer>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     private String name;
@@ -32,18 +33,18 @@ public class Parameter {
     public Parameter() {
     }
 
-    public Parameter(int id, String name, ParameterType type, ModelPDI modelPdi) {
+    public Parameter(Integer id, String name, ParameterType type, ModelPDI modelPdi) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.modelPdi = modelPdi;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -71,7 +72,7 @@ public class Parameter {
         this.modelPdi = modelPdi;
     }
 
-    public Parameter id(int id) {
+    public Parameter id(Integer id) {
         setId(id);
         return this;
     }
@@ -99,7 +100,7 @@ public class Parameter {
             return false;
         }
         Parameter parameter = (Parameter) o;
-        return id == parameter.id && Objects.equals(name, parameter.name) && Objects.equals(type, parameter.type) && Objects.equals(modelPdi, parameter.modelPdi);
+        return id == parameter.id;
     }
 
     @Override

@@ -10,11 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
+
 @Entity
-public class ValueParameter {
+public class ValueParameter implements ModelAbstract<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotNull
     private String value;
@@ -32,7 +34,7 @@ public class ValueParameter {
     public ValueParameter() {
     }
 
-    public ValueParameter(int id, String value, Object convertedValue, Parameter parameter, PDI pdi) {
+    public ValueParameter(Integer id, String value, Object convertedValue, Parameter parameter, PDI pdi) {
         this.id = id;
         this.value = value;
         this.convertedValue = convertedValue;
@@ -40,11 +42,11 @@ public class ValueParameter {
         this.pdi = pdi;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -80,7 +82,7 @@ public class ValueParameter {
         this.pdi = pdi;
     }
 
-    public ValueParameter id(int id) {
+    public ValueParameter id(Integer id) {
         setId(id);
         return this;
     }
@@ -113,7 +115,7 @@ public class ValueParameter {
             return false;
         }
         ValueParameter valueParameter = (ValueParameter) o;
-        return id == valueParameter.id && Objects.equals(value, valueParameter.value) && Objects.equals(convertedValue, valueParameter.convertedValue) && Objects.equals(parameter, valueParameter.parameter) && Objects.equals(pdi, valueParameter.pdi);
+        return id == valueParameter.id;
     }
 
     @Override

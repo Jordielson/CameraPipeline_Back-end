@@ -1,7 +1,5 @@
 package com.camerapipeline.camera_pipeline.services.pdi;
 
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,45 +8,58 @@ import org.springframework.stereotype.Service;
 import com.camerapipeline.camera_pipeline.model.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.repository.pdi.PDIRepository;
+import com.camerapipeline.camera_pipeline.services.ServiceAbstract;
 
 @Service
-public class PDIService {
-    @Autowired
-    private PDIRepository pdiRepository;
+public class PDIService extends ServiceAbstract<PDI, Integer> {
     @Autowired
     ValueParameterService valueService;
-
-    public PDI savePDI(PDI pdi) {
-        PDI pdiSaved = pdiRepository.save(pdi);
-        for (ValueParameter value : pdi.getValueParameters()) {
-            value.setPdi(pdiSaved);
-            valueService.saveValueParameter(value);
-        }
-        return pdiSaved;
+    
+    public PDIService(PDIRepository repository) {
+        super(repository);
     }
-
-    public List<PDI> getPDIList() {
-        return pdiRepository.findAll();
-    }
-
-    public PDI getPDI(Integer id) {
-        return pdiRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(Integer.toString(id)));
-    }
-
-    public PDI updatePDI(int id, PDI pdi) {
-        for (ValueParameter value : pdi.getValueParameters()) {
+    
+    @Override
+    public PDI create(PDI model) {
+        PDI pdi = super.create(model);
+        for (ValueParameter value : model.getValueParameters()) {
             value.setPdi(pdi);
-            valueService.updateValueParameter(value);
+            valueService.create(value);
         }
-        PDI pdiUpdated = pdiRepository.save(pdi);
-        return pdiUpdated;
+        return pdi;
     }
 
-    public void deletePDI(int id) {
-        for (ValueParameter value : getPDI(id).getValueParameters()) {
-            valueService.deleteValueParameter(value);
+    @Override
+    public PDI update(Integer id, PDI model) {
+        PDI oldPDI = this.repository.findById(id)
+                .map(existing -> existing
+                ).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+                
+        model.setId(id);
+        for (ValueParameter value : model.getValueParameters()) {
+            value.setPdi(model);
+            if(value.getId() != null && value.getId() != 0 &&
+               id.equals(valueService.getById(value.getId()).getPdi().getId())) {
+                valueService.update(value.getId(), value);
+            } else {
+                valueService.create(value);
+            }
         }
-        pdiRepository.delete(getPDI(id));
+
+        oldPDI.getValueParameters().forEach(oldParam -> {
+            if(!model.getValueParameters().contains(oldParam)) {
+                valueService.delete(oldParam.getId());
+            }
+        });
+
+        return super.repository.save(model);
+    }
+
+    @Override
+    public PDI delete(Integer id) {
+        for (ValueParameter value : getById(id).getValueParameters()) {
+            valueService.delete(value.getId());
+        }
+        return super.delete(id);
     }
 }

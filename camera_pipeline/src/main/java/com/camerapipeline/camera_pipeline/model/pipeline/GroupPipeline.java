@@ -12,13 +12,14 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.camerapipeline.camera_pipeline.model.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.user.User;
 
 @Entity
-public class GroupPipeline {
+public class GroupPipeline implements ModelAbstract<Integer> {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotBlank
     private String name;
     @OneToMany(mappedBy = "groupPipeline")
@@ -27,36 +28,21 @@ public class GroupPipeline {
     @ManyToOne
     private User user;
 
-
     public GroupPipeline() {
     }
 
-
-    public GroupPipeline(int id, String name, List<Pipeline> pipelineList, User user) {
+    public GroupPipeline(Integer id, String name, List<Pipeline> pipelineList, User user) {
         this.id = id;
         this.name = name;
         this.pipelineList = pipelineList;
         this.user = user;
     }
 
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public GroupPipeline user(User user) {
-        setUser(user);
-        return this;
-    }    
-
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -76,7 +62,15 @@ public class GroupPipeline {
         this.pipelineList = pipelineList;
     }
 
-    public GroupPipeline id(int id) {
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public GroupPipeline id(Integer id) {
         setId(id);
         return this;
     }
@@ -91,6 +85,11 @@ public class GroupPipeline {
         return this;
     }
 
+    public GroupPipeline user(User user) {
+        setUser(user);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -99,12 +98,12 @@ public class GroupPipeline {
             return false;
         }
         GroupPipeline groupPipeline = (GroupPipeline) o;
-        return id == groupPipeline.id && Objects.equals(name, groupPipeline.name) && Objects.equals(pipelineList, groupPipeline.pipelineList);
+        return Objects.equals(id, groupPipeline.id) && Objects.equals(name, groupPipeline.name) && Objects.equals(pipelineList, groupPipeline.pipelineList) && Objects.equals(user, groupPipeline.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, pipelineList);
+        return Objects.hash(id, name, pipelineList, user);
     }
 
     @Override
@@ -113,6 +112,7 @@ public class GroupPipeline {
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             ", pipelineList='" + getPipelineList() + "'" +
+            ", user='" + getUser() + "'" +
             "}";
     }
 }

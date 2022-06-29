@@ -77,13 +77,13 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
         Converter<String, ModelPDI> converterModel =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                modelService.getModelPDIByName(
+                modelService.getByName(
                     ctx.getSource()
                 );
         Converter<Integer, Pipeline> converterPipeline =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                pipelineService.getPipeline(
+                pipelineService.getById(
                     ctx.getSource()
                 );
         typeMap.addMappings(
