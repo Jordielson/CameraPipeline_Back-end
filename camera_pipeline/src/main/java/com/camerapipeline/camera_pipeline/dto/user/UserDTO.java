@@ -8,17 +8,16 @@ import lombok.Data;
 @Data
 public class UserDTO {
     private String token;
-    private String type = "Bearer";
-	private Integer id;
+    private String type;
 	private String login;
     private List<String> roles;
 
     public UserDTO() {
     }
 
-    public UserDTO(String token, Integer id, String login, List<String> roles) {
+    public UserDTO(String token, String type, String login, List<String> roles) {
         this.token = token;
-        this.id = id;
+        this.type = type;
         this.login = login;
         this.roles = roles;
     }
@@ -37,14 +36,6 @@ public class UserDTO {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getLogin() {
@@ -73,11 +64,6 @@ public class UserDTO {
         return this;
     }
 
-    public UserDTO id(Integer id) {
-        setId(id);
-        return this;
-    }
-
     public UserDTO login(String login) {
         setLogin(login);
         return this;
@@ -95,13 +81,13 @@ public class UserDTO {
         if (!(o instanceof UserDTO)) {
             return false;
         }
-        UserDTO userDto = (UserDTO) o;
-        return Objects.equals(token, userDto.token) && Objects.equals(type, userDto.type) && Objects.equals(id, userDto.id) && Objects.equals(login, userDto.login) && Objects.equals(roles, userDto.roles);
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(token, userDTO.token) && Objects.equals(type, userDTO.type) && Objects.equals(login, userDTO.login) && Objects.equals(roles, userDTO.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, type, id, login, roles);
+        return Objects.hash(token, type, login, roles);
     }
 
     @Override
@@ -109,7 +95,6 @@ public class UserDTO {
         return "{" +
             " token='" + getToken() + "'" +
             ", type='" + getType() + "'" +
-            ", id='" + getId() + "'" +
             ", login='" + getLogin() + "'" +
             ", roles='" + getRoles() + "'" +
             "}";

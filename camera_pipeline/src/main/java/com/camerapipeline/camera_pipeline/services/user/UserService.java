@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,16 +40,16 @@ public class UserService extends ServiceAbstract<User, Integer> {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
 
-        // User userDetails = (User) authentication.getPrincipal();		
-        User userDetails = ((UserRepository) super.repository).findByEmail(login).get();		
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
         
+        System.out.println(tokenProvider.getExpiration());
         UserDTO userDto = new UserDTO(
             jwt,
-            userDetails.getId(),
-            userDetails.getEmail(),
+            "Bearer",
+            userDetails.getUsername(),
             roles
         );
 
@@ -82,5 +83,5 @@ public class UserService extends ServiceAbstract<User, Integer> {
                     u.setPassword(existing.getPassword());
                     return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
-    }    
+    }
 }

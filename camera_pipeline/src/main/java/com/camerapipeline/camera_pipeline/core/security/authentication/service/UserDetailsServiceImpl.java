@@ -22,8 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) {
         Optional<com.camerapipeline.camera_pipeline.model.user.User> userO =  userRepository.findByEmail(s);
         if(!userO.isPresent()) {
-            throw new UsernameNotFoundException("Usuario nao encontrado!");
-        }
+            throw new UsernameNotFoundException("User not found");        }
         com.camerapipeline.camera_pipeline.model.user.User u = userO.get();
         return new User(u.getUsername(), u.getPassword(), true, true, true, true, u.getAuthorities());
     }

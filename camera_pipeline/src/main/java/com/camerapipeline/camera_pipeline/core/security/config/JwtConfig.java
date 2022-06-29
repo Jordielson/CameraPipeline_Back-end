@@ -2,14 +2,15 @@ package com.camerapipeline.camera_pipeline.core.security.config;
 
 import java.util.Objects;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "security.jwt")
 public class JwtConfig {
+    @Value("${CameraPipeline.jwtSecret}")
     private String clientSecret;
-    private int tokenValidityInSeconds = 6000;
+    @Value("${CameraPipeline.jwtExpirationMs}")
+    private int tokenValidityInSeconds;
 
 
     public JwtConfig() {
