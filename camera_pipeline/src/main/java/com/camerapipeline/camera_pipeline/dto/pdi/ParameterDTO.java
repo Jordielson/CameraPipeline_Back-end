@@ -11,16 +11,14 @@ public class ParameterDTO {
     private int id;
     private String name;
     private ParameterType type;
-    private int modelPdiId;
 
     public ParameterDTO() {
     }
 
-    public ParameterDTO(int id, String name, ParameterType type, int modelPdiId) {
+    public ParameterDTO(int id, String name, ParameterType type) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.modelPdiId = modelPdiId;
     }
 
     public int getId() {
@@ -47,14 +45,6 @@ public class ParameterDTO {
         this.type = type;
     }
 
-    public int getModelPdiId() {
-        return this.modelPdiId;
-    }
-
-    public void setModelPdiId(int modelPdiId) {
-        this.modelPdiId = modelPdiId;
-    }
-
     public ParameterDTO id(int id) {
         setId(id);
         return this;
@@ -70,11 +60,6 @@ public class ParameterDTO {
         return this;
     }
 
-    public ParameterDTO modelPdiId(int modelPdiId) {
-        setModelPdiId(modelPdiId);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -83,12 +68,12 @@ public class ParameterDTO {
             return false;
         }
         ParameterDTO parameterDTO = (ParameterDTO) o;
-        return id == parameterDTO.id && Objects.equals(name, parameterDTO.name) && Objects.equals(type, parameterDTO.type) && modelPdiId == parameterDTO.modelPdiId;
+        return id == parameterDTO.id && Objects.equals(name, parameterDTO.name) && Objects.equals(type, parameterDTO.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, modelPdiId);
+        return Objects.hash(id, name, type);
     }
 
     @Override
@@ -97,7 +82,6 @@ public class ParameterDTO {
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
-            ", modelPdiId='" + getModelPdiId() + "'" +
             "}";
     }
 }
