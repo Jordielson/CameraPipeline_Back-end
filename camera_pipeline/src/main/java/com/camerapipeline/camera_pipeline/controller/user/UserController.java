@@ -34,6 +34,8 @@ public class UserController {
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
+        System.out.println("Login: " + loginRequest.getLogin());
+        System.out.println("Senha: " + loginRequest.getPassword());
         UserDTO userDetails = userService
         .authenticateUserAndGetToken(
             loginRequest.getLogin(), 
@@ -57,7 +59,7 @@ public class UserController {
         );
     }
 
-    @GetMapping("users/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(
             this.userService.getById(id)
