@@ -39,7 +39,7 @@ public class TokenProvider {
         return Optional.ofNullable(getAllClaimsFromToken(token).getSubject());
     }
 
-    private Optional<Date> getExpirationDateFromToken(String token) {
+    public Optional<Date> getExpirationDateFromToken(String token) {
         return Optional.ofNullable(getAllClaimsFromToken(token).getExpiration());
     }
 
