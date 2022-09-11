@@ -29,6 +29,8 @@ public class Camera implements ModelAbstract<Integer>{
     private String URL;
     @NotNull
     private boolean isPrivate;
+    @NotNull
+    private boolean isActive = true;
     
 	@Valid
 	@Embedded
@@ -36,16 +38,16 @@ public class Camera implements ModelAbstract<Integer>{
 
     private int fpsLimiter;
 
-
     public Camera() {
     }
 
-    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, Coordinate coordinate, int fpsLimiter) {
+    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, int fpsLimiter) {
         this.id = id;
         this.user = user;
         this.name = name;
         this.URL = URL;
         this.isPrivate = isPrivate;
+        this.isActive = isActive;
         this.coordinate = coordinate;
         this.fpsLimiter = fpsLimiter;
     }
@@ -94,6 +96,18 @@ public class Camera implements ModelAbstract<Integer>{
         this.isPrivate = isPrivate;
     }
 
+    public boolean isIsActive() {
+        return this.isActive;
+    }
+
+    public boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public Coordinate getCoordinate() {
         return this.coordinate;
     }
@@ -135,6 +149,11 @@ public class Camera implements ModelAbstract<Integer>{
         return this;
     }
 
+    public Camera isActive(boolean isActive) {
+        setIsActive(isActive);
+        return this;
+    }
+
     public Camera coordinate(Coordinate coordinate) {
         setCoordinate(coordinate);
         return this;
@@ -153,12 +172,12 @@ public class Camera implements ModelAbstract<Integer>{
             return false;
         }
         Camera camera = (Camera) o;
-        return Objects.equals(id, camera.id) && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && Objects.equals(coordinate, camera.coordinate) && fpsLimiter == camera.fpsLimiter;
+        return Objects.equals(id, camera.id) && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && isActive == camera.isActive && Objects.equals(coordinate, camera.coordinate) && fpsLimiter == camera.fpsLimiter;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, name, URL, isPrivate, coordinate, fpsLimiter);
+        return Objects.hash(id, user, name, URL, isPrivate, isActive, coordinate, fpsLimiter);
     }
 
     @Override
@@ -169,6 +188,7 @@ public class Camera implements ModelAbstract<Integer>{
             ", name='" + getName() + "'" +
             ", URL='" + getURL() + "'" +
             ", isPrivate='" + isIsPrivate() + "'" +
+            ", isActive='" + isIsActive() + "'" +
             ", coordinate='" + getCoordinate() + "'" +
             ", fpsLimiter='" + getFpsLimiter() + "'" +
             "}";
