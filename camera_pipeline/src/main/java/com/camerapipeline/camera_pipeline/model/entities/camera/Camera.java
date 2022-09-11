@@ -2,12 +2,13 @@ package com.camerapipeline.camera_pipeline.model.entities.camera;
 
 import java.util.Objects;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -28,9 +29,10 @@ public class Camera implements ModelAbstract<Integer>{
     private String URL;
     @NotNull
     private boolean isPrivate;
-
-    @Transient
-    private Double[] coordinates;
+    
+	@Valid
+	@Embedded
+	private Coordinate coordinate;
 
     private int fpsLimiter;
 
@@ -38,13 +40,13 @@ public class Camera implements ModelAbstract<Integer>{
     public Camera() {
     }
 
-    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, Double[] coordinates, int fpsLimiter) {
+    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, Coordinate coordinate, int fpsLimiter) {
         this.id = id;
         this.user = user;
         this.name = name;
         this.URL = URL;
         this.isPrivate = isPrivate;
-        this.coordinates = coordinates;
+        this.coordinate = coordinate;
         this.fpsLimiter = fpsLimiter;
     }
 
@@ -92,12 +94,12 @@ public class Camera implements ModelAbstract<Integer>{
         this.isPrivate = isPrivate;
     }
 
-    public Double[] getCoordinates() {
-        return this.coordinates;
+    public Coordinate getCoordinate() {
+        return this.coordinate;
     }
 
-    public void setCoordinates(Double[] coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public int getFpsLimiter() {
@@ -133,8 +135,8 @@ public class Camera implements ModelAbstract<Integer>{
         return this;
     }
 
-    public Camera coordinates(Double[] coordinates) {
-        setCoordinates(coordinates);
+    public Camera coordinate(Coordinate coordinate) {
+        setCoordinate(coordinate);
         return this;
     }
 
@@ -151,12 +153,12 @@ public class Camera implements ModelAbstract<Integer>{
             return false;
         }
         Camera camera = (Camera) o;
-        return id == camera.id && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && Objects.equals(coordinates, camera.coordinates) && fpsLimiter == camera.fpsLimiter;
+        return Objects.equals(id, camera.id) && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && Objects.equals(coordinate, camera.coordinate) && fpsLimiter == camera.fpsLimiter;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, name, URL, isPrivate, coordinates, fpsLimiter);
+        return Objects.hash(id, user, name, URL, isPrivate, coordinate, fpsLimiter);
     }
 
     @Override
@@ -167,7 +169,7 @@ public class Camera implements ModelAbstract<Integer>{
             ", name='" + getName() + "'" +
             ", URL='" + getURL() + "'" +
             ", isPrivate='" + isIsPrivate() + "'" +
-            ", coordinates='" + getCoordinates() + "'" +
+            ", coordinate='" + getCoordinate() + "'" +
             ", fpsLimiter='" + getFpsLimiter() + "'" +
             "}";
     }

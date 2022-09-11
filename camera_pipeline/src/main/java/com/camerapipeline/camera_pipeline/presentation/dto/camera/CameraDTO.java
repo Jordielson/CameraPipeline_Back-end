@@ -2,6 +2,8 @@ package com.camerapipeline.camera_pipeline.presentation.dto.camera;
 
 import java.util.Objects;
 
+import com.camerapipeline.camera_pipeline.model.entities.camera.Coordinate;
+
 import lombok.Data;
 
 @Data
@@ -10,17 +12,18 @@ public class CameraDTO {
     private String name;
     private String URL;
     private boolean isPrivate;
+    private Coordinate coordinate;
     private int fpsLimiter;
-
 
     public CameraDTO() {
     }
 
-    public CameraDTO(int id, String name, String URL, boolean isPrivate, int fpsLimiter) {
+    public CameraDTO(int id, String name, String URL, boolean isPrivate, Coordinate coordinate, int fpsLimiter) {
         this.id = id;
         this.name = name;
         this.URL = URL;
         this.isPrivate = isPrivate;
+        this.coordinate = coordinate;
         this.fpsLimiter = fpsLimiter;
     }
 
@@ -60,6 +63,14 @@ public class CameraDTO {
         this.isPrivate = isPrivate;
     }
 
+    public Coordinate getCoordinate() {
+        return this.coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
     public int getFpsLimiter() {
         return this.fpsLimiter;
     }
@@ -88,6 +99,11 @@ public class CameraDTO {
         return this;
     }
 
+    public CameraDTO coordinate(Coordinate coordinate) {
+        setCoordinate(coordinate);
+        return this;
+    }
+
     public CameraDTO fpsLimiter(int fpsLimiter) {
         setFpsLimiter(fpsLimiter);
         return this;
@@ -101,12 +117,12 @@ public class CameraDTO {
             return false;
         }
         CameraDTO cameraDTO = (CameraDTO) o;
-        return id == cameraDTO.id && Objects.equals(name, cameraDTO.name) && Objects.equals(URL, cameraDTO.URL) && isPrivate == cameraDTO.isPrivate && fpsLimiter == cameraDTO.fpsLimiter;
+        return id == cameraDTO.id && Objects.equals(name, cameraDTO.name) && Objects.equals(URL, cameraDTO.URL) && isPrivate == cameraDTO.isPrivate && Objects.equals(coordinate, cameraDTO.coordinate) && fpsLimiter == cameraDTO.fpsLimiter;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, URL, isPrivate, fpsLimiter);
+        return Objects.hash(id, name, URL, isPrivate, coordinate, fpsLimiter);
     }
 
     @Override
@@ -116,6 +132,7 @@ public class CameraDTO {
             ", name='" + getName() + "'" +
             ", URL='" + getURL() + "'" +
             ", isPrivate='" + isIsPrivate() + "'" +
+            ", coordinate='" + getCoordinate() + "'" +
             ", fpsLimiter='" + getFpsLimiter() + "'" +
             "}";
     }
