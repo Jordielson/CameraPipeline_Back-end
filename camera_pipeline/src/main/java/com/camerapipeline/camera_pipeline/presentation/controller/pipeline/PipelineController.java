@@ -7,12 +7,16 @@ import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMappe
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 import java.security.Principal;
+import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,4 +30,21 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
     public ResponseEntity<String> execute(@PathVariable("id") Integer id, Principal principal) {
         return new ResponseEntity<String>("rtsp://rtsp.stream/pattern", HttpStatus.OK);
     }
+
+    @GetMapping
+	public ResponseEntity<?> search(
+			Principal principal,
+			@RequestParam String name,
+			Pageable pageable) {
+        PipelineDTO search = new PipelineDTO().name(name);
+        List<PipelineDTO> list = mapper.toDTOList(
+            service.search(
+                pageable, 
+                principal, 
+                mapper.fromDTO(search)
+            ).toList()
+        );
+		
+		return new ResponseEntity<List<PipelineDTO>>(list, HttpStatus.OK);
+	}
 }

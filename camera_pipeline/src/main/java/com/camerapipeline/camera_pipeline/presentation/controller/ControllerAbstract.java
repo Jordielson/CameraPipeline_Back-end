@@ -20,8 +20,8 @@ import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 
 public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
-    ServiceAbstract<M, ID> service;
-    Mapper<M, DTO> mapper;
+    protected ServiceAbstract<M, ID> service;
+    protected Mapper<M, DTO> mapper;
 
     public ControllerAbstract(ServiceAbstract<M, ID> service, Mapper<M, DTO> mapper) {
         this.service = service;
