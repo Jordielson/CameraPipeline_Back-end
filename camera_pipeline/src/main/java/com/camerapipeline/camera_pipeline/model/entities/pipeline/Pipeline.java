@@ -238,6 +238,15 @@ public class Pipeline implements ModelAbstract<Integer> {
 
     @Override
     public User getUser() {
-        return groupPipeline.getUser();
+        return groupPipeline != null ? 
+            groupPipeline.getUser() :
+            null;
+    }
+    @Override
+    public void setUser(User user) {
+        if(groupPipeline == null) {
+            groupPipeline = new GroupPipeline().user(user);
+        } 
+        groupPipeline.setUser(user);
     }
 }

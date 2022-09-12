@@ -28,9 +28,9 @@ public class Camera implements ModelAbstract<Integer>{
     @NotBlank
     private String URL;
     @NotNull
-    private boolean isPrivate;
+    private Boolean isPrivate;
     @NotNull
-    private boolean isActive = true;
+    private Boolean isActive;
     
 	@Valid
 	@Embedded
@@ -42,7 +42,7 @@ public class Camera implements ModelAbstract<Integer>{
     public Camera() {
     }
 
-    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
+    public Camera(Integer id, User user, String name, String URL, Boolean isPrivate, Boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -85,27 +85,27 @@ public class Camera implements ModelAbstract<Integer>{
         this.URL = URL;
     }
 
-    public boolean isIsPrivate() {
+    public Boolean isIsPrivate() {
         return this.isPrivate;
     }
 
-    public boolean getIsPrivate() {
+    public Boolean getIsPrivate() {
         return this.isPrivate;
     }
 
-    public void setIsPrivate(boolean isPrivate) {
+    public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
 
-    public boolean isIsActive() {
+    public Boolean isIsActive() {
         return this.isActive;
     }
 
-    public boolean getIsActive() {
+    public Boolean getIsActive() {
         return this.isActive;
     }
 
-    public void setIsActive(boolean isActive) {
+    public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -145,12 +145,12 @@ public class Camera implements ModelAbstract<Integer>{
         return this;
     }
 
-    public Camera isPrivate(boolean isPrivate) {
+    public Camera isPrivate(Boolean isPrivate) {
         setIsPrivate(isPrivate);
         return this;
     }
 
-    public Camera isActive(boolean isActive) {
+    public Camera isActive(Boolean isActive) {
         setIsActive(isActive);
         return this;
     }

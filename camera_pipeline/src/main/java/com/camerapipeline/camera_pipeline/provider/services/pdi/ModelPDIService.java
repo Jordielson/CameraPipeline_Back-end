@@ -5,12 +5,14 @@ import java.security.Principal;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.ModelPDIRepository;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.specification.pdi.ModelPDISpecification;
 
 @Service
 public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
@@ -72,5 +74,10 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
             paramService.delete(param.getId(), principal);
         }
         return super.delete(id, principal);
+    }
+
+    @Override
+    protected Specification<ModelPDI> getSpecification(ModelPDI search) {
+        return new ModelPDISpecification(search);
     }
 }

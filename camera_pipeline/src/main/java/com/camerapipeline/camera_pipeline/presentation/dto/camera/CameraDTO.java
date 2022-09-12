@@ -11,15 +11,15 @@ public class CameraDTO {
     private int id;
     private String name;
     private String URL;
-    private boolean isPrivate;
-    private boolean isActive = true;
+    private Boolean isPrivate;
+    private Boolean isActive;
     private Coordinate coordinate;
     private Integer fpsLimiter;
 
     public CameraDTO() {
     }
 
-    public CameraDTO(int id, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
+    public CameraDTO(int id, String name, String URL, Boolean isPrivate, Boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
         this.id = id;
         this.name = name;
         this.URL = URL;
@@ -53,27 +53,27 @@ public class CameraDTO {
         this.URL = URL;
     }
 
-    public boolean isIsPrivate() {
+    public Boolean isIsPrivate() {
         return this.isPrivate;
     }
 
-    public boolean getIsPrivate() {
+    public Boolean getIsPrivate() {
         return this.isPrivate;
     }
 
-    public void setIsPrivate(boolean isPrivate) {
+    public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
 
-    public boolean isIsActive() {
+    public Boolean isIsActive() {
         return this.isActive;
     }
 
-    public boolean getIsActive() {
+    public Boolean getIsActive() {
         return this.isActive;
     }
 
-    public void setIsActive(boolean isActive) {
+    public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -108,12 +108,12 @@ public class CameraDTO {
         return this;
     }
 
-    public CameraDTO isPrivate(boolean isPrivate) {
+    public CameraDTO isPrivate(Boolean isPrivate) {
         setIsPrivate(isPrivate);
         return this;
     }
 
-    public CameraDTO isActive(boolean isActive) {
+    public CameraDTO isActive(Boolean isActive) {
         setIsActive(isActive);
         return this;
     }

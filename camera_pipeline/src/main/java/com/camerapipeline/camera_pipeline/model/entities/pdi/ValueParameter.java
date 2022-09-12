@@ -139,4 +139,9 @@ public class ValueParameter implements ModelAbstract<Integer> {
     public User getUser() {
         return pdi.getUser();
     }
+
+    @Override
+    public void setUser(User user) {
+        pdi.setUser(user);
+    }
 }

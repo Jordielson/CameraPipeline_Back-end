@@ -17,14 +17,14 @@ public class PipelineDTO {
     private LocalDateTime creationDate;
     private LocalDateTime modificationTime;
     private boolean isActive;
-    private int groupPipelineId;
+    private Integer groupPipelineId;
     private List<PdiDTO> PDIList;
     private List<CameraDTO> cameraList;
 
     public PipelineDTO() {
     }
 
-    public PipelineDTO(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, int groupPipelineId, List<PdiDTO> PDIList, List<CameraDTO> cameraList) {
+    public PipelineDTO(int id, String name, String description, LocalDateTime creationDate, LocalDateTime modificationTime, boolean isActive, Integer groupPipelineId, List<PdiDTO> PDIList, List<CameraDTO> cameraList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -88,11 +88,11 @@ public class PipelineDTO {
         this.isActive = isActive;
     }
 
-    public int getGroupPipelineId() {
+    public Integer getGroupPipelineId() {
         return this.groupPipelineId;
     }
 
-    public void setGroupPipelineId(int groupPipelineId) {
+    public void setGroupPipelineId(Integer groupPipelineId) {
         this.groupPipelineId = groupPipelineId;
     }
 
@@ -142,7 +142,7 @@ public class PipelineDTO {
         return this;
     }
 
-    public PipelineDTO groupPipelineId(int groupPipelineId) {
+    public PipelineDTO groupPipelineId(Integer groupPipelineId) {
         setGroupPipelineId(groupPipelineId);
         return this;
     }

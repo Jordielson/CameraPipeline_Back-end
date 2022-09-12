@@ -123,4 +123,9 @@ public class Parameter implements ModelAbstract<Integer>{
     public User getUser() {
         return modelPdi.getUser();
     }
+
+    @Override
+    public void setUser(User user) {
+        modelPdi.setUser(user);
+    }
 }

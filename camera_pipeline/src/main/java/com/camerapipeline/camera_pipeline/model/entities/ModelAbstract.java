@@ -6,4 +6,5 @@ public interface ModelAbstract<ID> {
     public ID getId();
     public void setId(ID id);
     public User getUser();
+    public void setUser(User user);
 }

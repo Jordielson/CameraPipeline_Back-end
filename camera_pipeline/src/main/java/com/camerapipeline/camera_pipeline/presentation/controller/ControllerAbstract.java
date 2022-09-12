@@ -81,4 +81,20 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
             );
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search")
+	public ResponseEntity<?> search(
+			Principal principal,
+			@RequestBody DTO search,
+			Pageable pageable) {
+        List<DTO> list = mapper.toDTOList(
+            service.search(
+                pageable, 
+                principal, 
+                mapper.fromDTO(search)
+            ).toList()
+        );
+		
+		return new ResponseEntity<List<DTO>>(list, HttpStatus.OK);
+	}
 }

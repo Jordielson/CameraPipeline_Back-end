@@ -124,4 +124,9 @@ public class PDI implements ModelAbstract<Integer>{
     public User getUser() {
         return pipeline.getUser();
     }
+
+    @Override
+    public void setUser(User user) {
+        pipeline.setUser(user);
+    }
 }

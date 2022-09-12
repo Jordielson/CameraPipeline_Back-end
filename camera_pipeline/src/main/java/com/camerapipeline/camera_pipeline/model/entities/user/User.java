@@ -214,5 +214,15 @@ public class User implements UserDetails, ModelAbstract<Integer> {
     public User getUser() {
         return this;
     }
+
+    @Override
+    public void setUser(User user) {
+        setId(user.id);
+        setEmail(user.email);
+        setCameras(user.cameras);
+        setGroupPipeline(user.groupPipeline);
+        setPassword(user.password);
+        setRoles(user.roles);
+    }
     
 }

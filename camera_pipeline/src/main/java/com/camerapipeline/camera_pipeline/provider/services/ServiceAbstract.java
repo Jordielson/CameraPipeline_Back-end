@@ -7,10 +7,12 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
+
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 
 /* 
@@ -39,7 +41,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
     public Page<M> getAll(Pageable pageable, Principal principal) {
         return repository.findAll(
             pageable, 
-            authService.loadUserByUsername(principal.getName()).getId()
+            getUserByPrincipal(principal).getId()
         );
     }
 
@@ -49,7 +51,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
     }
 
     public M getById(ID id, Principal principal) {
-        User user = authService.loadUserByUsername(principal.getName());
+        User user = getUserByPrincipal(principal);
         M model = repository.findById(id).map(existing -> {
             if(existing.getUser().equals(user)) {
                 return existing;
@@ -61,7 +63,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
     }
 
     public M update(ID id, M model, Principal principal) {
-        User user = authService.loadUserByUsername(principal.getName());
+        User user = getUserByPrincipal(principal);
         return repository.findById(id).map(existing -> {
             if(existing.getUser().equals(user)) {
                 model.setId(id);
@@ -73,7 +75,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
     }
 
     public M delete(ID id, Principal principal) {
-        User user = authService.loadUserByUsername(principal.getName());
+        User user = getUserByPrincipal(principal);
         return repository.findById(id).map(existing -> {
             if(existing.getUser().equals(user)) {
                 repository.delete(existing);
@@ -83,4 +85,16 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
             }
         }).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
+
+    private User getUserByPrincipal(Principal principal) {
+        return authService.loadUserByUsername(principal.getName());
+    }
+
+    public Page<M> search(Pageable pageable, Principal principal, M search) {
+		User user = getUserByPrincipal(principal);        
+        search.setUser(user);            
+        return repository.findAll(getSpecification(search), pageable);
+	}
+
+    abstract protected Specification<M> getSpecification(M search);
 }

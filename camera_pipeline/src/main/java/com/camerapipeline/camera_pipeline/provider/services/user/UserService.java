@@ -4,8 +4,10 @@ import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.specification.user.UserSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,5 +54,10 @@ public class UserService extends ServiceAbstract<User, Integer> {
                     u.setPassword(existing.getPassword());
                     return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @Override
+    protected Specification<User> getSpecification(User search) {
+        return new UserSpecification(search);
     }
 }
