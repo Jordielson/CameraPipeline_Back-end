@@ -14,12 +14,12 @@ public class CameraDTO {
     private boolean isPrivate;
     private boolean isActive = true;
     private Coordinate coordinate;
-    private int fpsLimiter;
+    private Integer fpsLimiter;
 
     public CameraDTO() {
     }
 
-    public CameraDTO(int id, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, int fpsLimiter) {
+    public CameraDTO(int id, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
         this.id = id;
         this.name = name;
         this.URL = URL;
@@ -85,11 +85,11 @@ public class CameraDTO {
         this.coordinate = coordinate;
     }
 
-    public int getFpsLimiter() {
+    public Integer getFpsLimiter() {
         return this.fpsLimiter;
     }
 
-    public void setFpsLimiter(int fpsLimiter) {
+    public void setFpsLimiter(Integer fpsLimiter) {
         this.fpsLimiter = fpsLimiter;
     }
 
@@ -123,7 +123,7 @@ public class CameraDTO {
         return this;
     }
 
-    public CameraDTO fpsLimiter(int fpsLimiter) {
+    public CameraDTO fpsLimiter(Integer fpsLimiter) {
         setFpsLimiter(fpsLimiter);
         return this;
     }
@@ -136,7 +136,7 @@ public class CameraDTO {
             return false;
         }
         CameraDTO cameraDTO = (CameraDTO) o;
-        return id == cameraDTO.id && Objects.equals(name, cameraDTO.name) && Objects.equals(URL, cameraDTO.URL) && isPrivate == cameraDTO.isPrivate && isActive == cameraDTO.isActive && Objects.equals(coordinate, cameraDTO.coordinate) && fpsLimiter == cameraDTO.fpsLimiter;
+        return id == cameraDTO.id && Objects.equals(name, cameraDTO.name) && Objects.equals(URL, cameraDTO.URL) && isPrivate == cameraDTO.isPrivate && isActive == cameraDTO.isActive && Objects.equals(coordinate, cameraDTO.coordinate) && Objects.equals(fpsLimiter, cameraDTO.fpsLimiter);
     }
 
     @Override

@@ -36,12 +36,13 @@ public class Camera implements ModelAbstract<Integer>{
 	@Embedded
 	private Coordinate coordinate;
 
-    private int fpsLimiter;
+    private Integer fpsLimiter;
+
 
     public Camera() {
     }
 
-    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, int fpsLimiter) {
+    public Camera(Integer id, User user, String name, String URL, boolean isPrivate, boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -116,11 +117,11 @@ public class Camera implements ModelAbstract<Integer>{
         this.coordinate = coordinate;
     }
 
-    public int getFpsLimiter() {
+    public Integer getFpsLimiter() {
         return this.fpsLimiter;
     }
 
-    public void setFpsLimiter(int fpsLimiter) {
+    public void setFpsLimiter(Integer fpsLimiter) {
         this.fpsLimiter = fpsLimiter;
     }
 
@@ -159,7 +160,7 @@ public class Camera implements ModelAbstract<Integer>{
         return this;
     }
 
-    public Camera fpsLimiter(int fpsLimiter) {
+    public Camera fpsLimiter(Integer fpsLimiter) {
         setFpsLimiter(fpsLimiter);
         return this;
     }
@@ -172,7 +173,7 @@ public class Camera implements ModelAbstract<Integer>{
             return false;
         }
         Camera camera = (Camera) o;
-        return Objects.equals(id, camera.id) && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && isActive == camera.isActive && Objects.equals(coordinate, camera.coordinate) && fpsLimiter == camera.fpsLimiter;
+        return Objects.equals(id, camera.id) && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && isActive == camera.isActive && Objects.equals(coordinate, camera.coordinate) && Objects.equals(fpsLimiter, camera.fpsLimiter);
     }
 
     @Override
@@ -192,5 +193,5 @@ public class Camera implements ModelAbstract<Integer>{
             ", coordinate='" + getCoordinate() + "'" +
             ", fpsLimiter='" + getFpsLimiter() + "'" +
             "}";
-    }
+    }    
 }

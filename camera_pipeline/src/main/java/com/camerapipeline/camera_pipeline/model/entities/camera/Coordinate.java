@@ -5,18 +5,15 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Range;
 
 @Embeddable
 public class Coordinate implements Serializable{
-	@NotNull
 	@Range(min = -90, max=90)
 	@Column(name="latitude", columnDefinition="NUMERIC(10,8)")
 	private Double latitude;
 	
-	@NotNull
 	@Range(min = -180, max=180)
 	@Column(name="longitude", columnDefinition="NUMERIC(11,8)")
 	private Double longitude;
