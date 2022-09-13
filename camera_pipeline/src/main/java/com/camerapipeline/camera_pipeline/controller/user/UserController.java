@@ -6,6 +6,7 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,14 +24,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.camerapipeline.camera_pipeline.dto.user.LoginDTO;
 import com.camerapipeline.camera_pipeline.dto.user.UserDTO;
+import com.camerapipeline.camera_pipeline.exception.geral.RegraDeNegocioException;
 import com.camerapipeline.camera_pipeline.model.user.User;
+import com.camerapipeline.camera_pipeline.services.email.EmailService;
 import com.camerapipeline.camera_pipeline.services.user.UserService;
+
 
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
@@ -87,4 +94,29 @@ public class UserController {
         this.userService.delete(id, principal);
         return ResponseEntity.noContent().build();
     }
+    
+    /**
+     * TODO Recuperar Senha
+     * Metodo temporario para testar o envio de email para recuperação de senha
+     */
+    @PostMapping("/recuperarsenha")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity recuperarSenha( @RequestBody String emailRecuperacaoSenha ) {
+    	System.out.println(emailRecuperacaoSenha);
+    	try {
+    		User user = userService.recuperarUsuarioPorEmail(emailRecuperacaoSenha); 
+    		System.out.println( emailService.sendEmail(
+    				emailService.premoldadoEmailModel(
+    						"recuperacaoSenha"+user.getUsername(),
+    						emailRecuperacaoSenha, "Email de Recuperação de Senha",
+    						// TODO Logica de troca de senha aqui! 
+    						user.getPassword(),
+    						user.getUsername())));
+    		
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (RegraDeNegocioException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+    }
+    
 }

@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.services.user;
 
 import com.camerapipeline.camera_pipeline.core.security.config.TokenProvider;
 import com.camerapipeline.camera_pipeline.dto.user.UserDTO;
+import com.camerapipeline.camera_pipeline.exception.geral.RegraDeNegocioException;
 import com.camerapipeline.camera_pipeline.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.model.user.User;
 import com.camerapipeline.camera_pipeline.repository.user.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,5 +84,21 @@ public class UserService extends ServiceAbstract<User, Integer> {
                     u.setPassword(existing.getPassword());
                     return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
+    }
+    
+    /**
+     * TODO Metodo para recuperar usuario por email
+     * @return
+     */
+    public User recuperarUsuarioPorEmail(String email) {
+    		
+    	Optional<User> userReturn = ((UserRepository) super.repository).findByEmail(email);
+    	
+    	if(userReturn.isPresent()) {
+    		return userReturn.get();
+    	}
+    	
+    	throw new RegraDeNegocioException("Nenhum usuario cadastrado com este endereço de Email");
+		
     }
 }
