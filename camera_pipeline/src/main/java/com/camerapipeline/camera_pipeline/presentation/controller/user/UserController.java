@@ -50,7 +50,6 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<User> createUser(@RequestBody @Valid User u) {
         User user = this.userService.create(u);
         URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/users/{id}").buildAndExpand(user.getId()).toUri();

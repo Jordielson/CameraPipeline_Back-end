@@ -86,7 +86,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
         }).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    private User getUserByPrincipal(Principal principal) {
+    protected User getUserByPrincipal(Principal principal) {
         return authService.loadUserByUsername(principal.getName());
     }
 

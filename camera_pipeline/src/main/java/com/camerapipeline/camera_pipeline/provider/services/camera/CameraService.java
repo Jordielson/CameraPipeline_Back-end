@@ -18,7 +18,8 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
 
     @Override
     public Camera create(Camera model, Principal principal) {
-        model.setUser(super.authService.loadUserByUsername(principal.getName()));
+        model.setUser(super.getUserByPrincipal(principal));
+        model.setIsActive(true);
         return super.create(model);
     }
     

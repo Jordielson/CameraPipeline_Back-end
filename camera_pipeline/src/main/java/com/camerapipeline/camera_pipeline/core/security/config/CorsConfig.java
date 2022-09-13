@@ -30,6 +30,7 @@ public class CorsConfig {
         cors.addAllowedMethod("GET");
         cors.addAllowedMethod("PUT");
         cors.addAllowedMethod("POST");
+        cors.addAllowedMethod("DELETE");
         
         source.registerCorsConfiguration("/**", cors);
         return new CorsFilter(source);
