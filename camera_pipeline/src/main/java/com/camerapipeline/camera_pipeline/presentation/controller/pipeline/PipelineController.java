@@ -7,8 +7,8 @@ import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMappe
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 import java.security.Principal;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,14 +37,14 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
 			@RequestParam String name,
 			Pageable pageable) {
         PipelineDTO search = new PipelineDTO().name(name);
-        List<PipelineDTO> list = mapper.toDTOList(
+        Page<PipelineDTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
                 principal, 
                 mapper.fromDTO(search)
-            ).toList()
+            )
         );
 		
-		return new ResponseEntity<List<PipelineDTO>>(list, HttpStatus.OK);
+		return new ResponseEntity<Page<PipelineDTO>>(list, HttpStatus.OK);
 	}
 }

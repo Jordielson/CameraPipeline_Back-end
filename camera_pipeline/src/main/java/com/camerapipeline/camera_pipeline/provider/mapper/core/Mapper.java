@@ -6,6 +6,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 // M -> Model
 // D -> DTO
@@ -42,5 +43,9 @@ public abstract class Mapper<M, D> {
             );
         }
         return typeMap;
+    }
+
+    public Page<D> toDTOPage(Page<M> modelList) {
+        return modelList.map(this::toDTO);
     }
 }

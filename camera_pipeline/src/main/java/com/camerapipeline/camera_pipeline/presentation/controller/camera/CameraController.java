@@ -1,8 +1,8 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.camera;
 
 import java.security.Principal;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +30,14 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
 			@RequestParam String name,
 			Pageable pageable) {
         CameraDTO search = new CameraDTO().name(name);
-        List<CameraDTO> list = mapper.toDTOList(
+        Page<CameraDTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
                 principal, 
                 mapper.fromDTO(search)
-            ).toList()
+            )
         );
 		
-		return new ResponseEntity<List<CameraDTO>>(list, HttpStatus.OK);
+		return new ResponseEntity<Page<CameraDTO>>(list, HttpStatus.OK);
 	}
 }

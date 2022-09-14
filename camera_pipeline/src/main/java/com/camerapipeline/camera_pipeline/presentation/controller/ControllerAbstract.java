@@ -1,10 +1,10 @@
 package com.camerapipeline.camera_pipeline.presentation.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +29,11 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<DTO>> getAll(Pageable pageable, Principal principal) {
-        List<DTO> list = mapper.toDTOList(
-            service.getAll(pageable, principal).toList()
+    public ResponseEntity<Page<DTO>> getAll(Pageable pageable, Principal principal) {
+        Page<DTO> list = mapper.toDTOPage(
+            service.getAll(pageable, principal)
         );
-        return new ResponseEntity<List<DTO>>(list, HttpStatus.OK);
+        return new ResponseEntity<Page<DTO>>(list, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
@@ -87,14 +87,14 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
 			Principal principal,
 			@RequestBody DTO search,
 			Pageable pageable) {
-        List<DTO> list = mapper.toDTOList(
+        Page<DTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
                 principal, 
                 mapper.fromDTO(search)
-            ).toList()
+            )
         );
 		
-		return new ResponseEntity<List<DTO>>(list, HttpStatus.OK);
+		return new ResponseEntity<Page<DTO>>(list, HttpStatus.OK);
 	}
 }
