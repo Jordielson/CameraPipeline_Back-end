@@ -11,14 +11,18 @@ public class ParameterDTO {
     private int id;
     private String name;
     private ParameterType type;
+    private boolean required;
+    private Integer index;
 
     public ParameterDTO() {
     }
 
-    public ParameterDTO(int id, String name, ParameterType type) {
+    public ParameterDTO(int id, String name, ParameterType type, boolean required, Integer index) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.required = required;
+        this.index = index;
     }
 
     public int getId() {
@@ -45,6 +49,22 @@ public class ParameterDTO {
         this.type = type;
     }
 
+    public boolean getRequired() {
+        return this.required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public Integer getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
     public ParameterDTO id(int id) {
         setId(id);
         return this;
@@ -57,6 +77,15 @@ public class ParameterDTO {
 
     public ParameterDTO type(ParameterType type) {
         setType(type);
+        return this;
+    }
+    public ParameterDTO required(boolean required) {
+        setRequired(required);
+        return this;
+    }
+
+    public ParameterDTO index(Integer index) {
+        setIndex(index);
         return this;
     }
 
@@ -73,7 +102,7 @@ public class ParameterDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type);
+        return Objects.hash(id, name, type, required, index);
     }
 
     @Override
@@ -82,6 +111,8 @@ public class ParameterDTO {
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
+            ", required='" + getRequired() + "'" +
+            ", index='" + getIndex() + "'" +
             "}";
     }
 }

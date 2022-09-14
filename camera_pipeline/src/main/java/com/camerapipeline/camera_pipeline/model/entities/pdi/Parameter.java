@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.model.entities.pdi;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
@@ -27,6 +29,15 @@ public class Parameter implements ModelAbstract<Integer>{
     @Enumerated(EnumType.ORDINAL)
     private ParameterType type;
 
+    
+    @NotBlank   
+    @Column(name="obrigatorio")
+    private boolean required;
+
+    @NotBlank
+    @Column(name="indice")
+    private Integer index;
+
     @ManyToOne
     private ModelPDI modelPdi;
 
@@ -34,9 +45,11 @@ public class Parameter implements ModelAbstract<Integer>{
     public Parameter() {
     }
 
-    public Parameter(Integer id, String name, ParameterType type, ModelPDI modelPdi) {
+    public Parameter(Integer id, String name, boolean required, Integer index, ParameterType type, ModelPDI modelPdi) {
         this.id = id;
         this.name = name;
+        this.required = required;
+        this.index = index;
         this.type = type;
         this.modelPdi = modelPdi;
     }
@@ -55,6 +68,22 @@ public class Parameter implements ModelAbstract<Integer>{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean getRequired() {
+        return this.required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public Integer getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     public ParameterType getType() {
@@ -88,6 +117,16 @@ public class Parameter implements ModelAbstract<Integer>{
         return this;
     }
 
+    public Parameter required(boolean required) {
+        setRequired(required);
+        return this;
+    }
+
+    public Parameter index(Integer index) {
+        setIndex(index);
+        return this;
+    }
+
     public Parameter modelPdi(ModelPDI modelPdi) {
         setModelPdi(modelPdi);
         return this;
@@ -106,7 +145,7 @@ public class Parameter implements ModelAbstract<Integer>{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, modelPdi);
+        return Objects.hash(id, name, type, required, index, modelPdi);
     }
 
     @Override
@@ -115,6 +154,8 @@ public class Parameter implements ModelAbstract<Integer>{
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
+            ", required='" + getRequired() + "'" +
+            ", index='" + getIndex() + "'" +
             ", modelPdi='" + getModelPdi() + "'" +
             "}";
     }
@@ -128,4 +169,6 @@ public class Parameter implements ModelAbstract<Integer>{
     public void setUser(User user) {
         modelPdi.setUser(user);
     }
+
+
 }
