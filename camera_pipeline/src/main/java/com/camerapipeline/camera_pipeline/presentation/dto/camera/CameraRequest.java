@@ -22,11 +22,9 @@ public class CameraRequest {
     @NotNull
 	@NotEmpty
 	@NotBlank
-	@Size(min=1, max=50)
     private String URL;
     @NotNull
     private Boolean isPrivate;
-    @NotNull
     private Boolean isActive;
     private Coordinate coordinate;
     private Integer fpsLimiter;
