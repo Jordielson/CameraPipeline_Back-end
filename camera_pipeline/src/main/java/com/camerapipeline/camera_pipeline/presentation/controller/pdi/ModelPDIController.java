@@ -1,8 +1,8 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.pdi;
 
 import java.security.Principal;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +30,14 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
 			@RequestParam String name,
 			Pageable pageable) {
         ModelPdiDTO search = new ModelPdiDTO().name(name);
-        List<ModelPdiDTO> list = mapper.toDTOList(
+        Page<ModelPdiDTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
                 principal, 
                 mapper.fromDTO(search)
-            ).toList()
+            )
         );
 		
-		return new ResponseEntity<List<ModelPdiDTO>>(list, HttpStatus.OK);
+		return new ResponseEntity<Page<ModelPdiDTO>>(list, HttpStatus.OK);
 	}
 }
