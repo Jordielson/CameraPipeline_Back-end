@@ -30,11 +30,11 @@ public class Parameter implements ModelAbstract<Integer>{
     private ParameterType type;
 
     
-    @NotBlank   
+      
     @Column(name="obrigatorio")
     private boolean required;
 
-    @NotBlank
+    
     @Column(name="indice")
     private Integer index;
 
