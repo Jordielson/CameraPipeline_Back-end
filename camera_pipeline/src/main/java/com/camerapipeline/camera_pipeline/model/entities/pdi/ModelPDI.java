@@ -25,7 +25,7 @@ public class ModelPDI implements ModelAbstract<Integer>{
     private Integer id;
 
     @NotBlank
-    @Column(unique=true)
+    @Column(unique=true, length = 60)
     private String name;
 
     @NotBlank

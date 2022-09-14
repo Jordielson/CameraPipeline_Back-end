@@ -1,52 +1,41 @@
-package com.camerapipeline.camera_pipeline.model.entities.camera;
+package com.camerapipeline.camera_pipeline.presentation.dto.camera;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
-import com.camerapipeline.camera_pipeline.model.entities.user.User;
+import com.camerapipeline.camera_pipeline.model.entities.camera.Coordinate;
 
-@Entity
-public class Camera implements ModelAbstract<Integer>{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+import lombok.Data;
+
+@Data
+public class CameraRequest {
+    private int id;
     @NotNull
-    @ManyToOne
-    private User user;
-    @NotBlank
-    @Column(length = 60)
+	@NotEmpty
+	@NotBlank
+	@Size(min=1, max=50)
     private String name;
-    @NotBlank
+    @NotNull
+	@NotEmpty
+	@NotBlank
+	@Size(min=1, max=50)
     private String URL;
     @NotNull
     private Boolean isPrivate;
     @NotNull
     private Boolean isActive;
-    
-	@Valid
-	@Embedded
-	private Coordinate coordinate;
-
+    private Coordinate coordinate;
     private Integer fpsLimiter;
 
-
-    public Camera() {
+    public CameraRequest() {
     }
 
-    public Camera(Integer id, User user, String name, String URL, Boolean isPrivate, Boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
+    public CameraRequest(int id, String name, String URL, Boolean isPrivate, Boolean isActive, Coordinate coordinate, Integer fpsLimiter) {
         this.id = id;
-        this.user = user;
         this.name = name;
         this.URL = URL;
         this.isPrivate = isPrivate;
@@ -55,20 +44,12 @@ public class Camera implements ModelAbstract<Integer>{
         this.fpsLimiter = fpsLimiter;
     }
 
-    public Integer getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getName() {
@@ -127,42 +108,37 @@ public class Camera implements ModelAbstract<Integer>{
         this.fpsLimiter = fpsLimiter;
     }
 
-    public Camera id(Integer id) {
+    public CameraRequest id(int id) {
         setId(id);
         return this;
     }
 
-    public Camera user(User user) {
-        setUser(user);
-        return this;
-    }
-
-    public Camera name(String name) {
+    public CameraRequest name(String name) {
         setName(name);
         return this;
     }
 
-    public Camera URL(String URL) {
+    public CameraRequest URL(String URL) {
         setURL(URL);
         return this;
     }
 
-    public Camera isPrivate(Boolean isPrivate) {
+    public CameraRequest isPrivate(Boolean isPrivate) {
         setIsPrivate(isPrivate);
         return this;
     }
 
-    public Camera isActive(Boolean isActive) {
+    public CameraRequest isActive(Boolean isActive) {
         setIsActive(isActive);
         return this;
     }
 
-    public Camera coordinate(Coordinate coordinate) {
+    public CameraRequest coordinate(Coordinate coordinate) {
         setCoordinate(coordinate);
         return this;
     }
 
-    public Camera fpsLimiter(Integer fpsLimiter) {
+    public CameraRequest fpsLimiter(Integer fpsLimiter) {
         setFpsLimiter(fpsLimiter);
         return this;
     }
@@ -171,23 +147,22 @@ public class Camera implements ModelAbstract<Integer>{
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Camera)) {
+        if (!(o instanceof CameraRequest)) {
             return false;
         }
-        Camera camera = (Camera) o;
-        return Objects.equals(id, camera.id) && Objects.equals(user, camera.user) && Objects.equals(name, camera.name) && Objects.equals(URL, camera.URL) && isPrivate == camera.isPrivate && isActive == camera.isActive && Objects.equals(coordinate, camera.coordinate) && Objects.equals(fpsLimiter, camera.fpsLimiter);
+        CameraRequest cameraRequest = (CameraRequest) o;
+        return id == cameraRequest.id && Objects.equals(name, cameraRequest.name) && Objects.equals(URL, cameraRequest.URL) && Objects.equals(isPrivate, cameraRequest.isPrivate) && Objects.equals(isActive, cameraRequest.isActive) && Objects.equals(coordinate, cameraRequest.coordinate) && Objects.equals(fpsLimiter, cameraRequest.fpsLimiter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, name, URL, isPrivate, isActive, coordinate, fpsLimiter);
+        return Objects.hash(id, name, URL, isPrivate, isActive, coordinate, fpsLimiter);
     }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", user='" + getUser() + "'" +
             ", name='" + getName() + "'" +
             ", URL='" + getURL() + "'" +
             ", isPrivate='" + isIsPrivate() + "'" +
@@ -195,5 +170,5 @@ public class Camera implements ModelAbstract<Integer>{
             ", coordinate='" + getCoordinate() + "'" +
             ", fpsLimiter='" + getFpsLimiter() + "'" +
             "}";
-    }    
+    }
 }

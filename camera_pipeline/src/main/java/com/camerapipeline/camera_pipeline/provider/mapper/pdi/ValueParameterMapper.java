@@ -12,7 +12,7 @@ import com.camerapipeline.camera_pipeline.presentation.dto.pdi.ValueParameterDTO
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 
 @Component
-public class ValueParameterMapper extends Mapper<ValueParameter, ValueParameterDTO> {
+public class ValueParameterMapper extends Mapper<ValueParameter, ValueParameterDTO, ValueParameterDTO> {
     @Autowired
     ParameterMapper parameterMapper;
 

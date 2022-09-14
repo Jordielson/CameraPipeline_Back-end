@@ -9,24 +9,21 @@ import org.springframework.stereotype.Component;
 
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
-import com.camerapipeline.camera_pipeline.model.entities.pipeline.GroupPipeline;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraRequest;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.PdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.camera.CameraMapper;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.mapper.pdi.PdiMapper;
-import com.camerapipeline.camera_pipeline.provider.services.pipeline.GroupPipelineService;
 
 @Component
-public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
+public class PipelineMapper extends Mapper<Pipeline, PipelineDTO, PipelineDTO>{
     @Autowired
     PdiMapper pdiMapper;
     @Autowired
     CameraMapper cameraMapper;
-    @Autowired
-    GroupPipelineService gPipelineService;
 
     @Override
     public PipelineDTO toDTO(Pipeline model) {
@@ -40,10 +37,6 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
             ctx -> ctx.getSource() == null ? null : cameraMapper.toDTOList(ctx.getSource());
         typeMap.addMappings(
             mapper -> {
-                mapper.map(
-                    src -> src.getGroupPipeline().getId(), 
-                    PipelineDTO::setGroupPipelineId
-                );
                 mapper.using(converterPDIList)
                     .map(
                         Pipeline::getPDIList,
@@ -71,19 +64,10 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
         );
         Converter<List<PdiDTO>, List<PDI>> converterPDIList =
             ctx -> ctx.getSource() == null ? null : pdiMapper.fromDTOList(ctx.getSource());
-        Converter<Integer, GroupPipeline> converterGroupPipeline =
-            ctx -> ctx.getSource() == null ? 
-                null : 
-                gPipelineService.getById(ctx.getSource());
-        Converter<List<CameraDTO>, List<Camera>> converterCameraList =
+        Converter<List<CameraRequest>, List<Camera>> converterCameraList =
             ctx -> ctx.getSource() == null ? null : cameraMapper.fromDTOList(ctx.getSource());
         typeMap.addMappings(
             mapper -> {
-                mapper.using(converterGroupPipeline)
-                    .map(
-                        src -> src.getGroupPipelineId(), 
-                        Pipeline::setGroupPipeline
-                    );
                 mapper.using(converterPDIList)
                     .map(
                         PipelineDTO::getPDIList,

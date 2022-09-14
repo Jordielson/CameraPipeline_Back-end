@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.presentation.controller.ControllerAbstract;
 import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraRequest;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.services.camera.CameraService;
 
 @RestController
 @RequestMapping("/camera")
-public class CameraController extends ControllerAbstract<Camera, CameraDTO, Integer>{
-    public CameraController(CameraService service, Mapper<Camera, CameraDTO> mapper) {
+public class CameraController extends ControllerAbstract<Camera, CameraRequest ,CameraDTO, Integer>{
+    public CameraController(CameraService service, Mapper<Camera, CameraRequest, CameraDTO> mapper) {
         super(service, mapper);
     }
 
@@ -29,7 +30,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
 			Principal principal,
 			@RequestParam String name,
 			Pageable pageable) {
-        CameraDTO search = new CameraDTO().name(name);
+        CameraRequest search = new CameraRequest().name(name);
         Page<CameraDTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 

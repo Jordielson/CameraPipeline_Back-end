@@ -14,7 +14,7 @@ import com.camerapipeline.camera_pipeline.presentation.dto.pdi.ParameterDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 
 @Component
-public class ModelPDIMapper extends Mapper<ModelPDI, ModelPdiDTO> {
+public class ModelPDIMapper extends Mapper<ModelPDI, ModelPdiDTO, ModelPdiDTO> {
     @Autowired
     ParameterMapper parameterMapper;
 

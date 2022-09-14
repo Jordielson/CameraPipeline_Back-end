@@ -3,7 +3,6 @@ package com.camerapipeline.camera_pipeline.model.entities.user;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
@@ -25,8 +24,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
-import com.camerapipeline.camera_pipeline.model.entities.pipeline.GroupPipeline;
+import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode
 @Entity
 public class User implements UserDetails, ModelAbstract<Integer> {
     @Id
@@ -57,65 +61,9 @@ public class User implements UserDetails, ModelAbstract<Integer> {
 	private List<Role> roles = new ArrayList<Role>();
 
     @OneToMany(mappedBy = "user")
-    private List<GroupPipeline> groupPipeline;
+    private List<Pipeline> pipelines;
     @OneToMany(mappedBy = "user")
     private List<Camera> cameras;
-
-
-    public User() {
-    }
-
-    public User(Integer id, String email, String password, List<Role> roles, List<GroupPipeline> groupPipeline, List<Camera> cameras) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.groupPipeline = groupPipeline;
-        this.cameras = cameras;
-    }
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Role> getRoles() {
-        return this.roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<GroupPipeline> getGroupPipeline() {
-        return this.groupPipeline;
-    }
-
-    public void setGroupPipeline(List<GroupPipeline> groupPipeline) {
-        this.groupPipeline = groupPipeline;
-    }
-
-    public List<Camera> getCameras() {
-        return this.cameras;
-    }
-
-    public void setCameras(List<Camera> cameras) {
-        this.cameras = cameras;
-    }
 
     public User id(int id) {
         setId(id);
@@ -137,43 +85,10 @@ public class User implements UserDetails, ModelAbstract<Integer> {
         return this;
     }
 
-    public User groupPipeline(List<GroupPipeline> groupPipeline) {
-        setGroupPipeline(groupPipeline);
-        return this;
-    }
-
     public User cameras(List<Camera> cameras) {
         setCameras(cameras);
         return this;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof User)) {
-            return false;
-        }
-        User user = (User) o;
-        return id == user.id && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles) && Objects.equals(groupPipeline, user.groupPipeline) && Objects.equals(cameras, user.cameras);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, password, roles, groupPipeline, cameras);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", password='" + getPassword() + "'" +
-            ", roles='" + getRoles() + "'" +
-            ", groupPipeline='" + getGroupPipeline() + "'" +
-            ", cameras='" + getCameras() + "'" +
-            "}";
-    }    
 
     @Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -220,7 +135,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
         setId(user.id);
         setEmail(user.email);
         setCameras(user.cameras);
-        setGroupPipeline(user.groupPipeline);
+        setPipelines(user.pipelines);
         setPassword(user.password);
         setRoles(user.roles);
     }

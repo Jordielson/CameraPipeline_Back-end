@@ -19,7 +19,7 @@ import com.camerapipeline.camera_pipeline.provider.services.pdi.ModelPDIService;
 
 @RestController
 @RequestMapping("/model-pdi")
-public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO, Integer> {
+public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO, ModelPdiDTO, Integer> {
     public ModelPDIController(ModelPDIService service, ModelPDIMapper mapper) {
         super(service, mapper);
     }

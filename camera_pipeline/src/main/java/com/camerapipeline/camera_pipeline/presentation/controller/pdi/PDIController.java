@@ -11,7 +11,7 @@ import com.camerapipeline.camera_pipeline.provider.services.pdi.PDIService;
 
 @RestController
 @RequestMapping("/pdi")
-public class PDIController extends ControllerAbstract<PDI, PdiDTO, Integer> {
+public class PDIController extends ControllerAbstract<PDI, PdiDTO, PdiDTO, Integer> {
     public PDIController(PDIService service, PdiMapper mapper) {
         super(service, mapper);
     }

@@ -18,21 +18,16 @@ INSERT INTO camera_pipeline.role_user
 VALUES(1, 'ROLE_USER')
 ON DUPLICATE KEY UPDATE role_id = role_id;
 
-INSERT INTO camera_pipeline.group_pipeline
-(id, name, user_id)
-VALUES(1, 'Deteccao de objetos', 1)
-ON DUPLICATE KEY UPDATE name = name;
-
 INSERT INTO camera_pipeline.pipeline
-(id, creation_date, description, is_active, last_change, name, group_pipeline_id)
+(id, creation_date, description, is_active, last_change, name, user_id)
 VALUES(1, '2022-06-26 14:30:30', 
     'Servico que reduz o tamanho da imagem para um tamanho especifico determinado pelo usuario', 
     0, '2022-06-26 14:30:30', 'Reduzir o tamanho da imagem', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
 INSERT INTO camera_pipeline.camera
-(id, url, fps_limiter, is_private, name, user_id)
-VALUES(1, 'http://localhost:5000/api', 60, 1, 'Camera 01', 1)
+(id, url, fps_limiter, is_private, is_active, name, user_id)
+VALUES(1, 'http://localhost:5000/api', 60, 1, 1, 'Camera 01', 1)
 ON DUPLICATE KEY UPDATE url = url;
 
 INSERT INTO camera_pipeline.camera_pipeline

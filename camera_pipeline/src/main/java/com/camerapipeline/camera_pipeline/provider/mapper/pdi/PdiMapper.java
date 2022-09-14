@@ -18,7 +18,7 @@ import com.camerapipeline.camera_pipeline.provider.services.pdi.ModelPDIService;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 @Component
-public class PdiMapper extends Mapper<PDI, PdiDTO>{
+public class PdiMapper extends Mapper<PDI, PdiDTO, PdiDTO>{
     @Autowired
     ValueParameterMapper valueParameterMapper;
     @Autowired
