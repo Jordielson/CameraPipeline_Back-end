@@ -26,8 +26,8 @@ VALUES(1, '2022-06-26 14:30:30',
 ON DUPLICATE KEY UPDATE name = name;
 
 INSERT INTO camera_pipeline.camera
-(id, url, fps_limiter, is_private, name, user_id, is_active)
-VALUES(1, 'http://localhost:5000/api', 60, 1, 'Camera 01', 1, 0)
+(id, url, fps_limiter, is_private, is_active, name, user_id)
+VALUES(1, 'http://localhost:5000/api', 60, 1, 1, 'Camera 01', 1)
 ON DUPLICATE KEY UPDATE url = url;
 
 INSERT INTO camera_pipeline.camera_pipeline
@@ -46,8 +46,8 @@ VALUES(1, 1, 1)
 ON DUPLICATE KEY UPDATE id = id;
 
 INSERT INTO camera_pipeline.`parameter`
-(id, `index`, name, `required`, `type`, model_pdi_id)
-VALUES(1, 0,'Tamanho da imagem',1,0, 1)
+(id, name, `type`, required, index, model_pdi_id)
+VALUES(1, 'Tamanho da imagem', 0,true,0, 1)
 ON DUPLICATE KEY UPDATE id = id;
 
 INSERT INTO camera_pipeline.value_parameter
