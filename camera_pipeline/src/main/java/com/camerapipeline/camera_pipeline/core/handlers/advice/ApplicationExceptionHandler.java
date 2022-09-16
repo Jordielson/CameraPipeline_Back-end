@@ -34,15 +34,23 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInavalidArgument(MethodArgumentNotValidException ex) {
-        Map<String, String> errorMap = new HashMap<>();
+    public ResponseEntity<Object> handleInavalidArgument(MethodArgumentNotValidException ex) {
+        List <String> messages = new ArrayList<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errorMap.put(error.getField(), error.getDefaultMessage());
+            messages.add(String.format("%s - %s", error.getField(), error.getDefaultMessage()));
         });
+        final ExceptionMessage exceptionMessage 
+            = new ExceptionMessage(
+                HttpStatus.BAD_REQUEST, 
+                "ERR_INAVALID_ARGUMENT", 
+                ex.getLocalizedMessage(), 
+                messages
+            );
 
-        return errorMap;
+        log.warn("ERR_INAVALID_ARGUMENT - [{}].", messages, ex);
+        
+        return  new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -75,43 +83,43 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleBadCredentials(final AccessDeniedException ex) {
-        final ExceptionMessage apiExceptionMessage = new ExceptionMessage(HttpStatus.FORBIDDEN, "ERR_ACCESS_DENIED", ex.getLocalizedMessage(), "Access denied");
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.FORBIDDEN, "ERR_ACCESS_DENIED", ex.getLocalizedMessage(), "Access denied");
         log.warn("ERR_ACCESS_DENIED - [{}].", ex.getMessage(), ex);
 
-        return new ResponseEntity<>(apiExceptionMessage, new HttpHeaders(), apiExceptionMessage.getStatus());
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException ex) {
         final String message = ex.getName() + " should be of type " + ex.getRequiredType().getName();
-        final ExceptionMessage apiExceptionMessage = new ExceptionMessage(HttpStatus.BAD_REQUEST, "ERR_ARGUMENT_TYPE_MISMATCH", ex.getLocalizedMessage(), message);
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.BAD_REQUEST, "ERR_ARGUMENT_TYPE_MISMATCH", ex.getLocalizedMessage(), message);
         log.warn("ERR_ARGUMENT_TYPE_MISMATCH - [{}].", message, ex);
 
-        return new ResponseEntity<>(apiExceptionMessage, new HttpHeaders(), apiExceptionMessage.getStatus());
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentials(final BadCredentialsException ex) {
-        final ExceptionMessage apiExceptionMessage = new ExceptionMessage(HttpStatus.FORBIDDEN, "ERR_BAD_CREDENTIALS", ex.getLocalizedMessage(), "Bad credentials");
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.FORBIDDEN, "ERR_BAD_CREDENTIALS", ex.getLocalizedMessage(), "Bad credentials");
         log.warn("ERR_BAD_CREDENTIALS_VIOLATION - [{}].", ex.getMessage(), ex);
 
-        return new ResponseEntity<>(apiExceptionMessage, new HttpHeaders(), apiExceptionMessage.getStatus());
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     @ExceptionHandler({AuthorizationServiceException.class})
     public ResponseEntity<Object> handleAuthoritzation(final AuthorizationServiceException ex) {
-        final ExceptionMessage apiExceptionMessage = new ExceptionMessage(HttpStatus.UNAUTHORIZED, "ERR_UNAUTHORIZED", ex.getLocalizedMessage(), "Unauthorized");
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.UNAUTHORIZED, "ERR_UNAUTHORIZED", ex.getLocalizedMessage(), "Unauthorized");
         log.warn("ERR_UNAUTHORIZED - [{}].", ex.getMessage(), ex);
 
-        return new ResponseEntity<>(apiExceptionMessage, new HttpHeaders(), apiExceptionMessage.getStatus());
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     @ExceptionHandler({Exception.class, RuntimeException.class})
     public ResponseEntity<Object> handleAllExceptions(final Exception ex) {
         String key= getKeyForException(ex);
-        final ExceptionMessage apiExceptionMessage = new ExceptionMessage(getStatusForException(ex), key, ex.getLocalizedMessage(), getHumanReadeableTextForException(ex));
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(getStatusForException(ex), key, ex.getLocalizedMessage(), getHumanReadeableTextForException(ex));
         log.warn("[{}] - [{}].", key, ex.getMessage(), ex);
-        return new ResponseEntity<>(apiExceptionMessage, new HttpHeaders(), apiExceptionMessage.getStatus());
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     private HttpStatus getStatusForException(final Exception ex) {

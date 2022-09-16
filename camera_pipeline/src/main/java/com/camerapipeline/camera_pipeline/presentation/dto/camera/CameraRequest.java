@@ -14,13 +14,9 @@ import lombok.Data;
 @Data
 public class CameraRequest {
     private int id;
-    @NotNull
 	@NotEmpty
-	@NotBlank
-	@Size(min=1, max=50)
+	@Size(max=50)
     private String name;
-    @NotNull
-	@NotEmpty
 	@NotBlank
     private String URL;
     @NotNull
