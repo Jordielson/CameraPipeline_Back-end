@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
-
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 
 /* 
@@ -47,7 +46,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
 
     public M getById(ID id) {
         return repository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        .orElseThrow(() -> throwNotFoundEntity(id));
     }
 
     public M getById(ID id, Principal principal) {
@@ -56,9 +55,9 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
             if(existing.getUser().equals(user)) {
                 return existing;
             } else {
-                throw new EntityNotFoundException();
+                throw throwNotFoundEntity(id);
             }
-        }).orElseThrow(() -> new EntityNotFoundException(""));
+        }).orElseThrow(() -> throwNotFoundEntity(id));
         return model;
     }
 
@@ -83,7 +82,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
             } else {
                 throw new EntityNotFoundException();
             }
-        }).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        }).orElseThrow(() -> throwNotFoundEntity(id));
     }
 
     protected User getUserByPrincipal(Principal principal) {
@@ -97,4 +96,5 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
 	}
 
     abstract protected Specification<M> getSpecification(M search);
+    abstract protected EntityNotFoundException throwNotFoundEntity(ID id);
 }

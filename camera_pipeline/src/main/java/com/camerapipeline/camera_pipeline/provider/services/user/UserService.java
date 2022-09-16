@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class UserService extends ServiceAbstract<User, Integer> {
     @Autowired
@@ -59,5 +61,10 @@ public class UserService extends ServiceAbstract<User, Integer> {
     @Override
     protected Specification<User> getSpecification(User search) {
         return new UserSpecification(search);
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new UserNotFoundException(id);
     }
 }

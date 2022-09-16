@@ -1,9 +1,7 @@
 package com.camerapipeline.camera_pipeline.core.handlers.advice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
@@ -73,12 +71,19 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(EntityNotFoundException.class)
-    public Map<String, String> handleBusinessException(EntityNotFoundException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
+    public ResponseEntity<Object> handleNotFoundException(EntityNotFoundException ex) {
+        final ExceptionMessage exceptionMessage 
+            = new ExceptionMessage(
+                HttpStatus.INTERNAL_SERVER_ERROR, 
+                "ERR_INTERNAL_SERVER_ERROR", 
+                ex.getLocalizedMessage(), 
+                ex.getMessage()
+                );
+
+        log.warn("ERR_INTERNAL_SERVER_ERROR - [{}].", ex.getMessage(), ex);
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
 
     @ExceptionHandler(AccessDeniedException.class)

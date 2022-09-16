@@ -2,11 +2,14 @@ package com.camerapipeline.camera_pipeline.provider.services.camera;
 
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.repository.camera.CameraRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.camera.CameraSpecification;
 
 import java.security.Principal;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -56,5 +59,10 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
         return (camOptional.isPresent()
             && camOptional.get().getId() != id) 
             ? false : true;
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new CustomEntityNotFoundException("Camera", id.toString());
     }
 }

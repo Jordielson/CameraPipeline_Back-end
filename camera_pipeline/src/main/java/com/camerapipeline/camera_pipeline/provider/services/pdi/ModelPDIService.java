@@ -13,6 +13,7 @@ import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.ModelPDIRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.pdi.ModelPDISpecification;
 
@@ -101,5 +102,10 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
         return (modelPdiOptional.isPresent()
             && modelPdiOptional.get().getId() != id) 
             ? false : true;
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new CustomEntityNotFoundException("Model PDI", id.toString());
     }
 }

@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.services.pipeline;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.repository.pipeline.PipelineRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.services.pdi.PDIService;
 import com.camerapipeline.camera_pipeline.provider.specification.pipeline.PipelineSpecification;
@@ -31,5 +34,10 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
     @Override
     protected Specification<Pipeline> getSpecification(Pipeline search) {
         return new PipelineSpecification(search);
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new CustomEntityNotFoundException("Pipeline", id.toString());
     }
 }
