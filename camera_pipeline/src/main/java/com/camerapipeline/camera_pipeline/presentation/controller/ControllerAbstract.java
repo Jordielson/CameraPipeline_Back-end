@@ -19,58 +19,58 @@ import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 
-public abstract class ControllerAbstract<M extends ModelAbstract<ID>, REQUEST, RESPONSE, ID> {
+public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
     protected ServiceAbstract<M, ID> service;
-    protected Mapper<M, REQUEST, RESPONSE> mapper;
+    protected Mapper<M, DTO> mapper;
 
-    public ControllerAbstract(ServiceAbstract<M, ID> service, Mapper<M, REQUEST, RESPONSE> mapper) {
+    public ControllerAbstract(ServiceAbstract<M, ID> service, Mapper<M, DTO> mapper) {
         this.service = service;
         this.mapper = mapper;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<RESPONSE>> getAll(Pageable pageable, Principal principal) {
-        Page<RESPONSE> list = mapper.toDTOPage(
+    public ResponseEntity<Page<DTO>> getAll(Pageable pageable, Principal principal) {
+        Page<DTO> list = mapper.toDTOPage(
             service.getAll(pageable, principal)
         );
-        return new ResponseEntity<Page<RESPONSE>>(list, HttpStatus.OK);
+        return new ResponseEntity<Page<DTO>>(list, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<RESPONSE> get(@PathVariable("id") ID id, Principal principal) {
-        RESPONSE dto = mapper.toDTO(
+    public ResponseEntity<DTO> get(@PathVariable("id") ID id, Principal principal) {
+        DTO dto = mapper.toDTO(
             service.getById(
                 id,
                 principal
             )
         );
-        return new ResponseEntity<RESPONSE>(dto, HttpStatus.OK);
+        return new ResponseEntity<DTO>(dto, HttpStatus.OK);
     }
     
     @PostMapping("/register")
-    public ResponseEntity<RESPONSE> add(@Valid @RequestBody REQUEST dto, Principal principal) {
-        RESPONSE response = mapper.toDTO(
+    public ResponseEntity<DTO> add(@Valid @RequestBody DTO dto, Principal principal) {
+        DTO response = mapper.toDTO(
             service.create(
                 mapper.fromDTO(dto), 
                 principal
             )
         );
-        return new ResponseEntity<RESPONSE>(response, HttpStatus.OK);
+        return new ResponseEntity<DTO>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RESPONSE> update(
+    public ResponseEntity<DTO> update(
         @PathVariable("id") ID id, 
-        @Valid @RequestBody REQUEST dto, 
+        @Valid @RequestBody DTO dto, 
         Principal principal) {
-            RESPONSE response = mapper.toDTO(
+            DTO response = mapper.toDTO(
                 service.update(
                     id,
                     mapper.fromDTO(dto), 
                     principal
             )
         );
-        return new ResponseEntity<RESPONSE>(
+        return new ResponseEntity<DTO>(
             response,
             HttpStatus.OK
         );
@@ -88,9 +88,9 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, REQUEST, R
     @GetMapping("/search")
 	public ResponseEntity<?> search(
 			Principal principal,
-			@RequestBody REQUEST search,
+			@RequestBody DTO search,
 			Pageable pageable) {
-        Page<RESPONSE> list = mapper.toDTOPage(
+        Page<DTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
                 principal, 
@@ -98,6 +98,6 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, REQUEST, R
             )
         );
 		
-		return new ResponseEntity<Page<RESPONSE>>(list, HttpStatus.OK);
+		return new ResponseEntity<Page<DTO>>(list, HttpStatus.OK);
 	}
 }
