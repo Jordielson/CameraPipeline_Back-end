@@ -91,4 +91,15 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
             && modelPdiOptional.get().getId() != id) 
             ? false : true;
     }
+
+    public boolean checkValidUrl(String url, Integer id, Principal p) {
+        Optional<ModelPDI> modelPdiOptional 
+            = ((ModelPDIRepository) repository).findByURL(
+                url, 
+                getUserByPrincipal(p).getId()
+            );
+        return (modelPdiOptional.isPresent()
+            && modelPdiOptional.get().getId() != id) 
+            ? false : true;
+    }
 }

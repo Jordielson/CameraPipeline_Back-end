@@ -58,4 +58,19 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
 		
 		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
 	}
+
+    @GetMapping("/verify-url")
+	public ResponseEntity<?> verifyUrl(
+        Principal principal,
+        @RequestParam String url,
+        @RequestParam(required = false) Integer id
+        ) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put(
+            "valid", 
+            ((ModelPDIService) service).checkValidUrl(url, id, principal)
+        );
+		
+		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
+	}
 }
