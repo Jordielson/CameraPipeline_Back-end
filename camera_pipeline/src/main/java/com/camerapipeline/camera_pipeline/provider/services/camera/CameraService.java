@@ -6,6 +6,7 @@ import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.camera.CameraSpecification;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,28 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
     @Override
     protected Specification<Camera> getSpecification(Camera search) {
         return new CameraSpecification(search);
+    }
+
+    public boolean checkValidName(String name, Integer id, Principal p) {
+        Optional<Camera> camOptional 
+            = ((CameraRepository) repository).findByName(
+                name, 
+                getUserByPrincipal(p).getId()
+            );
+            
+        return (camOptional.isPresent() 
+            && camOptional.get().getId() != id) 
+            ? false : true;
+    }
+
+    public boolean checkValidUrl(String url, Integer id, Principal p) {
+        Optional<Camera> camOptional 
+            = ((CameraRepository) repository).findByURL(
+                url, 
+                getUserByPrincipal(p).getId()
+            );
+        return (camOptional.isPresent()
+            && camOptional.get().getId() != id) 
+            ? false : true;
     }
 }

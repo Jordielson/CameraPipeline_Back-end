@@ -1,6 +1,8 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.camera;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,5 +42,36 @@ public class CameraController extends ControllerAbstract<Camera, CameraRequest ,
         );
 		
 		return new ResponseEntity<Page<CameraDTO>>(list, HttpStatus.OK);
+	}
+
+    @GetMapping("/verify-name")
+	public ResponseEntity<?> verifyName(
+        Principal principal,
+        @RequestParam String name,
+        @RequestParam(required = false) Integer id
+        ) {
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put(
+            "valid", 
+            ((CameraService) service).checkValidName(name, id, principal)
+        );
+		
+		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
+	}
+
+    @GetMapping("/verify-url")
+	public ResponseEntity<?> verifyUrl(
+        Principal principal,
+        @RequestParam String url,
+        @RequestParam(required = false) Integer id
+        ) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put(
+            "valid", 
+            ((CameraService) service).checkValidUrl(url, id, principal)
+        );
+		
+		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
 	}
 }

@@ -1,6 +1,8 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.pdi;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +41,21 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
         );
 		
 		return new ResponseEntity<Page<ModelPdiDTO>>(list, HttpStatus.OK);
+	}
+
+    @GetMapping("/verify-name")
+	public ResponseEntity<?> verifyName(
+        Principal principal,
+        @RequestParam String name,
+        @RequestParam(required = false) Integer id
+        ) {
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put(
+            "valid", 
+            ((ModelPDIService) service).checkValidName(name, id, principal)
+        );
+		
+		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
 	}
 }
