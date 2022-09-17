@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.provider.services.user;
 
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
+import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
 import com.camerapipeline.camera_pipeline.provider.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.user.UserSpecification;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class UserService extends ServiceAbstract<User, Integer> {
@@ -40,6 +43,15 @@ public class UserService extends ServiceAbstract<User, Integer> {
         throw new SecurityException();
     }
 
+    public User create(UserResquest u) {
+        User user = new User()
+            .email(u.getEmail())
+            .password(
+                passwordEncoder.encode(u.getPassword())
+            );
+        return super.create(user);
+    }
+
     @Override
     public User create(User u) {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
@@ -59,5 +71,10 @@ public class UserService extends ServiceAbstract<User, Integer> {
     @Override
     protected Specification<User> getSpecification(User search) {
         return new UserSpecification(search);
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new UserNotFoundException(id);
     }
 }

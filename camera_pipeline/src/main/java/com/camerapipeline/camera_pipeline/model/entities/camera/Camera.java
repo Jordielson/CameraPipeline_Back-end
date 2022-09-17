@@ -23,9 +23,10 @@ public class Camera implements ModelAbstract<Integer>{
     private Integer id;
     @NotNull
     @ManyToOne
+
     private User user;
     @NotBlank
-    @Column(length = 60)
+    @Column(unique=true, length = 60)
     private String name;
     @NotBlank
     private String URL;

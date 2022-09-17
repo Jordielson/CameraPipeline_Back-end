@@ -11,15 +11,14 @@ import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraDTO;
-import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraRequest;
-import com.camerapipeline.camera_pipeline.presentation.dto.pdi.PdiDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.camera.CameraMapper;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.mapper.pdi.PdiMapper;
 
 @Component
-public class PipelineMapper extends Mapper<Pipeline, PipelineDTO, PipelineDTO>{
+public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
     @Autowired
     PdiMapper pdiMapper;
     @Autowired
@@ -64,7 +63,7 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO, PipelineDTO>{
         );
         Converter<List<PdiDTO>, List<PDI>> converterPDIList =
             ctx -> ctx.getSource() == null ? null : pdiMapper.fromDTOList(ctx.getSource());
-        Converter<List<CameraRequest>, List<Camera>> converterCameraList =
+        Converter<List<CameraDTO>, List<Camera>> converterCameraList =
             ctx -> ctx.getSource() == null ? null : cameraMapper.fromDTOList(ctx.getSource());
         typeMap.addMappings(
             mapper -> {

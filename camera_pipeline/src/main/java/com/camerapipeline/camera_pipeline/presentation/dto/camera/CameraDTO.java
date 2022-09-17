@@ -2,6 +2,10 @@ package com.camerapipeline.camera_pipeline.presentation.dto.camera;
 
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.camerapipeline.camera_pipeline.model.entities.camera.Coordinate;
 
 import lombok.Data;
@@ -9,8 +13,12 @@ import lombok.Data;
 @Data
 public class CameraDTO {
     private int id;
+    @NotBlank
+	@Size(max=50)
     private String name;
+    @NotBlank
     private String URL;
+    @NotNull
     private Boolean isPrivate;
     private Boolean isActive;
     private Coordinate coordinate;

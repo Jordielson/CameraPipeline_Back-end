@@ -10,22 +10,22 @@ import org.springframework.data.domain.Page;
 
 // M -> Model
 // D -> DTO
-public abstract class Mapper<M, REQUEST, RESPONSE> {
+public abstract class Mapper<M, DTO> {
     @Autowired
     protected ModelMapper modelMapper;
 
-    public abstract RESPONSE toDTO(M model);
-    public abstract M fromDTO(REQUEST dto);
-    public List<RESPONSE> toDTOList(List<M> modelList) {
-        List<RESPONSE> list = new ArrayList<>();
+    public abstract DTO toDTO(M model);
+    public abstract M fromDTO(DTO dto);
+    public List<DTO> toDTOList(List<M> modelList) {
+        List<DTO> list = new ArrayList<>();
         for (M model : modelList) {
             list.add(toDTO(model));
         }
         return list;
     }
-    public List<M> fromDTOList(List<REQUEST> dtoList) {
+    public List<M> fromDTOList(List<DTO> dtoList) {
         List<M> list = new ArrayList<>();
-        for (REQUEST dto : dtoList) {
+        for (DTO dto : dtoList) {
             list.add(fromDTO(dto));
         }
         return list;
@@ -45,7 +45,7 @@ public abstract class Mapper<M, REQUEST, RESPONSE> {
         return typeMap;
     }
 
-    public Page<RESPONSE> toDTOPage(Page<M> modelList) {
+    public Page<DTO> toDTOPage(Page<M> modelList) {
         return modelList.map(this::toDTO);
     }
 }

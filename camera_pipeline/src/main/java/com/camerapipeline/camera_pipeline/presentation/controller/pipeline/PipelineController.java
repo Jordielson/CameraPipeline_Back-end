@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pipeline")
-public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO, PipelineDTO, Integer> {
+public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO, Integer> {
     public PipelineController(PipelineService service, PipelineMapper mapper) {
         super(service, mapper);
     }
