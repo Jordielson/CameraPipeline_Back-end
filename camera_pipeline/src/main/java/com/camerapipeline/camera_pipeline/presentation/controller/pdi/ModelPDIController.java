@@ -73,4 +73,18 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
 		
 		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
 	}
+    
+    @GetMapping("/verify-used")
+	public ResponseEntity<?> verifyUsed(
+        Principal principal,
+        @RequestParam Integer id
+        ) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put(
+            "valid", 
+            ((ModelPDIService) service).checkIfItUsed(id, principal)
+        );
+		
+		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
+	}
 }

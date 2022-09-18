@@ -72,10 +72,6 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
 
     @Override
     public ModelPDI delete(Integer id, Principal principal) {
-        ModelPDI modelPDI = getById(id);
-        for (Parameter param : modelPDI.getParameters()) {
-            paramService.delete(param.getId(), principal);
-        }
         return super.delete(id, principal);
     }
 
@@ -102,6 +98,11 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
         return (modelPdiOptional.isPresent()
             && modelPdiOptional.get().getId() != id) 
             ? false : true;
+    }
+
+    public boolean checkIfItUsed(Integer id, Principal principal) {
+        ModelPDI modelPdi = getById(id, principal);
+        return !modelPdi.getPdiList().isEmpty();
     }
 
     @Override

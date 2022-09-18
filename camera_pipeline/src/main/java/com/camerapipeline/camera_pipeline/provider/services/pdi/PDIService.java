@@ -62,9 +62,6 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
 
     @Override
     public PDI delete(Integer id, Principal principal) {
-        for (ValueParameter value : getById(id).getValueParameters()) {
-            valueService.delete(value.getId(), principal);
-        }
         return super.delete(id, principal);
     }
 
