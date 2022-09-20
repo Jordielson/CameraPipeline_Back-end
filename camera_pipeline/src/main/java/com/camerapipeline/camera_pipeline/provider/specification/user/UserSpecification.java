@@ -11,7 +11,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
-import com.camerapipeline.camera_pipeline.model.entities.user.User_;
 
 public class UserSpecification implements Specification<User> {
 
@@ -25,10 +24,10 @@ public class UserSpecification implements Specification<User> {
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         final List<Predicate> predicates = new ArrayList<Predicate>();
         if(criteria.getEmail()!=null) {
-            predicates.add(cb.like(cb.lower(root.get(User_.email)), "%" + criteria.getEmail().toLowerCase() + "%"));
+            predicates.add(cb.like(cb.lower(root.get("email")), "%" + criteria.getEmail().toLowerCase() + "%"));
         }
         if(criteria.getUser()!=null) {
-            predicates.add(cb.equal(root.get(User_.id), criteria.getUser().getId()));
+            predicates.add(cb.equal(root.get("id"), criteria.getUser().getId()));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }

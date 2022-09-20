@@ -11,7 +11,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera_;
 
 public class CameraSpecification implements Specification<Camera> {
 
@@ -25,16 +24,16 @@ public class CameraSpecification implements Specification<Camera> {
     public Predicate toPredicate(Root<Camera> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         final List<Predicate> predicates = new ArrayList<Predicate>();
         if(criteria.getName()!=null) {
-            predicates.add(cb.like(cb.lower(root.get(Camera_.name)), "%" + criteria.getName().toLowerCase() + "%"));
+            predicates.add(cb.like(cb.lower(root.get("name")), "%" + criteria.getName().toLowerCase() + "%"));
         }
         if(criteria.getIsActive()!=null) {
-            predicates.add(cb.equal(root.get(Camera_.isActive), criteria.getIsActive()));
+            predicates.add(cb.equal(root.get("isActive"), criteria.getIsActive()));
         }
         if(criteria.getIsPrivate()!=null) {
-            predicates.add(cb.equal(root.get(Camera_.isPrivate), criteria.getIsPrivate()));
+            predicates.add(cb.equal(root.get("isPrivate"), criteria.getIsPrivate()));
         }
         if(criteria.getUser()!=null) {
-            predicates.add(cb.equal(root.get(Camera_.user), criteria.getUser()));
+            predicates.add(cb.equal(root.get("user"), criteria.getUser()));
         }
         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
     }
