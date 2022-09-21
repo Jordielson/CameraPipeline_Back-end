@@ -27,12 +27,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "TB_EMAIL")
+@Table(name = "mail")
 public class EmailModel {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long emailId;
 
     private String ownerRef;

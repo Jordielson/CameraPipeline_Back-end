@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.camerapipeline.camera_pipeline.dto.user.ForgotPasswordDTO;
 import com.camerapipeline.camera_pipeline.dto.user.LoginDTO;
 import com.camerapipeline.camera_pipeline.dto.user.UserDTO;
 import com.camerapipeline.camera_pipeline.exception.geral.RegraDeNegocioException;
@@ -99,21 +100,23 @@ public class UserController {
      * TODO Recuperar Senha
      * Metodo temporario para testar o envio de email para recuperação de senha
      */
-    @PostMapping("/recuperarsenha")
-//    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity recuperarSenha( @RequestBody String emailRecuperacaoSenha ) {
-    	System.out.println(emailRecuperacaoSenha);
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody @Valid ForgotPasswordDTO recoveryEmail ) {
     	try {
-    		User user = userService.recuperarUsuarioPorEmail(emailRecuperacaoSenha); 
-    		System.out.println( emailService.sendEmail(
-    				emailService.premoldadoEmailModel(
-    						"recuperacaoSenha"+user.getUsername(),
-    						emailRecuperacaoSenha, "Email de Recuperação de Senha",
-    						// TODO Logica de troca de senha aqui! 
-    						user.getPassword(),
-    						user.getUsername())));
+    		User user = userService.getByEmail(recoveryEmail.getEmail()); 
+    		emailService.sendEmail(
+                emailService.preShapedEmail(
+                    "recovery mail - "+user.getUsername(),
+                    recoveryEmail.getEmail(), 
+                    "Email de Recuperação de Senha",
+                    // TODO Logica de troca de senha aqui! 
+                    user.getPassword(),
+                    user.getUsername()
+                )
+            );
     		
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (RegraDeNegocioException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

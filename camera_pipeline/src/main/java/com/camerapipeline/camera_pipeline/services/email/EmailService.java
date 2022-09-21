@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
@@ -20,8 +20,9 @@ import com.camerapipeline.camera_pipeline.exception.geral.RegraDeNegocioExceptio
 import com.camerapipeline.camera_pipeline.model.email.EmailModel;
 import com.camerapipeline.camera_pipeline.repository.email.EmailRepository;
 
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @Service
 public class EmailService {
 
@@ -34,45 +35,44 @@ public class EmailService {
     public EmailModel sendEmail(EmailModel emailModel) {
         emailModel.setSendDataEmail(LocalDateTime.now());
         
-        String conteudoEmail = ConverterEmail(emailModel);
+        String content = convertEmail(emailModel, "");
         try {
-        	
         	 MimeMessage message = emailSender.createMimeMessage();
 
              MimeMessageHelper helper;
              helper = new MimeMessageHelper(message, true, "UTF-8");
              helper.setFrom(emailModel.getEmailFrom());
              helper.setTo(emailModel.getEmailTo());
-//             helper.setCc();
              helper.setSubject(emailModel.getSubject());
-             helper.setText(conteudoEmail, true);
+             helper.setText(content, true);
 
             emailSender.send(message);
 
             emailModel.setStatusEmail(StatusEmail.SENT);
 
-        }catch (MailException e){
-        	System.out.println(e.getMessage());
+        } catch (MailException e){
+            log.warn("ERR_SEND_MAIL - [{}].", e.getLocalizedMessage(), e.getMessage());
             emailModel.setStatusEmail(StatusEmail.ERROR);
-
+        } catch (MessagingException e) {
+            log.warn("ERR_MESSAGE_MAIL - [{}].", e.getLocalizedMessage(), e.getMessage());
+            emailModel.setStatusEmail(StatusEmail.ERROR);
         }finally {
         	emailModel.setResolut(emailModel.getResolut() + 1);
-            return repository.save(emailModel);
         }
+        return repository.save(emailModel);
     }
     
-    public void deletarPorId(EmailModel email) {
+    public void delete(EmailModel email) {
     	Optional<EmailModel> emailFix = repository.findById(email.getEmailId());
     	if(emailFix.isPresent()) {
     		repository.deleteById(email.getEmailId());
-    		return;
     	}
     	
     	throw new RegraDeNegocioException("Email não encontrado");
     	
     }
     
-    public ArrayList<EmailModel> obterPorStatus(int status){
+    public ArrayList<EmailModel> getByStatus(int status){
     	return repository.findByStatusEmail(status);
     }
     
@@ -80,7 +80,7 @@ public class EmailService {
         return repository.findAll(pageable);
     }
     
-    public EmailModel premoldadoEmailModel(String ownerRef,String emailTo, String subject,String text, String nomeDestinatario) {
+    public EmailModel preShapedEmail(String ownerRef,String emailTo, String subject,String text, String nomeDestinatario) {
 		
 		EmailModel email = EmailModel.builder()
 				.ownerRef(ownerRef)
@@ -94,9 +94,15 @@ public class EmailService {
 		return email;
 	}
     
-    private String ConverterEmail(EmailModel email) {
+    private String convertEmail(EmailModel email, String link) {
  
-    	return "<H1> Camera_Pipeline <H1>";
+    	return "<H1> Camera_Pipeline <H1>"
+            + "<p>You have requested to reset your password.</p>"
+            + "<p>Click the link below to change your password:</p>"
+            + "<p><a href=\"" + link + "\">Change my password</a></p>"
+            + "<br>"
+            + "<p>Ignore this email if you do remember your password, "
+            + "or you have not made the request.</p>";
     }
 
 }

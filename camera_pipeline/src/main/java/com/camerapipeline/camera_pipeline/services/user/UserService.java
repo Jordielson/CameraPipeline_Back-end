@@ -90,7 +90,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
      * TODO Metodo para recuperar usuario por email
      * @return
      */
-    public User recuperarUsuarioPorEmail(String email) {
+    public User getByEmail(String email) {
     		
     	Optional<User> userReturn = ((UserRepository) super.repository).findByEmail(email);
     	
