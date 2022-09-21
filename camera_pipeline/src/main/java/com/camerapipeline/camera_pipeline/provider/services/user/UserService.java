@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.provider.services.user;
 
+import com.camerapipeline.camera_pipeline.model.entities.user.Role;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
 import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -49,6 +51,9 @@ public class UserService extends ServiceAbstract<User, Integer> {
             .password(
                 passwordEncoder.encode(u.getPassword())
             );
+
+        user.setRoles(List.of(new Role("ROLE_USER")));
+        
         return super.create(user);
     }
 

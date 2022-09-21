@@ -8,6 +8,15 @@ import javax.persistence.ManyToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
 public class Role implements GrantedAuthority {
 
@@ -17,16 +26,13 @@ public class Role implements GrantedAuthority {
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
+    public Role(String role) {
+        this.role = role;
+    }
+
     @Override
     public String getAuthority() {
         return role;
-    }
-
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override
