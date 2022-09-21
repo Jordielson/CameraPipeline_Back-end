@@ -45,7 +45,7 @@ public class ModelPDI implements ModelAbstract<Integer>{
     @OneToMany(mappedBy = "modelPdi", cascade = CascadeType.ALL)
     private List<PDI> pdiList;
 
-    @OneToMany(mappedBy = "modelPdi", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "modelPdi", cascade = CascadeType.REMOVE)
     private List<Parameter> parameters;
 
     @Enumerated(EnumType.ORDINAL)
