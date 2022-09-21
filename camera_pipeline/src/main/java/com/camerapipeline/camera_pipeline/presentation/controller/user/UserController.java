@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.presentation.dto.user.ForgotPasswordDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResponse;
 import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
-import com.camerapipeline.camera_pipeline.provider.services.mail.EmailService;
 import com.camerapipeline.camera_pipeline.provider.services.user.UserService;
 
 
@@ -36,9 +36,6 @@ import com.camerapipeline.camera_pipeline.provider.services.user.UserService;
 public class UserController {
     @Autowired
     private UserService userService;
-    
-    @Autowired
-    private EmailService emailService;
 
     @PostMapping("/password")
     public ResponseEntity<UserResponse> changePassword(@RequestParam("oldpassword") String oldPassword, @RequestParam("newpassword") String newPassword, Principal principal) {
@@ -85,19 +82,14 @@ public class UserController {
      * Metodo temporario para testar o envio de email para recuperação de senha
      */
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody @Valid ForgotPasswordDTO recoveryEmail ) {
-        User user = userService.getByEmail(recoveryEmail.getEmail()); 
-        emailService.sendEmail(
-            emailService.preShapedEmail(
-                "recovery mail - "+user.getUsername(),
-                recoveryEmail.getEmail(), 
-                "Email de Recuperação de Senha",
-                // TODO Logica de troca de senha aqui! 
-                user.getPassword(),
-                user.getUsername()
-            )
-        );
-        
+    public ResponseEntity<?> forgotPassword(
+        @RequestBody @Valid ForgotPasswordDTO recoveryEmail, 
+        HttpServletRequest request
+    ) {
+        String siteURL = request.getRequestURL().toString();
+        siteURL = siteURL.replace(request.getServletPath(), "");
+
+        userService.forgotPassword(recoveryEmail.getEmail(), siteURL); 
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

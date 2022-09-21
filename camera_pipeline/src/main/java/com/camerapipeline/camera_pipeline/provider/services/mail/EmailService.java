@@ -32,8 +32,6 @@ public class EmailService {
 
     public EmailModel sendEmail(EmailModel emailModel) {
         emailModel.setSendDataEmail(LocalDateTime.now());
-        
-        String content = convertEmail(emailModel, "");
         try {
         	 MimeMessage message = emailSender.createMimeMessage();
 
@@ -42,7 +40,7 @@ public class EmailService {
              helper.setFrom(emailModel.getEmailFrom());
              helper.setTo(emailModel.getEmailTo());
              helper.setSubject(emailModel.getSubject());
-             helper.setText(content, true);
+             helper.setText(emailModel.getText(), true);
 
             emailSender.send(message);
 
@@ -92,16 +90,5 @@ public class EmailService {
 		
 		return email;
 	}
-    
-    private String convertEmail(EmailModel email, String link) {
- 
-    	return "<H1> Camera_Pipeline <H1>"
-            + "<p>You have requested to reset your password.</p>"
-            + "<p>Click the link below to change your password:</p>"
-            + "<p><a href=\"" + link + "\">Change my password</a></p>"
-            + "<br>"
-            + "<p>Ignore this email if you do remember your password, "
-            + "or you have not made the request.</p>";
-    }
 
 }

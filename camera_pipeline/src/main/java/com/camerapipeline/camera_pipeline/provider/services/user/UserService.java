@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.services.user;
 
+import com.camerapipeline.camera_pipeline.core.security.config.JwtConfig;
+import com.camerapipeline.camera_pipeline.core.security.config.TokenProvider;
 import com.camerapipeline.camera_pipeline.model.entities.user.Role;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
@@ -7,6 +9,7 @@ import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.services.mail.EmailService;
 import com.camerapipeline.camera_pipeline.provider.specification.user.UserSpecification;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +17,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -29,6 +36,8 @@ public class UserService extends ServiceAbstract<User, Integer> {
     private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailService emailService;
     
     public UserService(UserRepository repository) {
         super(repository);
@@ -87,6 +96,55 @@ public class UserService extends ServiceAbstract<User, Integer> {
     	}
     	
     	throw new CustomEntityNotFoundException("User", email);
+    }
+
+    public void forgotPassword(String email, String link) {
+        User user = getByEmail(email); 
+        emailService.sendEmail(
+            emailService.preShapedEmail(
+                "recovery mail - " + user.getUsername(),
+                email, 
+                "Email de Recuperação de Senha",
+                recoveryEmailContent(addTokenOnLink(user, link)),
+                user.getUsername()
+            )
+        );
+    }
+
+    private String addTokenOnLink(User user, String link) {
+        JwtConfig jwtConfig = new JwtConfig(
+            null, 
+            1080
+        );
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(
+            "AUTHORITIES_KEY", 
+            user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","))
+        );
+        claims.put("PASSWORD_KEY", user.getPassword());
+
+        TokenProvider provider = new TokenProvider(jwtConfig);
+
+        String token = provider.generateToken(user.getEmail(), claims);
+        StringBuffer linkWithToken = new StringBuffer(link);
+        linkWithToken.append("?token=");
+        linkWithToken.append(token);
+
+        return linkWithToken.toString();
+    }
+
+    private String recoveryEmailContent(String link) {
+    	return "<H1> Camera_Pipeline <H1>"
+            + "<H3>Você solicitou a redefinição de sua senha.</H3>"
+            + "<H3>Clique no link abaixo para alterar sua senha:</H3>"
+            + "<H3><a href=\"" + link + "\">Mudar minha senha</a></H3>"
+            + "<br>"
+            + "<H3>Ignore este e-mail se você se lembrar de sua senha.</H3>"
+            + "<H3>Se não foi você que solicitou a recuperação de senha ignore"
+            + " este email e não compartilhe esse link com ninguém!</H3>";
     }
 
     @Override
