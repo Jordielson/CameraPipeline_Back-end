@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.model.email;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -9,10 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.mail.javamail.JavaMailSender;
-
-import com.camerapipeline.camera_pipeline.enums.StatusEmail;
-import com.camerapipeline.camera_pipeline.services.email.EmailService;
+import com.camerapipeline.camera_pipeline.model.enums.StatusEmail;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +26,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "mail")
-public class EmailModel {
+public class EmailModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

@@ -1,0 +1,38 @@
+package com.camerapipeline.camera_pipeline.provider.specification.pdi;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.data.jpa.domain.Specification;
+
+import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
+
+public class ValueParameterSpecification implements Specification<ValueParameter> {
+
+    private final ValueParameter criteria;
+
+    public ValueParameterSpecification(ValueParameter criteria) {
+        this.criteria=criteria;
+    }
+
+    @Override
+    public Predicate toPredicate(Root<ValueParameter> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        final List<Predicate> predicates = new ArrayList<Predicate>();
+
+        Join<ValueParameter, PDI> pdi = root.join("pdi");
+        Join<PDI, ModelPDI> modelPdi = pdi.join("modelPdi");
+
+        if(criteria.getUser()!=null) {
+            predicates.add(cb.equal(modelPdi.get("user"), criteria.getUser()));
+        }
+        return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+    }
+}

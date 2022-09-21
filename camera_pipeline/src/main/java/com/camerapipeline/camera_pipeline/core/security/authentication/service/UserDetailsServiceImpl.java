@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import com.camerapipeline.camera_pipeline.repository.user.UserRepository;
+import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
 
 
 @Service(value = "userManagementService")
@@ -20,10 +20,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) {
-        Optional<com.camerapipeline.camera_pipeline.model.user.User> userO =  userRepository.findByEmail(s);
+        Optional<com.camerapipeline.camera_pipeline.model.entities.user.User> userO =  userRepository.findByEmail(s);
         if(!userO.isPresent()) {
             throw new UsernameNotFoundException("User not found");        }
-        com.camerapipeline.camera_pipeline.model.user.User u = userO.get();
+        com.camerapipeline.camera_pipeline.model.entities.user.User u = userO.get();
         return new User(u.getUsername(), u.getPassword(), true, true, true, true, u.getAuthorities());
     }
 }
