@@ -30,7 +30,7 @@ public class PDI implements ModelAbstract<Integer>{
     @ManyToOne
     private Pipeline pipeline;
 
-    @OneToMany(mappedBy = "pdi", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pdi", cascade = CascadeType.REMOVE)
     private List<ValueParameter> valueParameters;
 
     public PDI() {

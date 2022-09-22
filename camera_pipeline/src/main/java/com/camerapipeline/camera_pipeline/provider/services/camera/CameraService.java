@@ -61,6 +61,17 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
             ? false : true;
     }
 
+    public Camera setActive(Integer cameraId, Boolean active, Principal principal) {
+        Camera camera = getById(cameraId);
+        camera.setIsActive(active);
+        return update(cameraId, camera, principal);
+    }
+
+    public boolean checkIfItUsed(Integer id, Principal principal) {
+        Camera camera = getById(id, principal);
+        return !camera.getPipelineList().isEmpty();
+    }
+
     @Override
     protected EntityNotFoundException throwNotFoundEntity(Integer id) {
         return new CustomEntityNotFoundException("Camera", id.toString());
