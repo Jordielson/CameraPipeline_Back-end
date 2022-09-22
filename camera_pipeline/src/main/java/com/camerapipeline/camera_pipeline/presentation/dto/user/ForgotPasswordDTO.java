@@ -12,4 +12,6 @@ import lombok.ToString;
 public class ForgotPasswordDTO {
     @NotBlank
 	public String email;
+    @NotBlank
+    public String redirect;
 }

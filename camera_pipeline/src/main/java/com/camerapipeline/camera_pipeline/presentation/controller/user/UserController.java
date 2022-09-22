@@ -5,7 +5,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +82,12 @@ public class UserController {
      */
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(
-        @RequestBody @Valid ForgotPasswordDTO recoveryEmail, 
-        HttpServletRequest request
+        @RequestBody @Valid ForgotPasswordDTO recoveryEmail
     ) {
-        String siteURL = request.getRequestURL().toString();
-        siteURL = siteURL.replace(request.getServletPath(), "");
-
-        userService.forgotPassword(recoveryEmail.getEmail(), siteURL); 
+        userService.forgotPassword(
+            recoveryEmail.getEmail(),
+            recoveryEmail.getRedirect()
+        ); 
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -104,5 +102,20 @@ public class UserController {
             roles
         );
         return response;
+    }
+
+    @PostMapping("/password-reset")
+    public ResponseEntity<UserResponse> resetPassword(
+        @RequestParam("newpassword") String newPassword, 
+        @RequestParam("token") String token
+    ) {
+        return ResponseEntity.ok(
+            parseUserResponse(
+                this.userService.passwordReset(
+                    token, 
+                    newPassword
+                )
+            )
+        );
     }
 }

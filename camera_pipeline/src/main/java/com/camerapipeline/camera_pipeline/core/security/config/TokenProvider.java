@@ -38,6 +38,10 @@ public class TokenProvider {
 
     public Optional<String> getUsernameFromToken(String token) {
         return Optional.ofNullable(getAllClaimsFromToken(token).getSubject());
+    } 
+    
+    public Optional<String> getClaimFromToken(String token, String claim) {
+        return Optional.ofNullable(getAllClaimsFromToken(token).get(claim, String.class));
     }
 
     public Optional<Date> getExpirationDateFromToken(String token) {
@@ -52,7 +56,7 @@ public class TokenProvider {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return getExpirationDateFromToken(token)
                 .map(expiration -> expiration.before(new Date()))
                 .orElse(true);

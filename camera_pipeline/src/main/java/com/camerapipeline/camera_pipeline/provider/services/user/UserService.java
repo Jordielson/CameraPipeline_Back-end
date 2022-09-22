@@ -1,5 +1,24 @@
 package com.camerapipeline.camera_pipeline.provider.services.user;
 
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.camerapipeline.camera_pipeline.core.security.config.JwtConfig;
 import com.camerapipeline.camera_pipeline.core.security.config.TokenProvider;
 import com.camerapipeline.camera_pipeline.model.entities.user.Role;
@@ -12,24 +31,6 @@ import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.services.mail.EmailService;
 import com.camerapipeline.camera_pipeline.provider.specification.user.UserSpecification;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityNotFoundException;
-
 @Service
 public class UserService extends ServiceAbstract<User, Integer> {
     @Autowired
@@ -38,6 +39,8 @@ public class UserService extends ServiceAbstract<User, Integer> {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private JwtConfig jwtConfig;
     
     public UserService(UserRepository repository) {
         super(repository);
@@ -112,11 +115,6 @@ public class UserService extends ServiceAbstract<User, Integer> {
     }
 
     private String addTokenOnLink(User user, String link) {
-        JwtConfig jwtConfig = new JwtConfig(
-            null, 
-            1080
-        );
-
         Map<String, Object> claims = new HashMap<>();
         claims.put(
             "AUTHORITIES_KEY", 
@@ -126,14 +124,33 @@ public class UserService extends ServiceAbstract<User, Integer> {
         );
         claims.put("PASSWORD_KEY", user.getPassword());
 
+        jwtConfig.setTokenValidityInSeconds(10800);
         TokenProvider provider = new TokenProvider(jwtConfig);
-
         String token = provider.generateToken(user.getEmail(), claims);
-        StringBuffer linkWithToken = new StringBuffer(link);
-        linkWithToken.append("?token=");
-        linkWithToken.append(token);
 
-        return linkWithToken.toString();
+        return String.format("%s/%s", link, token);
+    }
+
+    public User passwordReset(String token, String password) {
+        TokenProvider provider = new TokenProvider(jwtConfig);
+        Optional<String> username = provider.getUsernameFromToken(token);
+
+        if (provider.isTokenExpired(token)) {
+            throw new CredentialsExpiredException("Expired token");
+        }else if (username.isPresent()) {
+            return ((UserRepository) super.repository)
+                .findByEmail(username.get()).map(existing -> {
+                    Optional<String> oldPassword = provider.getClaimFromToken(token, "PASSWORD_KEY");
+                    if (oldPassword.isPresent() && existing.getPassword().equals(oldPassword.get())) {
+                        existing.setPassword(passwordEncoder.encode(password));
+                        return this.repository.save(existing);
+                    } else {
+                        throw new CredentialsExpiredException("User not found");
+                    }
+                }).orElseThrow(SecurityException::new);
+        } else {
+            throw new CredentialsExpiredException("Username is not found");
+        }
     }
 
     private String recoveryEmailContent(String link) {
