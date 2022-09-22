@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,11 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/password")
-    public ResponseEntity<UserResponse> changePassword(@RequestParam("oldpassword") String oldPassword, @RequestParam("newpassword") String newPassword, Principal principal) {
+    public ResponseEntity<UserResponse> changePassword(
+        @RequestParam("oldpassword") @Size(min = 6) String oldPassword, 
+        @RequestParam("newpassword") @Size(min = 6) String newPassword, 
+        Principal principal
+    ) {
         return ResponseEntity.ok(
             parseUserResponse(
                 this.userService.changePassword(
@@ -106,7 +111,7 @@ public class UserController {
 
     @PostMapping("/password-reset")
     public ResponseEntity<UserResponse> resetPassword(
-        @RequestParam("newpassword") String newPassword, 
+        @RequestParam("newpassword") @Size(min = 6) String newPassword, 
         @RequestParam("token") String token
     ) {
         return ResponseEntity.ok(

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,6 +27,7 @@ import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionCode;
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -76,13 +78,13 @@ public class ApplicationExceptionHandler {
     public ResponseEntity<Object> handleNotFoundException(EntityNotFoundException ex) {
         final ExceptionMessage exceptionMessage 
             = new ExceptionMessage(
-                HttpStatus.INTERNAL_SERVER_ERROR, 
-                "ERR_INTERNAL_SERVER_ERROR", 
+                HttpStatus.NOT_FOUND, 
+                "ERR_NOT_FOUND", 
                 ex.getLocalizedMessage(), 
                 ex.getMessage()
                 );
 
-        log.warn("ERR_INTERNAL_SERVER_ERROR - [{}].", ex.getMessage(), ex);
+        log.warn("ERR_NOT_FOUND - [{}].", ex.getMessage(), ex);
 
         return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
@@ -108,6 +110,22 @@ public class ApplicationExceptionHandler {
     public ResponseEntity<Object> handleBadCredentials(final BadCredentialsException ex) {
         final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.FORBIDDEN, "ERR_BAD_CREDENTIALS", ex.getLocalizedMessage(), "Bad credentials");
         log.warn("ERR_BAD_CREDENTIALS_VIOLATION - [{}].", ex.getMessage(), ex);
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
+    }
+
+    @ExceptionHandler(CredentialsExpiredException.class)
+    public ResponseEntity<Object> handleCredentialsExpired(final CredentialsExpiredException ex) {
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.BAD_REQUEST, "ERR_BAD_REQUEST", ex.getLocalizedMessage(), "BAD_REQUEST");
+        log.warn("ERR_BAD_REQUEST_VIOLATION - [{}].", ex.getMessage(), ex);
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleExpiredJwt(final SignatureException ex) {
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.BAD_REQUEST, "ERR_BAD_REQUEST", ex.getLocalizedMessage(), "BAD_REQUEST");
+        log.warn("ERR_BAD_REQUEST_VIOLATION - [{}].", ex.getMessage(), ex);
 
         return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
