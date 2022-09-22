@@ -15,6 +15,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -110,6 +111,13 @@ public class Pipeline implements ModelAbstract<Integer> {
     public Pipeline cameraList(List<Camera> cameraList) {
         setCameraList(cameraList);
         return this;
+    }
+
+    @PreRemove
+    private void removeAll() {
+        for (Camera c : cameraList) {
+            c.getPipelineList().remove(this);
+        }
     }
 
     @Override
