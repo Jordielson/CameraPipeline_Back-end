@@ -29,6 +29,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
     }
 
     public M create(M model, Principal principal) {
+        model.setUser(getUserByPrincipal(principal));
         return create(model);
     }
 

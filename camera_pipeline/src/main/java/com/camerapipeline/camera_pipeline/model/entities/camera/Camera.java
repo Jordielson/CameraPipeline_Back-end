@@ -40,7 +40,7 @@ public class Camera implements ModelAbstract<Integer>{
 
     private User user;
     @NotBlank
-    @Column(unique=true, length = 60)
+    @Column(length = 60)
     private String name;
     @NotBlank
     private String URL;
@@ -55,7 +55,7 @@ public class Camera implements ModelAbstract<Integer>{
 
     private Integer fpsLimiter;
 
-    @ManyToMany(mappedBy = "cameraList", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "cameraList", cascade = CascadeType.REMOVE)
     private List<Pipeline> pipelineList;
 
     @Override

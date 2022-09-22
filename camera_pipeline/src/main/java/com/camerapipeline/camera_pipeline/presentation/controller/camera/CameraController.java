@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,4 +89,19 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
 		
 		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
 	}
+
+    @PatchMapping("/{id}/state")
+	public ResponseEntity<?> setStatus(Principal principal,
+        @PathVariable("id") Integer id,
+        @RequestParam(name="active", required=true) Boolean active) {
+        CameraDTO response = mapper.toDTO(
+            ((CameraService) service)
+                .setActive(id, active, principal)
+        );
+
+        return new ResponseEntity<>(
+            response,
+            HttpStatus.OK
+        );
+    }
 }
