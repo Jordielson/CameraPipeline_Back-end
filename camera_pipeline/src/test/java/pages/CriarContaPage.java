@@ -17,7 +17,7 @@ public class CriarContaPage {
 	@FindBy(xpath = "//*[@id=\"new-user\"]/div[2]/button[1]")
 	private WebElement botaoVoltar;
 	
-	@FindBy(xpath = "//*[@id=\"new-user\"]/div[2]/button[2]")
+	@FindBy(xpath = "//*[@id=\"new-user\"]/div[2]/div/button[2]")
 	private WebElement botaoCadastrar;
 	
 	public void inserirEmail(String value) {
