@@ -1,5 +1,4 @@
 package com.camerapipeline.camera_pipeline.provider.specification.pipeline;
-
 import java.util.ArrayList;
 import java.util.List;
 
