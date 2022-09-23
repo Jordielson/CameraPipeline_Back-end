@@ -11,7 +11,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +31,8 @@ public class AuthController {
 	@Autowired
 	private AuthService authService;
 
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login")
     public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
-        System.out.println("Login: " + loginRequest.getLogin());
-        System.out.println("Senha: " + loginRequest.getPassword());
         UserDTO userDetails = authService
         .authenticateUserAndGetToken(
             loginRequest.getLogin(), 
@@ -72,9 +69,9 @@ public class AuthController {
 		try {
 			session.invalidate();
 			
-			return ResponseEntity.ok("Logout concluído!");
+			return ResponseEntity.ok("Logout completed!");
 		} catch  (IllegalStateException exception) {
-			return ResponseEntity.badRequest().body("Você já está deslogado!");
+			return ResponseEntity.badRequest().body("There is no session!");
 		}
 	}
 }

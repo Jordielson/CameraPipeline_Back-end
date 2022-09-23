@@ -31,11 +31,10 @@ public class Parameter implements ModelAbstract<Integer>{
 
     
       
-    @Column(name="obrigatorio")
+    @Column(name="required")
     private boolean required;
 
-    
-    @Column(name="indice")
+    @Column(name="\"index\"")
     private Integer index;
 
     @ManyToOne

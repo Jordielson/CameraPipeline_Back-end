@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.services.pdi;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
+import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.ModelPDIRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.pdi.ModelPDISpecification;
 
@@ -69,15 +72,41 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
 
     @Override
     public ModelPDI delete(Integer id, Principal principal) {
-        ModelPDI modelPDI = getById(id);
-        for (Parameter param : modelPDI.getParameters()) {
-            paramService.delete(param.getId(), principal);
-        }
         return super.delete(id, principal);
     }
 
     @Override
     protected Specification<ModelPDI> getSpecification(ModelPDI search) {
         return new ModelPDISpecification(search);
+    }
+
+    public boolean checkValidName(String name, Integer id, Principal principal) {
+        User u = getUserByPrincipal(principal);
+        Optional<ModelPDI> modelPdiOptional 
+            = ((ModelPDIRepository) repository).findByName(name, u.getId());
+        return (modelPdiOptional.isPresent()
+            && modelPdiOptional.get().getId() != id) 
+            ? false : true;
+    }
+
+    public boolean checkValidUrl(String url, Integer id, Principal p) {
+        Optional<ModelPDI> modelPdiOptional 
+            = ((ModelPDIRepository) repository).findByURL(
+                url, 
+                getUserByPrincipal(p).getId()
+            );
+        return (modelPdiOptional.isPresent()
+            && modelPdiOptional.get().getId() != id) 
+            ? false : true;
+    }
+
+    public boolean checkIfItUsed(Integer id, Principal principal) {
+        ModelPDI modelPdi = getById(id, principal);
+        return !modelPdi.getPdiList().isEmpty();
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new CustomEntityNotFoundException("Model PDI", id.toString());
     }
 }

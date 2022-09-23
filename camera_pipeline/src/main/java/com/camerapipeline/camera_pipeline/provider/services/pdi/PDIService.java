@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.PDIRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.pdi.PDISpecification;
 
@@ -61,14 +62,16 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
 
     @Override
     public PDI delete(Integer id, Principal principal) {
-        for (ValueParameter value : getById(id).getValueParameters()) {
-            valueService.delete(value.getId(), principal);
-        }
         return super.delete(id, principal);
     }
 
     @Override
     protected Specification<PDI> getSpecification(PDI search) {
         return new PDISpecification(search);
+    }
+
+    @Override
+    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+        return new CustomEntityNotFoundException("PDI", id.toString());
     }
 }

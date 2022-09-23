@@ -1,6 +1,10 @@
-package com.camerapipeline.camera_pipeline.presentation.dto.pdi;
+package com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter;
 
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.parameter.ParameterDTO;
 
 import lombok.Data;
 
@@ -8,6 +12,7 @@ import lombok.Data;
 public class ValueParameterDTO {
     private int id;
     private String value;
+    @NotNull
     private ParameterDTO parameter;
 
     public ValueParameterDTO() {

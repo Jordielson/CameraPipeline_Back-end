@@ -59,12 +59,15 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DTO> update(@PathVariable("id") ID id, @Valid @RequestBody DTO dto, Principal principal) {
-        DTO response = mapper.toDTO(
-            service.update(
-                id,
-                mapper.fromDTO(dto), 
-                principal
+    public ResponseEntity<DTO> update(
+        @PathVariable("id") ID id, 
+        @Valid @RequestBody DTO dto, 
+        Principal principal) {
+            DTO response = mapper.toDTO(
+                service.update(
+                    id,
+                    mapper.fromDTO(dto), 
+                    principal
             )
         );
         return new ResponseEntity<DTO>(

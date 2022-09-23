@@ -3,6 +3,7 @@ package com.camerapipeline.camera_pipeline.model.entities.pdi;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class PDI implements ModelAbstract<Integer>{
     @ManyToOne
     private Pipeline pipeline;
 
-    @OneToMany(mappedBy = "pdi")
+    @OneToMany(mappedBy = "pdi", cascade = CascadeType.REMOVE)
     private List<ValueParameter> valueParameters;
 
     public PDI() {

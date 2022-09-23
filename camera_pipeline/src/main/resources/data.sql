@@ -18,13 +18,8 @@ INSERT INTO camera_pipeline.role_user
 VALUES(1, 'ROLE_USER')
 ON DUPLICATE KEY UPDATE role_id = role_id;
 
-INSERT INTO camera_pipeline.group_pipeline
-(id, name, user_id)
-VALUES(1, 'Deteccao de objetos', 1)
-ON DUPLICATE KEY UPDATE name = name;
-
 INSERT INTO camera_pipeline.pipeline
-(id, creation_date, description, is_active, last_change, name, group_pipeline_id)
+(id, creation_date, description, is_active, last_change, name, user_id)
 VALUES(1, '2022-06-26 14:30:30', 
     'Servico que reduz o tamanho da imagem para um tamanho especifico determinado pelo usuario', 
     0, '2022-06-26 14:30:30', 'Reduzir o tamanho da imagem', 1)
@@ -51,7 +46,7 @@ VALUES(1, 1, 1)
 ON DUPLICATE KEY UPDATE id = id;
 
 INSERT INTO camera_pipeline.`parameter`
-(id, indice, name, obrigatorio, `type`, model_pdi_id)
+(id, `index`, name, `required`, `type`, model_pdi_id)
 VALUES(1, 0,'Tamanho da imagem',1,0, 1)
 ON DUPLICATE KEY UPDATE id = id;
 

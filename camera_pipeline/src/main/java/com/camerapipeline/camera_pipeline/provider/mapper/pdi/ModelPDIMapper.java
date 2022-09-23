@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
-import com.camerapipeline.camera_pipeline.presentation.dto.pdi.ModelPdiDTO;
-import com.camerapipeline.camera_pipeline.presentation.dto.pdi.ParameterDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.modelpdi.ModelPdiDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.parameter.ParameterDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 
 @Component
