@@ -88,7 +88,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
     }
     
     /**
-     * TODO Metodo para recuperar usuario por email
+     * Metodo para recuperar usuario por email
      * @return
      */
     public User getByEmail(String email) {

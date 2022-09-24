@@ -64,7 +64,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserResquest u) {
         User user = this.userService.create(u);
-        URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/users/{id}").buildAndExpand(user.getId()).toUri();
+        URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(parseUserResponse(user));
     }
 
@@ -82,7 +82,6 @@ public class UserController {
     }
     
     /**
-     * TODO Recuperar Senha
      * Metodo temporario para testar o envio de email para recuperação de senha
      */
     @PostMapping("/forgot-password")

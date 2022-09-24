@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.presentation.controller;
 
+import java.net.URI;
 import java.security.Principal;
 
 import javax.validation.Valid;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
@@ -49,13 +52,14 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
     
     @PostMapping("/register")
     public ResponseEntity<DTO> add(@Valid @RequestBody DTO dto, Principal principal) {
-        DTO response = mapper.toDTO(
-            service.create(
-                mapper.fromDTO(dto), 
-                principal
-            )
+        M model = service.create(
+            mapper.fromDTO(dto), 
+            principal
         );
-        return new ResponseEntity<DTO>(response, HttpStatus.OK);
+        DTO response = mapper.toDTO(model);
+
+        URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(model.getId()).toUri();
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PutMapping("/{id}")
@@ -63,17 +67,15 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         @PathVariable("id") ID id, 
         @Valid @RequestBody DTO dto, 
         Principal principal) {
-            DTO response = mapper.toDTO(
-                service.update(
-                    id,
-                    mapper.fromDTO(dto), 
-                    principal
-            )
-        );
-        return new ResponseEntity<DTO>(
-            response,
-            HttpStatus.OK
-        );
+            M model = service.update(
+                id,
+                mapper.fromDTO(dto), 
+                principal
+            );
+            DTO response = mapper.toDTO(model);
+
+            URI selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+            return ResponseEntity.created(selfLink).body(response);
     }
 
     @DeleteMapping("/{id}")

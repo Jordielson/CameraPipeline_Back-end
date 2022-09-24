@@ -16,13 +16,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.camerapipeline.camera_pipeline.core.validation.ExtendedEmailValidator;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
@@ -39,7 +39,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
     private Integer id;
 
     @Column(unique=true)
-    @Email(message="invalid email")
+    @ExtendedEmailValidator
     private String email;
     @NotBlank
 	@Size(min = 6, message = "Password must be longer than 6 characters")
