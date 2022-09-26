@@ -1,31 +1,89 @@
 # language: pt
 #enconding: UTF-8
 
+# Erros email = campoemail|formatocampoemail
+#|camposenha|campoconfirmarsenha|emailexistente|conexao|outro
+
 @CadastroUser
 Funcionalidade: Deve validar o cadastro de um usuario
 	Como usuario não cadastrado
 	Eu quero me cadastrar com email e senha
 	Para ter acesso a plataforma 
 	
-#Cenário: Cadastro de um usuario com sucesso
-#	Dado que eu passe o email "userteste2@user.com" 
-#	E passe a senha "senha2"
-#	E passe confirme a senha "senha2"
-#	Quando cadastrar 
-#	Então a conta de usuario deve ser criada
-#	Então usuario deve estar no banco
-
-#Cenário: usuario não informou o email
-#	Dado que eu não passe o email
-#	E passe a senha "senha2"
-#	E passe confirme a senha "senha2"
-#	Quando cadastrar
-#	Então sistema aponta erro "campoemail"
 	
-#Cenário: Cadastro de um usuario com sucesso
-#	Dado que eu não passe o email "userteste2@user.com" 
-#	E passe a senha "senha2"
-#	E passe confirme a senha "senha2"
-#	Quando cadastrar 
-#	Então sistema aponta erro campoemail
-#	Então usuario não deve estar no banco
+Cenário: funcionalidade dos botões
+	Quando clicar no botão voltar
+	Então devo estar na pagina Login
+	Quando clicar no botão Cadastrar
+	Então devo estar na pagina CadastroUser
+	Quando clicar no botão Guia
+	Então devo estar na pagina Guia
+	Quando clicar no botão CameraPipeline
+	Então devo estar na pagina Login
+	
+	
+Esquema do Cenário: Deve validar email para cadastro
+	Dado que eu<condicao> passe o email <email>
+	Quando cadastrar
+	Então sistema aponta erro <erro>
+
+Exemplos:
+	| condicao | 					email				 	 | 				 erro 			  |
+	|  " não"	 |												 |			campoemail			|
+	| 				 |			user@gmail.com		 |			camposenha			|
+	| 	 			 |		user.user@gmail.com	 |			camposenha			|
+	| 	 			 |	user.user@gmail.com.br |			camposenha			|
+	| 	 			 |user.user@gmail.com.br.br|			camposenha			|
+	| 	 			 |		user@user@gmail.com	 |	formatocampoemail		|
+	| 	 			 |		user#user@gmail.com	 |	formatocampoemail		|
+	| 	 			 |		user.user@gmail.		 |	formatocampoemail		|
+	| 	 			 |		user.user@gmailcom	 |	formatocampoemail		|
+	| 	 			 |		user.user@123456		 |	formatocampoemail		|
+	| 	 			 |		user.user@12345.12	 |	formatocampoemail		|
+	| 	 			 |			 @gmail.com		     |	formatocampoemail		|
+	
+	
+Cenário: usuario não confirmou a senha
+	Dado que eu passe o email userteste2@user.com
+	E passe a senha "senha2"
+	E não passe confirme a senha
+	Quando cadastrar 
+	Então sistema aponta erro campoconfirmarsenha	
+	
+Esquema do Cenário: usuario digita senhas diferentes
+	Dado que eu passe o email userteste2@user.com
+	E passe a senha <senha>
+	E passe confirme a senha <confirmsenha>
+	Quando cadastrar
+	Então sistema aponta erro campoconfirmarsenha
+	
+	Exemplos:
+	|    senha  		  |   		confirmsenha    	| 
+	| 	"senha123"		| 			"SENHA123"				|
+	| 	"senha123"		| 			"Senha123"				|
+	|		"123456"			|				"1234567"					|
+	|		"senha10"			|				"senha(5+5)"			|
+	|		"senha10"			|				"senha{5+5}"			|
+	
+	
+Cenário: Cadastro de um usuario com sucesso
+	Dado que eu passe o email userteste2@user.com
+	E passe a senha "senha2"
+	E passe confirme a senha "senha2"
+	Quando cadastrar 
+	Então a conta de usuario deve ser criada
+	Então usuario deve estar no banco
+ Então remover usuario
+
+	
+Cenário: Email informado já cadastrado
+	Dado que eu passe o email userteste2@user.com
+	E passe a senha "senha2"
+	E passe confirme a senha "senha2"
+	E que o email já está cadastrado
+	Quando cadastrar 
+	Então sistema aponta erro emailexistente
+	Então usuario deve estar no banco
+	Então remover usuario
+
+

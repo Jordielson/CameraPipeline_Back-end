@@ -14,7 +14,7 @@ public class CriarContaPage {
 	@FindBy(xpath = "//*[@id=\"new-user\"]/div[1]/input[3]")
 	private WebElement campoConfirmarSenha;
 	
-	@FindBy(xpath = "//*[@id=\"new-user\"]/div[2]/button[1]")
+	@FindBy(xpath = "//*[@id=\"new-user\"]/div[2]/div/button[1]")
 	private WebElement botaoVoltar;
 	
 	@FindBy(xpath = "//*[@id=\"new-user\"]/div[2]/div/button[2]")

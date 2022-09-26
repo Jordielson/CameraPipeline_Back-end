@@ -22,7 +22,7 @@ public class Hooks {
 	
 	@After
 	public void tearDown() {
-		esperar(2);
+		esperar(1);
 		driver.close();
 	}
 }
