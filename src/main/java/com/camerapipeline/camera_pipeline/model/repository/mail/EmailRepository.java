@@ -10,7 +10,7 @@ import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
 
 public interface EmailRepository extends RepositoryAbstract<EmailModel, Long> {
 	
-	@Query(value = "select * from tb_email email where email.status_email = :status_email", nativeQuery = true)
+	@Query(value = "SELECT e FROM EmailModel e WHERE e.statusEmail = :status_email")
 	public ArrayList<EmailModel> findByStatusEmail(@Param("status_email") int statusEmail);
 
 }

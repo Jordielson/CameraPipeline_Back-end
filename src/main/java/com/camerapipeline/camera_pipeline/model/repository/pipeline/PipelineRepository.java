@@ -11,6 +11,6 @@ import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
 @Repository
 public interface PipelineRepository extends RepositoryAbstract<Pipeline, Integer>  {
     @Override
-    @Query(value = "SELECT * FROM pipeline p WHERE user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT p FROM Pipeline p WHERE p.user.id = ?1")
     Page<Pipeline> findAll(Pageable pageable, Integer userId);
 }

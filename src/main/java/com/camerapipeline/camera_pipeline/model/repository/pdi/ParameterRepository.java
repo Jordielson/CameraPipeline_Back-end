@@ -10,6 +10,7 @@ import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
 public interface ParameterRepository extends RepositoryAbstract<Parameter, Integer> {
     
     @Override
-    @Query(value = "SELECT * FROM parameter p JOIN model_pdi m ON m.id = p.model_pdi_id WHERE m.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT p, m FROM Parameter p, ModelPDI m "+
+        "WHERE m.id = p.modelPdi.id AND m.user.id = ?1")
     Page<Parameter> findAll(Pageable pageable, Integer userId);
 }

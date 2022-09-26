@@ -14,16 +14,16 @@ import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
 @Repository
 public interface ModelPDIRepository extends RepositoryAbstract<ModelPDI, Integer>  {
     
-    @Query(value = "SELECT p FROM model_pdi p WHERE p.name = :name AND p.user.id = :userId")
+    @Query(value = "SELECT p FROM ModelPDI p WHERE p.name = :name AND p.user.id = :userId")
     Optional<ModelPDI> findByName(@Param("name") String name, @Param("userId") Integer id);
 
-    @Query(value = "SELECT p FROM model_pdi p WHERE p.URL = :url AND p.user.id = :userId")
+    @Query(value = "SELECT p FROM ModelPDI p WHERE p.URL = :url AND p.user.id = :userId")
     Optional<ModelPDI> findByURL(@Param("url") String url, @Param("userId") Integer id);
 
     
     Optional<ModelPDI> findByName(@Param("name") String name);
 
     @Override
-    @Query(value = "SELECT * FROM model_pdi m WHERE m.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT m FROM ModelPDI m WHERE m.user.id = ?1")
     Page<ModelPDI> findAll(Pageable pageable, Integer userId);
 }

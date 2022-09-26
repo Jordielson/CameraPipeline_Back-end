@@ -15,7 +15,7 @@ import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
 public interface CameraRepository extends RepositoryAbstract<Camera, Integer> {
     
     @Override
-    @Query(value = "SELECT * FROM camera c WHERE c.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT c FROM Camera c WHERE c.user.id = ?1")
     Page<Camera> findAll(Pageable pageable, Integer userId);
 
     @Query(value = "SELECT c FROM Camera c WHERE c.name = :name AND c.user.id = :userId")

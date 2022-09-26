@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -33,6 +34,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @Entity
+@Table(name="users")
 public class User implements UserDetails, ModelAbstract<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
