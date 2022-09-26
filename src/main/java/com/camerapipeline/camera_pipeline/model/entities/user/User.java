@@ -30,10 +30,14 @@ import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @EqualsAndHashCode
 @Entity
+@Setter
+@Getter
 @Table(name="users")
 public class User implements UserDetails, ModelAbstract<Integer> {
     @Id
