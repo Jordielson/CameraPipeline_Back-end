@@ -40,11 +40,11 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
 
     public boolean checkValidName(String name, Integer id, Principal p) {
         Optional<Camera> camOptional 
-            = ((CameraRepository) repository).findByName(
+            = ((CameraRepository) repository).findByNameIgnoreCase(
                 name, 
                 getUserByPrincipal(p).getId()
             );
-            
+        System.out.println(name);
         return (camOptional.isPresent() 
             && camOptional.get().getId() != id) 
             ? false : true;
