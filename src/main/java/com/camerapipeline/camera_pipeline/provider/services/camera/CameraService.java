@@ -31,7 +31,7 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
     
     @Override
     public Camera update(Integer id, Camera model, Principal principal) {
-        validCamera(model, null, principal);
+        validCamera(model, id, principal);
         
         return super.update(id, model, principal);
     }
