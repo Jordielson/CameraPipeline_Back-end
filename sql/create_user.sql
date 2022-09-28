@@ -1,5 +1,5 @@
-CREATE USER IF NOT EXISTS 'cp_dev' IDENTIFIED BY 'cp_dev';
+CREATE USER cp_dev WITH PASSWORD 'cp_dev';
 
-CREATE DATABASE IF NOT EXISTS camera_pipeline;
+CREATE DATABASE camera_pipeline;
 
-GRANT ALL ON camera_pipeline.* TO 'cp_dev';
+GRANT ALL PRIVILEGES ON DATABASE camera_pipeline TO cp_dev;
