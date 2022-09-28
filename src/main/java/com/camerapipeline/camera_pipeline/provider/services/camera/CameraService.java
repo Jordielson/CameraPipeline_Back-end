@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.provider.services.camera;
 
 import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.repository.camera.CameraRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.camera.CameraSpecification;
@@ -22,14 +23,16 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
 
     @Override
     public Camera create(Camera model, Principal principal) {
-        model.setUser(super.getUserByPrincipal(principal));
+        validCamera(model, null, principal);
+
         model.setIsActive(true);
-        return super.create(model);
+        return super.create(model, principal);
     }
     
     @Override
     public Camera update(Integer id, Camera model, Principal principal) {
-        model.setUser(super.authService.loadUserByUsername(principal.getName()));
+        validCamera(model, null, principal);
+        
         return super.update(id, model, principal);
     }
 
@@ -38,13 +41,21 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
         return new CameraSpecification(search);
     }
 
+    private void validCamera(Camera model, Integer id, Principal principal) {
+        if (!checkValidName(model.getName(), id, principal)) {
+            throw new BusinessException(String.format("There is already a camera with the name %s", model.getName()));
+        }else if (!checkValidUrl(model.getURL(), id, principal)) {
+            throw new BusinessException(String.format("There is already a camera with the url %s", model.getURL()));
+        }
+    }
+
     public boolean checkValidName(String name, Integer id, Principal p) {
         Optional<Camera> camOptional 
             = ((CameraRepository) repository).findByNameIgnoreCase(
                 name, 
                 getUserByPrincipal(p).getId()
             );
-        System.out.println(name);
+            
         return (camOptional.isPresent() 
             && camOptional.get().getId() != id) 
             ? false : true;

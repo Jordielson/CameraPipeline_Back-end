@@ -15,7 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.camerapipeline.camera_pipeline.model.email.EmailModel;
+import com.camerapipeline.camera_pipeline.model.entities.email.EmailModel;
 import com.camerapipeline.camera_pipeline.model.enums.StatusEmail;
 import com.camerapipeline.camera_pipeline.model.repository.mail.EmailRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;

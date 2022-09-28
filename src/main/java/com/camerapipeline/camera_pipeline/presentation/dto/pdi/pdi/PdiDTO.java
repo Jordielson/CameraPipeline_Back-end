@@ -2,10 +2,9 @@ package com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.modelpdi.ModelPdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.ValueParameterDTO;
 
 import lombok.Data;
@@ -17,9 +16,8 @@ import lombok.ToString;
 @Data
 public class PdiDTO {
     private int id;
-    @NotBlank
-    @Size(max = 60)
-    private String name;
+    @NotNull
+    private ModelPdiDTO modelPdi;
     private List<ValueParameterDTO> valueParameters;
     @NotNull
     private Integer pipelineId;

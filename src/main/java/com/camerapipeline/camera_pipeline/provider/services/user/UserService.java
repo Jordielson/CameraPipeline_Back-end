@@ -26,6 +26,7 @@ import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
 import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
+import com.camerapipeline.camera_pipeline.provider.exception.user.SamePasswordException;
 import com.camerapipeline.camera_pipeline.provider.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.services.mail.EmailService;
@@ -52,6 +53,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
 
         if (authentication.isAuthenticated()) {
             return ((UserRepository) super.repository).findByEmail(principal.getName()).map(existing -> {
+                checkPasswordSameOld(newPassword, existing);
                 existing.setPassword(passwordEncoder.encode(newPassword));
                 return this.repository.save(existing);
             }).orElseThrow(SecurityException::new);
@@ -85,6 +87,12 @@ public class UserService extends ServiceAbstract<User, Integer> {
                     u.setPassword(existing.getPassword());
                     return super.repository.save(u);
                 }).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    private void checkPasswordSameOld(String newPassword, User user) {
+        if(passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new SamePasswordException("Password is the same as old password", user.getId());
+        }
     }
     
     /**
@@ -134,7 +142,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
     public User passwordReset(String token, String password) {
         TokenProvider provider = new TokenProvider(jwtConfig);
         Optional<String> username = provider.getUsernameFromToken(token);
-
+        
         if (provider.isTokenExpired(token)) {
             throw new CredentialsExpiredException("Expired token");
         }else if (username.isPresent()) {
@@ -142,6 +150,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
                 .findByEmail(username.get()).map(existing -> {
                     Optional<String> oldPassword = provider.getClaimFromToken(token, "PASSWORD_KEY");
                     if (oldPassword.isPresent() && existing.getPassword().equals(oldPassword.get())) {
+                        checkPasswordSameOld(password, existing);
                         existing.setPassword(passwordEncoder.encode(password));
                         return this.repository.save(existing);
                     } else {

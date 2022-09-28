@@ -1,12 +1,27 @@
 package com.camerapipeline.camera_pipeline.provider.exception;
 
-public class BusinessException extends RuntimeException {
+import lombok.Getter;
 
-	public BusinessException(String mensagem, Throwable cause) {
-		super(mensagem, cause);
+@Getter
+public class BusinessException extends RuntimeException {
+	private final String code;
+	private final String specificMessage;
+
+	public BusinessException(String message, Throwable cause) {
+		super(message, cause);
+		this.code = "ERR_INTERNAL_SERVER_ERROR";
+		this.specificMessage = message;
 	}
 	
-	public BusinessException(String mensagem) {
-		super(mensagem);
+	public BusinessException(String message) {
+		super(message);
+		this.code = "ERR_INTERNAL_SERVER_ERROR";
+		this.specificMessage = message;
+	}
+	
+	public BusinessException(String message, String code, String specificMessage) {
+		super(message);
+		this.code = code;
+		this.specificMessage = specificMessage;
 	}
 }

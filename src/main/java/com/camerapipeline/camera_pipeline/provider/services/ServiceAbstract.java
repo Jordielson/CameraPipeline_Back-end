@@ -64,6 +64,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
 
     public M update(ID id, M model, Principal principal) {
         User user = getUserByPrincipal(principal);
+        model.setUser(user);
         return repository.findById(id).map(existing -> {
             if(existing.getUser().equals(user)) {
                 model.setId(id);

@@ -13,6 +13,7 @@ import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.ModelPDIRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.specification.pdi.ModelPDISpecification;
@@ -28,7 +29,9 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
 
     @Override
     public ModelPDI create(ModelPDI model, Principal principal) {
-        model.setUser(super.authService.loadUserByUsername(principal.getName()));
+        validModelPDI(model, null, principal);
+
+        model.setUser(getUserByPrincipal(principal));
         ModelPDI modelPDI = super.create(model);
         for (Parameter param : model.getParameters()) {
             param.setModelPdi(modelPDI);
@@ -44,7 +47,9 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
     
     @Override
     public ModelPDI update(Integer id, ModelPDI model, Principal principal) {
-        model.setUser(super.authService.loadUserByUsername(principal.getName()));
+        validModelPDI(model, id, principal);
+
+        model.setUser(getUserByPrincipal(principal));
         
         ModelPDI oldModelPDI = this.repository.findById(id)
                 .map(existing -> existing
@@ -78,6 +83,14 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
     @Override
     protected Specification<ModelPDI> getSpecification(ModelPDI search) {
         return new ModelPDISpecification(search);
+    }
+
+    private void validModelPDI(ModelPDI model, Integer id, Principal principal) {
+        if (!checkValidName(model.getName(), id, principal)) {
+            throw new BusinessException(String.format("There is already a PDI model with the name %s", model.getName()));
+        }else if (!checkValidUrl(model.getURL(), id, principal)) {
+            throw new BusinessException(String.format("There is already a PDI model with the url %s", model.getURL()));
+        }
     }
 
     public boolean checkValidName(String name, Integer id, Principal principal) {

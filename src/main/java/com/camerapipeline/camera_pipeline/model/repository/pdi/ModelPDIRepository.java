@@ -17,7 +17,7 @@ public interface ModelPDIRepository extends RepositoryAbstract<ModelPDI, Integer
     @Query(value = "SELECT p FROM ModelPDI p WHERE LOWER(p.name) = LOWER(:name) AND p.user.id = :userId")
     Optional<ModelPDI> findByName(@Param("name") String name, @Param("userId") Integer id);
 
-    @Query(value = "SELECT p FROM ModelPDI p WHERE LOWER(p.URL) = LOWER(:url) AND p.user.id = :userId")
+    @Query(value = "SELECT p FROM ModelPDI p WHERE p.URL = :url AND p.user.id = :userId")
     Optional<ModelPDI> findByURL(@Param("url") String url, @Param("userId") Integer id);
 
     

@@ -1,4 +1,4 @@
-package com.camerapipeline.camera_pipeline.model.email;
+package com.camerapipeline.camera_pipeline.model.entities.email;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
