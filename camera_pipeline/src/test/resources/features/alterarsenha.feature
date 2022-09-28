@@ -22,13 +22,13 @@ Esquema do Cenário: Validar campos da funcionalidade de alteração de senha
 	Exemplos:
 	|			senhaatual			| 		novasenha			|			confirmarnovasenha		|				  		erro								|
 	|											|										|														|camposenhaatual_Alterarsenha 		|
-	|				"      "			|				123456			|						123456					|senhaincorreta_Alterarsenha			|
-	|				12345					|				123456			|						123456					|senhaincorreta_Alterarsenha			|
+	|				"      "			|				123456			|						123456					|errotentativa_Alterarsenha				|
+	|				12345					|				123456			|						123456					|errotentativa_Alterarsenha				|
 	|				654321				|										|														|camponovasenha_Alterarsenha 			|
 	|				123456				|										|						123456					|camponovasenha_Alterarsenha			|
 	|				123456				|				123456			|														|campoconfirmarsenha_Alterarsenha	|
-	|				123456				|				123456			|						123456					|							outro								|
-	|				123456				|			 "      "			|					 "      "					|camponovasenha_Alterarsenha			|
+	|				123456				|				123456			|						123456					|errosenhaigual_Alterarsenha			|
+	|				123456				|			 "      "			|					 "      "					|espacosnovasenha_Alterarsenha		|
 	|				123456				|				123456			|						654321					|campoconfirmarsenha_Alterarsenha	|
 	|				123456				|				12345				|						12345 					|camponovasenha_Alterarsenha			|
 	|				123456				|				654321			|						654321 					|senhaalterada_Alterarsenha				|

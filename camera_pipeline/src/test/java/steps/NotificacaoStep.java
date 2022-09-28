@@ -82,6 +82,20 @@ public class NotificacaoStep extends MainSteps{
 			mensagemErro = "Senha não confirmada.";
 			break;
 			
+		case "espacosnovasenha_Alterarsenha":
+			mensagemErro = "Senha não pode conter caracteres vazios.";
+			break;
+
+		case "errotentativa_Alterarsenha":
+			mensagemErro = "Ocorreu um erro tentar alterar sua senha.";
+			break;
+		
+		case "errosenhaigual_Alterarsenha":
+			mensagemErro = "Sua nova senha não pode ser igual a anterior.";
+			break;
+			
+			
+			
 		/**
 		 * TODO Notificações Gerais
 		 */
