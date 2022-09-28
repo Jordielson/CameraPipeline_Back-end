@@ -8,15 +8,14 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = "src/test/resources/features/cadastro_user.feature",
+		features = "src/test/resources/features/alterarsenha.feature",
 		glue = {"steps", "config"},
-		tags = "@CadastroUser",
-		plugin = {"pretty", "html:target/report.html", "json:target/report.json"},
+		tags = "@Alterarsenha",
+		plugin = {"pretty", "html:target/report.html", "json:target/report.json", "html:target/cucumber/report"},
 		monochrome = true, 
 		snippets = SnippetType.CAMELCASE, 
 		dryRun = false
 		)
-public class RunnerCadastroUser {
+public class RunnerAlterarSenha {
 
-	
 }

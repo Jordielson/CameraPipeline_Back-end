@@ -16,7 +16,7 @@ public class Hooks {
 	}
 	
 	@Before(value = "@CadastroUser")
-	public void setUpLoginInicial() {
+	public void setUpCadastroUser() {
 		acessarSistema("http://localhost:3000/criar-conta");
 	}
 	
