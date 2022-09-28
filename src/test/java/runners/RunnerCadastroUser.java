@@ -11,11 +11,12 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 		features = "src/test/resources/features/cadastro_user.feature",
 		glue = {"steps", "config"},
 		tags = "@CadastroUser",
-		plugin = {"pretty", "html:target/report-html", "json:target/report.json"},
+		plugin = {"pretty", "html:target/report.html", "json:target/report.json"},
 		monochrome = true, 
 		snippets = SnippetType.CAMELCASE, 
 		dryRun = false
 		)
 public class RunnerCadastroUser {
 
+	
 }

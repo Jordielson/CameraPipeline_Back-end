@@ -16,13 +16,13 @@ public class Hooks {
 	}
 	
 	@Before(value = "@CadastroUser")
-	public void setUpLoginInicial() {
+	public void setUpCadastroUser() {
 		acessarSistema("http://localhost:3000/criar-conta");
 	}
 	
 	@After
 	public void tearDown() {
-		esperar(5);
+		esperar(1);
 		driver.close();
 	}
 }

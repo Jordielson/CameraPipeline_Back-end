@@ -2,30 +2,28 @@ package steps;
 
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 
+import static config.ConfigInit.*;
+
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import pages.LoginPage;
 
-public class LoginStep {
+public class LoginStep extends MainSteps{
 	
-	private User user;
-
-	@Dado("que existe um usuario cadastrado com o email {string}")
-	public void queExisteUmUsuarioCadastradoComOEmail(String string) {
-	    
+	
+	@Dado("^que informei email (.*) e senha (.*)$")
+	public void que_informei_email_e_senha(String email, String senha) {
+		this.email = email;
+		this.senha = senha;
+	    Na(LoginPage.class).inserirEmailLogin(email);
+	    Na(LoginPage.class).inserirSenhaLogin(senha);
+	}
+	
+	@Quando("^tentar logar$")
+	public void tentar_logar() { 
+		Na(LoginPage.class).clicarBotaoEntrar();
 	}
 
-	@Dado("a senha é {string}")
-	public void aSenhaÉ(String string) {
-	   
-	}
-	@Quando("logar com email {string} e senha {string}")
-	public void logarComEmailESenha(String string, String string2) {
-	    
-	}
-	@Então("o login deve ser realizado com sucesso")
-	public void oLoginDeveSerRealizadoComSucesso() {
-	    
-	}
 
 }
