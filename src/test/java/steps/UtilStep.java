@@ -8,8 +8,30 @@ import io.cucumber.java.pt.Então;
 
 public class UtilStep extends MainSteps{
 	
-	@Então("^devo estar na pagina (.*)$")
-	public void devoEstarNaPaginaLogin(String pagina) {
+	@Dado("^que estou na pagina (.*)$")
+	public void queEstouNaPaginaCadastroUsuario(String pagina) {
+		switch (pagina) {
+		case "CadastroUsuario":
+			driver.get("http://localhost:3000/criar-conta");
+			break;
+
+		case "Login":
+
+			driver.get("http://localhost:3000/login");
+			break;
+			
+		case "Guia":
+
+			driver.get("http://localhost:3000/guia");
+			break;
+			
+		default:
+			break;
+		}
+	}
+	
+	@Então("^devo estar na pagina( de)? (.*)$")
+	public void devoEstarNaPaginaLogin(String pass,String pagina) {
 		
 		esperar(1);
 		
@@ -33,6 +55,11 @@ public class UtilStep extends MainSteps{
 		case "Pipeline":
 
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/pipeline");
+			break;
+			
+		case "Recuperacaodesenha":
+
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/forgotten-password");
 			break;
 			
 		default:

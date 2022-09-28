@@ -8,7 +8,7 @@ public class Navbar {
 	@FindBy(xpath = "/html/body/div/div/nav/div/a")
 	private WebElement cameraPipeline;
 	
-	@FindBy(xpath = "//*[@id=\"root\"]/div/nav/span")
+	@FindBy(xpath = "//*[@class=\"navbar navbar-expand navbar-dark\"]/span")
 	private WebElement botaoGuia;
 	
 	public void clicarLogoCameraPipeline() {

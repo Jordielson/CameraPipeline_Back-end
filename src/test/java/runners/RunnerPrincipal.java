@@ -11,7 +11,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 		features = "src/test/resources/features",
 		glue = {"steps", "config"},
 		tags = "@Geral",
-		plugin = {"pretty", "html:target/index.html", "json:target/report.json", "html:target/cucumber/report"},
+		plugin = {"pretty", "html:target/principal/index.html", "json:target/report.json"},
 		monochrome = true, 
 		snippets = SnippetType.CAMELCASE, 
 		dryRun = false
