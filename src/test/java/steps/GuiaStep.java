@@ -8,6 +8,7 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.GuiaPage;
+import pages.SideBar;
 
 public class GuiaStep {
 
@@ -40,6 +41,11 @@ public class GuiaStep {
 		}
 		
 
+	}
+	
+	@Quando("clicar logado no botão Guia")
+	public void clicarLogadoNoBotãoGuia() {
+		Na(SideBar.class).clickAbaGuia();
 	}
 
 	@Então("^(\"não \")?vejo o conteudo (.*)$")
