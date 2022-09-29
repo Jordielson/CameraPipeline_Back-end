@@ -1,7 +1,7 @@
 # language: pt
 #enconding: UTF-8
 
-@Recuperarsenha
+@Recuperarsenha @Geral
 Funcionalidade: Deve validar a Recuperação de senha
 	Como um Usuario
 	Eu quero informar o email da conta

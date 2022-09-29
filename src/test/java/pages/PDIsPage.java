@@ -30,16 +30,36 @@ public class PDIsPage {
 	@FindBy(xpath = "//*[@class=\"Pdi_modal__2LEg0 modal-body\"]/div[@class=\"card\"]")
 	private List<WebElement> parametros; 
 	
+	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 listpdi list-group\"]/div[@class=\"list-item list-group-item list-group-item-light\"]")
+	private List<WebElement> PDIs;
+	
 	public int getTotalElements() {
 		return parametros.size();
 	}
 	
+	public void deletarTodosPDIs() {
+		for(WebElement e : PDIs) {
+			deletarPDIPorWebElement(e);
+		}
+	}
+	
+	private void deletarPDIPorWebElement(WebElement element) {
+		WebElement botao = element.findElement(By.xpath("//*[@class=\"buttons\"]/button[@title=\"EXCLUIR\"]"));
+		botao.click();
+	}
+	
 	public void inserirCampoNomeParametro(int posicao, String value) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement imput = temp.findElement(By.xpath("div/input"));
-		imput.clear();
-		imput.sendKeys(value);
+		WebElement input = temp.findElement(By.xpath("div/input"));
+		input.clear();
+		input.sendKeys(value);
 //		WebElement imput = temp.findElement(By.xpath("//*div[@class=\"card\" and position()="+posicao+"]/div/input[@id=\""+ (posicao-1) +"\"]"));
+	}
+	
+	public String getNomeParametro(int posicao) {
+		WebElement temp = parametros.get(posicao-1);
+		WebElement input = temp.findElement(By.xpath("div/input"));
+		return input.getAttribute("value");
 	}
 	
 	public void selecionarTipoParametro(int posicao,int tipo) {
@@ -49,17 +69,33 @@ public class PDIsPage {
 		
 	}
 	
-	public void ClicarObrigatoriedadeParametro(int posicao) {
+	public int getTipoParametro(int posicao) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement imput = temp.findElement(By.xpath("div/div/input"));
-		imput.click();
-		
+		Select select = new Select( temp.findElement(By.xpath("div/select")));
+		String opcao = select.getFirstSelectedOption().getAttribute("innerText");
+		return opcao.equals("STRING")? 0: opcao.equals("NUMBER")? 1 : null;
+	}
+	
+	
+	public void setObrigatoriedadeDoParametro(int posicao, boolean isObrigatorio) {
+		WebElement temp = parametros.get(posicao-1);
+		WebElement input = temp.findElement(By.xpath("div/div/input"));
+		boolean checkbox = input.isSelected(); 
+		if(checkbox != isObrigatorio) {
+			input.click();
+		}
+	}
+
+	public boolean getObrigatoriedadeDoParametro(int posicao) {
+		WebElement temp = parametros.get(posicao-1);
+		WebElement input = temp.findElement(By.xpath("div/div/input"));
+		return input.isSelected(); 
 	}
 	
 	public void ClicarDeletarParametro(int posicao) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement imput = temp.findElement(By.xpath("div/i"));
-		imput.click();
+		WebElement input = temp.findElement(By.xpath("div/i"));
+		input.click();
 		
 	}
 	
