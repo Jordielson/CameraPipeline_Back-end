@@ -109,17 +109,19 @@ public class UserService extends ServiceAbstract<User, Integer> {
     	throw new CustomEntityNotFoundException("User", email);
     }
 
-    public void forgotPassword(String email, String link) {
+    public String forgotPassword(String email, String link) {
         User user = getByEmail(email); 
+        String recoveryLink = addTokenOnLink(user, link);
         emailService.sendEmail(
             emailService.preShapedEmail(
                 "recovery mail - " + user.getUsername(),
                 email, 
                 "Email de Recuperação de Senha",
-                recoveryEmailContent(addTokenOnLink(user, link)),
+                recoveryEmailContent(recoveryLink),
                 user.getUsername()
             )
         );
+        return recoveryLink;
     }
 
     private String addTokenOnLink(User user, String link) {
