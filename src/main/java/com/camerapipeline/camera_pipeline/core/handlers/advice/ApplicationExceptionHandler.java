@@ -140,7 +140,7 @@ public class ApplicationExceptionHandler {
     
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> handleBusiness(final BusinessException ex) {
-        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, ex.getCode(), ex.getMessage(), ex.getSpecificMessage());
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(ex.getStatus(), ex.getCode(), ex.getMessage(), ex.getSpecificMessage());
         log.warn("[{}] - [{}].", ex.getCode(), ex.getMessage(), ex, ex.getCause());
 
         return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());

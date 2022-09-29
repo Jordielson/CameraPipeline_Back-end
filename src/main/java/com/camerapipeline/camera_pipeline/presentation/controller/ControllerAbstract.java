@@ -5,9 +5,11 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +20,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
     protected ServiceAbstract<M, ID> service;
@@ -31,15 +40,57 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         this.mapper = mapper;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<Page<DTO>> getAll(Pageable pageable, Principal principal) {
+    @Operation(summary = "Get all entities")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully get"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<DTO>> getAll(@ParameterObject Pageable pageable, Principal principal) {
         Page<DTO> list = mapper.toDTOPage(
             service.getAll(pageable, principal)
         );
         return new ResponseEntity<Page<DTO>>(list, HttpStatus.OK);
     }
     
-    @GetMapping("/{id}")
+    @Operation(summary = "Get a entity by its id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully found"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Entity not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DTO> get(@PathVariable("id") ID id, Principal principal) {
         DTO dto = mapper.toDTO(
             service.getById(
@@ -50,7 +101,28 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         return new ResponseEntity<DTO>(dto, HttpStatus.OK);
     }
     
-    @PostMapping("/register")
+    @Operation(summary = "Register a entity")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully save"),
+        @ApiResponse(responseCode = "400", description = "Invalid entity supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DTO> add(@Valid @RequestBody DTO dto, Principal principal) {
         M model = service.create(
             mapper.fromDTO(dto), 
@@ -62,7 +134,32 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         return ResponseEntity.created(uri).body(response);
     }
 
-    @PutMapping("/{id}")
+    @Operation(summary = "Update a entity")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully save"),
+        @ApiResponse(responseCode = "400", description = "Invalid entity or id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),  
+        @ApiResponse(responseCode = "404", description = "Entity with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DTO> update(
         @PathVariable("id") ID id, 
         @Valid @RequestBody DTO dto, 
@@ -78,6 +175,31 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
             return ResponseEntity.created(selfLink).body(response);
     }
 
+    @Operation(summary = "Delete a entity")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully removed"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),  
+        @ApiResponse(responseCode = "404", description = "Entity with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") ID id, Principal principal) {
         service.delete(
@@ -87,11 +209,32 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search")
-	public ResponseEntity<?> search(
+    @Operation(summary = "Search an entity by criteria")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully search"),
+        @ApiResponse(responseCode = "400", description = "Invalid criteria supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<DTO>> search(
 			Principal principal,
 			@RequestBody DTO search,
-			Pageable pageable) {
+			@ParameterObject Pageable pageable) {
         Page<DTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
