@@ -24,6 +24,7 @@ import com.camerapipeline.camera_pipeline.provider.mapper.pdi.ModelPDIMapper;
 import com.camerapipeline.camera_pipeline.provider.services.pdi.ModelPDIService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -64,6 +65,12 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<ModelPdiDTO>> search(
 			Principal principal,
+            @Parameter(
+                name = "name",
+                description = "Query to be search",
+                example = "redi",
+                required = true
+            )
 			@RequestParam String name,
 			@ParameterObject Pageable pageable) {
         ModelPdiDTO search = new ModelPdiDTO().name(name);
@@ -108,7 +115,19 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
     @GetMapping(value = "/verify-name", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> verifyName(
         Principal principal,
+        @Parameter(
+            name = "name",
+            description = "Name to be verified",
+            example = "PDI 05",
+            required = true
+        )
         @RequestParam String name,
+        @Parameter(
+            name = "id",
+            description = "ModelPDI ID to be verified",
+            example = "3",
+            required = false
+        )
         @RequestParam(required = false) Integer id
         ) {
 
@@ -151,7 +170,19 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
     @GetMapping(value = "/verify-url", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> verifyUrl(
         Principal principal,
+        @Parameter(
+            name = "url",
+            description = "URL to check if being verified",
+            example = "https://modelpdi-server",
+            required = true
+        )
         @RequestParam String url,
+        @Parameter(
+            name = "id",
+            description = "ModelPDI ID to check if being verified",
+            example = "25",
+            required = false
+        )
         @RequestParam(required = false) Integer id
         ) {
         Map<String, Boolean> response = new HashMap<>();
@@ -193,6 +224,12 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
     @GetMapping(value = "/verify-used", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> verifyUsed(
         Principal principal,
+        @Parameter(
+            name = "id",
+            description = "ModelPDI ID to check if being used",
+            example = "4",
+            required = true
+        )
         @RequestParam Integer id
         ) {
         Map<String, Boolean> response = new HashMap<>();

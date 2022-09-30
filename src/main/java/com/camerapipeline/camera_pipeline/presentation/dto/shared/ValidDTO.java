@@ -2,7 +2,7 @@ package com.camerapipeline.camera_pipeline.presentation.dto.shared;
 
 import javax.validation.constraints.NotNull;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,10 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 public class ValidDTO {
-    @ApiModelProperty(
-        value = "Valided",
+    @Schema(
+        title = "Valided",
         name = "valid",
-        dataType = "Boolean",
+        type = "Boolean",
         example = "false"
     )
     @NotNull

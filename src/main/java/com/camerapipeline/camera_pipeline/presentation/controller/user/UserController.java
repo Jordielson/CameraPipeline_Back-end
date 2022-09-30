@@ -32,6 +32,7 @@ import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
 import com.camerapipeline.camera_pipeline.provider.services.user.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -67,7 +68,19 @@ public class UserController {
     })
     @PostMapping("/password")
     public ResponseEntity<UserResponse> changePassword(
+        @Parameter(
+            name = "oldpassword",
+            description = "Current password",
+            example = "Sadm@klds.d25",
+            required = true
+        )
         @RequestParam("oldpassword") @Size(min = 6) String oldPassword, 
+        @Parameter(
+            name = "newpassword",
+            description = "New user password",
+            example = "Za_m@kLds.d58",
+            required = true
+        )
         @RequestParam("newpassword") @Size(min = 6) String newPassword, 
         Principal principal
     ) {
@@ -105,6 +118,12 @@ public class UserController {
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponse> getUser(
+        @Parameter(
+            name = "id",
+            description = "User ID to fetch",
+            example = "652",
+            required = true
+        )
         @PathVariable("id") Integer id,
         Principal principal
     ) {
@@ -135,7 +154,8 @@ public class UserController {
         ),
     })
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserResquest u) {
+    public ResponseEntity<UserResponse> createUser(
+        @RequestBody @Valid UserResquest u) {
         User user = this.userService.create(u);
         URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(parseUserResponse(user));
@@ -163,10 +183,22 @@ public class UserController {
         ),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable("id") Integer id, @Valid @RequestBody User u, Principal principal) {
-        User user = this.userService.update(id, u, principal);
+    public ResponseEntity<UserResponse> updateUser(
+        @Parameter(
+            name = "id",
+            description = "User ID to fetch",
+            example = "652",
+            required = true
+        )
+        @PathVariable("id") Integer id, 
+        @Valid @RequestBody UserResquest u, 
+        Principal principal) {
+        User user = new User();
+        user.setPassword(u.getPassword());
+        user.setEmail(u.getEmail());
+        User response = this.userService.update(id, user, principal);
         URI selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
-        return ResponseEntity.created(selfLink).body(parseUserResponse(user));
+        return ResponseEntity.created(selfLink).body(parseUserResponse(response));
     }
 
     @Operation(summary = "Delete a user")
@@ -191,7 +223,15 @@ public class UserController {
         ),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id, Principal principal) {
+    public ResponseEntity<?> deleteUser(
+        @Parameter(
+            name = "id",
+            description = "User ID to delete",
+            example = "652",
+            required = true
+        )
+        @PathVariable("id") Integer id, 
+        Principal principal) {
         this.userService.delete(id, principal);
         return ResponseEntity.noContent().build();
     }
@@ -264,7 +304,22 @@ public class UserController {
     })
     @PostMapping("/password-reset")
     public ResponseEntity<UserResponse> resetPassword(
+        @Parameter(
+            name = "newpassword",
+            description = "New user password",
+            example = "Za_m@kLds.d58",
+            required = true
+        )
         @RequestParam("newpassword") @Size(min = 6) String newPassword, 
+        @Parameter(
+            name = "token",
+            description = "Token needed for password recovery",
+            example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvQ"+
+            "GdtYWlsLmNvbSIsInNjb3BlcyI6IlJPTEVfVVNFUiIsImlhdC"+
+            "I6MTY2MjkyMzU0OSwiZXhwIjoxNjY0MTIzNTQ5fQ.NGoBjVtnURZ"+
+            "x_P0t-istEJEHXDetbRZbrVYPqnaIeOU",
+            required = true
+        )
         @RequestParam("token") String token
     ) {
         return ResponseEntity.ok(

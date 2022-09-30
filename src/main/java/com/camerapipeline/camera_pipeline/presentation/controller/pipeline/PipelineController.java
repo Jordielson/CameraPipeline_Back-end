@@ -8,6 +8,7 @@ import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMappe
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -62,6 +63,12 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
     })
     @PostMapping("/preview/{id}")
     public ResponseEntity<String> execute(
+        @Parameter(
+            name = "id",
+            description = "ID of the pipeline that will be processed and viewed",
+            example = "2",
+            required = true
+        )
         @PathVariable("id") Integer id, 
         Principal principal) {
         return new ResponseEntity<String>("rtsp://rtsp.stream/pattern", HttpStatus.OK);
@@ -90,18 +97,24 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<PipelineDTO>> search(
-			Principal principal,
-			@RequestParam String name,
-			@ParameterObject Pageable pageable) {
-        PipelineDTO search = new PipelineDTO().name(name);
-        Page<PipelineDTO> list = mapper.toDTOPage(
-            service.search(
-                pageable, 
-                principal, 
-                mapper.fromDTO(search)
-            )
-        );
-		
-		return new ResponseEntity<Page<PipelineDTO>>(list, HttpStatus.OK);
+        Principal principal,
+        @Parameter(
+            name = "name",
+            description = "Query to be search",
+            example = "pipe",
+            required = true
+        )
+        @RequestParam String name,
+        @ParameterObject Pageable pageable) {
+            PipelineDTO search = new PipelineDTO().name(name);
+            Page<PipelineDTO> list = mapper.toDTOPage(
+                service.search(
+                    pageable, 
+                    principal, 
+                    mapper.fromDTO(search)
+                )
+            );
+            
+            return new ResponseEntity<Page<PipelineDTO>>(list, HttpStatus.OK);
 	}
 }

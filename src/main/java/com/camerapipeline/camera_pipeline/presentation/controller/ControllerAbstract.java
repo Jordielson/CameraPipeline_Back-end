@@ -26,6 +26,7 @@ import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,7 +59,9 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         ),
     })
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<DTO>> getAll(@ParameterObject Pageable pageable, Principal principal) {
+    public ResponseEntity<Page<DTO>> getAll(
+        @ParameterObject Pageable pageable, 
+        Principal principal) {
         Page<DTO> list = mapper.toDTOPage(
             service.getAll(pageable, principal)
         );
@@ -91,7 +94,15 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         ),
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DTO> get(@PathVariable("id") ID id, Principal principal) {
+    public ResponseEntity<DTO> get(
+        @Parameter(
+            name = "id",
+            description = "Entity ID to fetch",
+            example = "253",
+            required = true
+        )
+        @PathVariable("id") ID id, 
+        Principal principal) {
         DTO dto = mapper.toDTO(
             service.getById(
                 id,
@@ -123,7 +134,9 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         ),
     })
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DTO> add(@Valid @RequestBody DTO dto, Principal principal) {
+    public ResponseEntity<DTO> add(
+        @Valid @RequestBody DTO dto, 
+        Principal principal) {
         M model = service.create(
             mapper.fromDTO(dto), 
             principal
@@ -161,6 +174,12 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DTO> update(
+        @Parameter(
+            name = "id",
+            description = "Entity ID to update",
+            example = "253",
+            required = true
+        )
         @PathVariable("id") ID id, 
         @Valid @RequestBody DTO dto, 
         Principal principal) {
@@ -201,7 +220,15 @@ public abstract class ControllerAbstract<M extends ModelAbstract<ID>, DTO, ID> {
         ),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") ID id, Principal principal) {
+    public ResponseEntity<?> delete(
+        @Parameter(
+            name = "id",
+            description = "Entity ID to delete",
+            example = "253",
+            required = true
+        )
+        @PathVariable("id") ID id, 
+        Principal principal) {
         service.delete(
             id,
             principal

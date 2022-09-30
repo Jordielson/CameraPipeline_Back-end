@@ -91,7 +91,7 @@ public class AuthController {
 			.toLocalDateTime();
 		response.setExpirationTime(dateTimeExp);
 		response.setToken(dto.getToken());
-		response.setIsValid(isValid);
+		response.setValid(isValid);
 		return ResponseEntity.ok(response);
 	}
 	

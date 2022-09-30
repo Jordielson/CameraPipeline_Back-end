@@ -76,16 +76,21 @@ public class UserService extends ServiceAbstract<User, Integer> {
     @Override
     public User create(User u) {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
+        u.setRoles(List.of(new Role("ROLE_USER")));
         return super.create(u);
     }
 
     @Override
     public User update(Integer id, User u, Principal principal) {
+        User user = getUserByPrincipal(principal);
         return super.repository.findById(id)
                 .map(existing -> {
-                    u.setId(id);
-                    u.setPassword(existing.getPassword());
-                    return super.repository.save(u);
+                    if(existing.equals(user)) {
+                        u.setId(id);
+                        return super.repository.save(u);
+                    } else {
+                        throw new UserNotFoundException(id);
+                    }
                 }).orElseThrow(() -> new UserNotFoundException(id));
     }
 

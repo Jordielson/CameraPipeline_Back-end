@@ -24,6 +24,7 @@ import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
 import com.camerapipeline.camera_pipeline.provider.services.camera.CameraService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -60,6 +61,12 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<CameraDTO>> search(
 			Principal principal,
+            @Parameter(
+                name = "name",
+                description = "Query to be search",
+                example = "cam",
+                required = true
+            )
 			@RequestParam String name,
 			@ParameterObject Pageable pageable) {
         CameraDTO search = new CameraDTO().name(name);
@@ -104,7 +111,19 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
     @GetMapping("/verify-name")
 	public ResponseEntity<ValidDTO> verifyName(
         Principal principal,
+        @Parameter(
+            name = "name",
+            description = "Name to be verified",
+            example = "Camera",
+            required = true
+        )
         @RequestParam String name,
+        @Parameter(
+            name = "id",
+            description = "Camera ID to be verified",
+            example = "13",
+            required = false
+        )
         @RequestParam(required = false) Integer id
         ) {
 
@@ -145,7 +164,19 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
     @GetMapping("/verify-url")
 	public ResponseEntity<ValidDTO> verifyUrl(
         Principal principal,
+        @Parameter(
+            name = "url",
+            description = "URL to check if being verified",
+            example = "rtsp://rtsp.stream/camera256",
+            required = true
+        )
         @RequestParam String url,
+        @Parameter(
+            name = "id",
+            description = "Camera ID to check if being verified",
+            example = "25",
+            required = false
+        )
         @RequestParam(required = false) Integer id
         ) {
         ValidDTO response = new ValidDTO(
@@ -185,6 +216,12 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
     @GetMapping("/verify-used")
 	public ResponseEntity<ValidDTO> verifyUsed(
         Principal principal,
+        @Parameter(
+            name = "id",
+            description = "Camera ID to check if being used",
+            example = "25",
+            required = true
+        )
         @RequestParam Integer id
         ) {
         ValidDTO response = new ValidDTO(
@@ -224,7 +261,19 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
     @PatchMapping("/{id}/state")
 	public ResponseEntity<CameraDTO> setStatus(
         Principal principal,
+        @Parameter(
+            name = "id",
+            description = "Camera ID to be enabled or disabled",
+            example = "25",
+            required = true
+        )
         @PathVariable("id") Integer id,
+        @Parameter(
+            name = "active",
+            description = "Camera status whether or not it is working",
+            example = "25",
+            required = true
+        )
         @RequestParam(name="active", required=true) Boolean active) {
         CameraDTO response = mapper.toDTO(
             ((CameraService) service)

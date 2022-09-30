@@ -1,90 +1,41 @@
 package com.camerapipeline.camera_pipeline.presentation.dto.auth;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ValidTokenResponse {
+    @Schema(
+		name = "token",
+		description = "Token that has been verified if it is valid",
+		example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvQ"+
+		"GdtYWlsLmNvbSIsInNjb3BlcyI6IlJPTEVfVVNFUiIsImlhdC"+
+		"I6MTY2MjkyMzU0OSwiZXhwIjoxNjY0MTIzNTQ5fQ.NGoBjVtnURZ"+
+		"x_P0t-istEJEHXDetbRZbrVYPqnaIeOU",
+		type = "string"
+	)
     private String token;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(
+		name = "expirationTime",
+		description = "Token expiration date",
+		type = "date-time"
+	)
 	private LocalDateTime expirationTime;
+    @Schema(
+		name = "isValid",
+		description = "Reponse if the token is valid",
+		example = "true",
+		type = "boolean"
+	)
 	private boolean isValid;
-
-    public ValidTokenResponse() {
-    }
-
-    public ValidTokenResponse(String token, LocalDateTime expirationTime, boolean isValid) {
-        this.token = token;
-        this.expirationTime = expirationTime;
-        this.isValid = isValid;
-    }
-
-    public String getToken() {
-        return this.token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getExpirationTime() {
-        return this.expirationTime;
-    }
-
-    public void setExpirationTime(LocalDateTime expirationTime) {
-        this.expirationTime = expirationTime;
-    }
-
-    public boolean isIsValid() {
-        return this.isValid;
-    }
-
-    public boolean getIsValid() {
-        return this.isValid;
-    }
-
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
-    }
-
-    public ValidTokenResponse token(String token) {
-        setToken(token);
-        return this;
-    }
-
-    public ValidTokenResponse expirationTime(LocalDateTime expirationTime) {
-        setExpirationTime(expirationTime);
-        return this;
-    }
-
-    public ValidTokenResponse isValid(boolean isValid) {
-        setIsValid(isValid);
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ValidTokenResponse)) {
-            return false;
-        }
-        ValidTokenResponse validTokenResponse = (ValidTokenResponse) o;
-        return Objects.equals(token, validTokenResponse.token) && Objects.equals(expirationTime, validTokenResponse.expirationTime) && isValid == validTokenResponse.isValid;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(token, expirationTime, isValid);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " token='" + getToken() + "'" +
-            ", expirationTime='" + getExpirationTime() + "'" +
-            ", isValid='" + isIsValid() + "'" +
-            "}";
-    }
 }
