@@ -43,6 +43,13 @@ public class ModelPdiDTO {
     @NotBlank
     private String URL;
     @Schema(
+		name = "description",
+		example = "image crop tool",
+		type = "string",
+		required = false
+	)
+    private String description;
+    @Schema(
         title = "PDI Parameters",
         name = "parameters",
 		required = false

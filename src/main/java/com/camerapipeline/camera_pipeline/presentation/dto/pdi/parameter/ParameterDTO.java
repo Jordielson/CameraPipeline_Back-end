@@ -31,6 +31,13 @@ public class ParameterDTO {
     @NotBlank
     private String name;
     @Schema(
+		name = "description",
+		example = "Image size after cropping",
+		type = "string",
+		required = false
+	)
+    private String description;
+    @Schema(
 		name = "type",
 		example = "NUMBER",
 		type = "ParameterType",

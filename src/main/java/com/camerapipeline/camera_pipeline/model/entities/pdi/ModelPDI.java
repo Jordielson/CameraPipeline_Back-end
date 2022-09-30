@@ -44,6 +44,8 @@ public class ModelPDI implements ModelAbstract<Integer>{
     @NotBlank
     private String URL;
 
+    private String description;
+
     @OneToMany(mappedBy = "modelPdi", cascade = CascadeType.ALL)
     private List<PDI> pdiList;
 
