@@ -55,21 +55,6 @@ public class CadastroUserStep extends MainSteps {
 		}
 	}
 
-	@Dado("^que estou na pagina (CadastroUser|Login)$")
-	public void queEstouNaPaginaCadastroUsuario(String pagina) {
-		switch (pagina) {
-		case "CadastroUsuario":
-			driver.get("http://localhost:3000/criar-conta");
-			break;
-
-		case "Login":
-
-			driver.get("http://localhost:3000/login");
-			break;
-		default:
-			break;
-		}
-	}
 
 	@Quando("^clicar no botão (.*)$")
 	public void clicarNoBotão(String botao) {

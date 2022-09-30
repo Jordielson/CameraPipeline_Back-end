@@ -22,6 +22,7 @@ public class NotificacaoStep extends MainSteps{
 
 		switch (string) {
 		
+		
 		/**
 		 * TODO Notificações Login
 		 */
@@ -95,17 +96,52 @@ public class NotificacaoStep extends MainSteps{
 			break;
 			
 			
+		/**
+		 * TODO Notificações Recuperação de Senha
+		 */
+			
+		case "EmailRecuperacao_Enviado":
+			mensagemErro = "Foi enviado o link de recuperação para seu email";
+			break;
+		
+		/**
+		 * TODO Notificações Senha Reset
+		 */
+			
+		case "senhaalterada_senhareset":
+			mensagemErro = "Senha alterada!!";
+			break;
+			
+		/**
+		 * TODO Notificações Page PDIs
+		 */
+			
+		case "parametroRemovido_PDIPage":
+			mensagemErro = "Removido!";
+			break;
+
+		case "parametrosalvo_PDIPage":
+			mensagemErro = "Salvo com sucesso!";
+			break;
 			
 		/**
 		 * TODO Notificações Gerais
 		 */
+			
+		case "campoemail_Geral":
+			mensagemErro = "Preencha o campo de email";
+			break;
+		
+		case "formatocampoemail_Geral":
+			mensagemErro = "Formato de email inválido.";
+			break;
 
 		case "conexao":
 			mensagemErro = "Network Error";
 			break;
 
 		case "outro":
-			mensagemErro = "O loko meu, tem coisa nova aí";
+			mensagemErro = "Oh loko meu, tem coisa nova aí";
 			break;
 
 		default:

@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+/.gitignore
+/README.md
+/camera_pipeline/
+/driver/
+/mvnw
+/mvnw.cmd
