@@ -1,4 +1,4 @@
-package com.camerapipeline.camera_pipeline.model.entities.camera;
+package com.camerapipeline.camera_pipeline.model.entities.input.camera;
 
 import java.io.Serializable;
 

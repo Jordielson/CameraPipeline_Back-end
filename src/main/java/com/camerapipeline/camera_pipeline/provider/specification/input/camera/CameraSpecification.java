@@ -1,4 +1,4 @@
-package com.camerapipeline.camera_pipeline.provider.specification.camera;
+package com.camerapipeline.camera_pipeline.provider.specification.input.camera;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
 
 public class CameraSpecification implements Specification<Camera> {
 

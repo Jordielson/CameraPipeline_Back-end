@@ -1,14 +1,15 @@
-package com.camerapipeline.camera_pipeline.provider.services.camera;
+package com.camerapipeline.camera_pipeline.provider.services.input.camera;
 
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
-import com.camerapipeline.camera_pipeline.model.repository.camera.CameraRepository;
+import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.repository.input.camera.CameraRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
-import com.camerapipeline.camera_pipeline.provider.specification.camera.CameraSpecification;
+import com.camerapipeline.camera_pipeline.provider.specification.input.camera.CameraSpecification;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -16,7 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CameraService extends ServiceAbstract<Camera, Integer> {
+public class CameraService extends ServiceAbstract<Camera, UUID> {
     public CameraService(CameraRepository repository) {
         super(repository);
     }
@@ -30,7 +31,7 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
     }
     
     @Override
-    public Camera update(Integer id, Camera model, Principal principal) {
+    public Camera update(UUID id, Camera model, Principal principal) {
         validCamera(model, id, principal);
         
         return super.update(id, model, principal);
@@ -41,15 +42,15 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
         return new CameraSpecification(search);
     }
 
-    private void validCamera(Camera model, Integer id, Principal principal) {
+    private void validCamera(Camera model, UUID id, Principal principal) {
         if (!checkValidName(model.getName(), id, principal)) {
             throw new BusinessException(String.format("There is already a camera with the name %s", model.getName()));
-        }else if (!checkValidUrl(model.getURL(), id, principal)) {
-            throw new BusinessException(String.format("There is already a camera with the url %s", model.getURL()));
+        }else if (!checkValidUrl(model.getUrl(), id, principal)) {
+            throw new BusinessException(String.format("There is already a camera with the url %s", model.getUrl()));
         }
     }
 
-    public boolean checkValidName(String name, Integer id, Principal p) {
+    public boolean checkValidName(String name, UUID id, Principal p) {
         Optional<Camera> camOptional 
             = ((CameraRepository) repository).findByNameIgnoreCase(
                 name, 
@@ -61,7 +62,7 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
             ? false : true;
     }
 
-    public boolean checkValidUrl(String url, Integer id, Principal p) {
+    public boolean checkValidUrl(String url, UUID id, Principal p) {
         Optional<Camera> camOptional 
             = ((CameraRepository) repository).findByURL(
                 url, 
@@ -72,19 +73,19 @@ public class CameraService extends ServiceAbstract<Camera, Integer> {
             ? false : true;
     }
 
-    public Camera setActive(Integer cameraId, Boolean active, Principal principal) {
+    public Camera setActive(UUID cameraId, Boolean active, Principal principal) {
         Camera camera = getById(cameraId);
         camera.setIsActive(active);
         return update(cameraId, camera, principal);
     }
 
-    public boolean checkIfItUsed(Integer id, Principal principal) {
+    public boolean checkIfItUsed(UUID id, Principal principal) {
         Camera camera = getById(id, principal);
         return !camera.getPipelineList().isEmpty();
     }
 
     @Override
-    protected EntityNotFoundException throwNotFoundEntity(Integer id) {
+    protected EntityNotFoundException throwNotFoundEntity(UUID id) {
         return new CustomEntityNotFoundException("Camera", id.toString());
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.input.PipelineInputDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -75,11 +75,11 @@ public class PipelineDTO {
     )
     private List<PdiDTO> PDIList;
     @Schema(
-        name = "cameraList",
-        type = "[CameraDTO]",
+        name = "inputList",
+        type = "[PipelineInputDTO]",
 		required = false
     )
-    private List<CameraDTO> cameraList;
+    private List<PipelineInputDTO> inputList;
 
 
     public PipelineDTO id(int id) {
@@ -114,11 +114,6 @@ public class PipelineDTO {
 
     public PipelineDTO PDIList(List<PdiDTO> PDIList) {
         setPDIList(PDIList);
-        return this;
-    }
-
-    public PipelineDTO cameraList(List<CameraDTO> cameraList) {
-        setCameraList(cameraList);
         return this;
     }
 }

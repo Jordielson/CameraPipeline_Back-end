@@ -1,6 +1,7 @@
-package com.camerapipeline.camera_pipeline.presentation.controller.camera;
+package com.camerapipeline.camera_pipeline.presentation.controller.input.camera;
 
 import java.security.Principal;
+import java.util.UUID;
 
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
 import com.camerapipeline.camera_pipeline.presentation.controller.ControllerAbstract;
-import com.camerapipeline.camera_pipeline.presentation.dto.camera.CameraDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.input.camera.CameraDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.shared.ValidDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
-import com.camerapipeline.camera_pipeline.provider.services.camera.CameraService;
+import com.camerapipeline.camera_pipeline.provider.services.input.camera.CameraService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +33,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/camera")
-public class CameraController extends ControllerAbstract<Camera, CameraDTO, Integer>{
+public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID>{
     public CameraController(CameraService service, Mapper<Camera, CameraDTO> mapper) {
         super(service, mapper);
     }
@@ -69,7 +70,8 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
             )
 			@RequestParam String name,
 			@ParameterObject Pageable pageable) {
-        CameraDTO search = new CameraDTO().name(name);
+        CameraDTO search = new CameraDTO();
+        search.setName(name);
         Page<CameraDTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 
@@ -124,7 +126,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
             example = "13",
             required = false
         )
-        @RequestParam(required = false) Integer id
+        @RequestParam(required = false) UUID id
         ) {
 
         ValidDTO response = new ValidDTO(
@@ -177,7 +179,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
             example = "25",
             required = false
         )
-        @RequestParam(required = false) Integer id
+        @RequestParam(required = false) UUID id
         ) {
         ValidDTO response = new ValidDTO(
             ((CameraService) service).checkValidUrl(url, id, principal)
@@ -222,7 +224,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
             example = "25",
             required = true
         )
-        @RequestParam Integer id
+        @RequestParam UUID id
         ) {
         ValidDTO response = new ValidDTO(
             ((CameraService) service).checkIfItUsed(id, principal)
@@ -267,7 +269,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, Inte
             example = "25",
             required = true
         )
-        @PathVariable("id") Integer id,
+        @PathVariable("id") UUID id,
         @Parameter(
             name = "active",
             description = "Camera status whether or not it is working",

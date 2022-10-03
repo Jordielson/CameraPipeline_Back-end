@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.core.handlers.advice;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionCode;
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
+import com.camerapipeline.camera_pipeline.provider.exception.file.CustomIOException;
 
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -133,7 +136,7 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler({AuthorizationServiceException.class})
     public ResponseEntity<Object> handleAuthoritzation(final AuthorizationServiceException ex) {
         final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.UNAUTHORIZED, "ERR_UNAUTHORIZED", ex.getLocalizedMessage(), "Unauthorized");
-        log.warn("ERR_UNAUTHORIZED - [{}].", ex.getMessage(), ex);
+        log.warn("ERR_UNAUTHORIZED - [{}].", ex.getMessage());
 
         return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }
@@ -141,7 +144,52 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> handleBusiness(final BusinessException ex) {
         final ExceptionMessage exceptionMessage = new ExceptionMessage(ex.getStatus(), ex.getCode(), ex.getMessage(), ex.getSpecificMessage());
-        log.warn("[{}] - [{}].", ex.getCode(), ex.getMessage(), ex, ex.getCause());
+        log.warn("[{}] - [{}]; [{}].", ex.getCode(), ex.getMessage(), ex, ex.getCause());
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
+    }
+
+    @ExceptionHandler({CustomIOException.class})
+    public ResponseEntity<Object> handleIOException(final CustomIOException ex) {
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(
+            ex.getStatus(), 
+            ex.getCode(), 
+            ex.getMessage(), 
+            "Failed to load or save the file"
+        );
+        log.warn("[{}] - [{}]; [{}].", ex.getCode(), ex.getMessage(), ex, ex.getCause());
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
+    }
+
+    @ExceptionHandler({IOException.class})
+    public ResponseEntity<Object> handleIOException(final IOException ex) {
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(
+            HttpStatus.INTERNAL_SERVER_ERROR, 
+            "ERR_INPUT_OUTPUT", ex.getMessage(), 
+            "Failed to load or save the file"
+        );
+        log.warn("ERR_INPUT_OUTPUT - [{}]; [{}].", ex.getMessage(), ex.getCause());
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
+    }
+
+    @ExceptionHandler({NoSuchFileException.class})
+    public ResponseEntity<Object> handleIOException(final NoSuchFileException ex) {
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, "ERR_FILE_NOT_FOUND", "An attempt is made to access a file that does not exist", "File does not exist");
+        log.warn("ERR_FILE_NOT_FOUND - [{}], [{}].", ex.getMessage(), ex.getCause());
+
+        return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
+    }
+
+    @ExceptionHandler({IllegalStateException.class})
+    public ResponseEntity<Object> handleIOException(final IllegalStateException ex) {
+        final ExceptionMessage exceptionMessage = new ExceptionMessage(
+            HttpStatus.INTERNAL_SERVER_ERROR, 
+            "ERR_ILLEGAL_STATE", 
+            "Method has been invoked at an illegal or inappropriate time", 
+            "The system environment is not in an appropriate state for the requested operation");
+        log.warn("ERR_ILLEGAL_STATE - [{}], [{}].", ex.getMessage(), ex.getCause());
 
         return new ResponseEntity<>(exceptionMessage, new HttpHeaders(), exceptionMessage.getStatus());
     }

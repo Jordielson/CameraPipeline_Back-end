@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.camerapipeline.camera_pipeline.core.validation.ExtendedEmailValidator;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 
 import lombok.Data;

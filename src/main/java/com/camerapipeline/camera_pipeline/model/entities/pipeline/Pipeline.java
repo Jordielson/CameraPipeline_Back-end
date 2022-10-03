@@ -23,7 +23,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 
@@ -57,21 +57,21 @@ public class Pipeline implements ModelAbstract<Integer> {
     private List<PDI> PDIList;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
-	@JoinTable(name = "camera_pipeline", 
+	@JoinTable(name = "input_pipeline", 
 		joinColumns = @JoinColumn(
 			name = "pipeline_id", 
 			referencedColumnName = "id"
 		),
 		inverseJoinColumns = @JoinColumn(
-			name = "camera_id",
+			name = "input_id",
 			referencedColumnName = "id"
 		),
         uniqueConstraints = { @UniqueConstraint(
-            name = "UniquePipelineAndCamera", 
-            columnNames = { "pipeline_id", "camera_id" }) 
+            name = "UniquePipelineAndInput", 
+            columnNames = { "pipeline_id", "input_id" }) 
         }
 	)
-	private List<Camera> cameraList;
+	private List<PipelineInput> inputList;
 
     public Pipeline id(Integer id) {
         setId(id);
@@ -108,14 +108,9 @@ public class Pipeline implements ModelAbstract<Integer> {
         return this;
     }
 
-    public Pipeline cameraList(List<Camera> cameraList) {
-        setCameraList(cameraList);
-        return this;
-    }
-
     @PreRemove
     private void removeAll() {
-        for (Camera c : cameraList) {
+        for (PipelineInput c : inputList) {
             c.getPipelineList().remove(this);
         }
     }
