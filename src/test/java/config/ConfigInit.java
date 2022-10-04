@@ -1,6 +1,7 @@
 package config;
 
 import java.time.Duration;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -29,6 +30,23 @@ public class ConfigInit {
 
 		driver.get(URL);
 
+	}
+	
+	public static void alterarJanela(String URL) {
+		
+		String parentWindow = driver.getWindowHandle();
+		
+		driver.get(URL);
+		
+		Set<String> handles =  driver.getWindowHandles();
+		   for(String windowHandle  : handles)
+		       {
+		       if(!windowHandle.equals(parentWindow)){
+		          driver.switchTo().window(windowHandle);
+//		          driver.close(); //closing child window
+//		          driver.switchTo().window(parentWindow); //cntrl to parent window
+		          }
+		       }
 	}
 	
 	public static <T> T Na(Class<T>classe){
