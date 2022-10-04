@@ -49,16 +49,16 @@ public class PDIsPage {
 		}
 	}
 	
-	private void clicarBotaoFecharCardPDI() {
+	public void clicarBotaoFecharCardPDI() {
 		botaoFecharCardParametro.click();
 	}
 	
-	private void inserirCampoDescricaoPDI(String value) {
+	public void inserirCampoDescricaoPDI(String value) {
 		campoDescricaoPDI.clear();
 		campoDescricaoPDI.sendKeys(value);
 	}
 	
-	private String getCampoDescricaoPDI(String value) {
+	public String getCampoDescricaoPDI(String value) {
 		return campoDescricaoPDI.getAttribute("innerText");
 	}
 	

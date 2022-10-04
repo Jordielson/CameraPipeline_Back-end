@@ -1,6 +1,8 @@
 package steps;
 
 import static config.ConfigInit.Na;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
@@ -8,6 +10,7 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.CameraPage;
 import pages.SideBar;
+import static config.ConfigInit.*;
 
 public class CameraStep extends MainSteps{
 
@@ -59,31 +62,30 @@ public class CameraStep extends MainSteps{
 		Na(SideBar.class).clickAbaCameras();
 	}
 	
-	@Então("verificar existencia camera Camera1")
-	public void verificarExistenciaCameraCamera1() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	@Então("^verificar existencia camera (.*)$")
+	public void verificarExistenciaCameraCamera1(String nome) {
+		esperar(1);
+	    boolean valor = Na(CameraPage.class).cameraIsPresente(nome);
+	    assertTrue(valor);
 	}
 
-	@Então("editar camera Camera1")
-	public void editarCameraCamera1() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	@Então("^editar camera (.*)$")
+	public void editarCameraCamera1(String nome) {
+	    Na(CameraPage.class).clicarEditarCamera(nome);
 	}
-	@Então("Desabilitar camera Camera1")
-	public void desabilitarCameraCamera1() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	@Então("^Desabilitar camera (.*)$")
+	public void desabilitarCameraCamera1(String nome) {
+	    Na(CameraPage.class).clicarAtiviarDesativarCamera(nome);
 	}
-	@Então("excluir camera Camera1")
-	public void excluirCameraCamera1() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	@Então("^excluir camera (.*)$")
+	public void excluirCameraCamera1(String nome) {
+		Na(CameraPage.class).clicarExcluirCamera(nome);
 	}
-	@Então("verificar inexistencia camera Camera1")
-	public void verificarInexistenciaCameraCamera1() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	@Então("^verificar inexistencia camera (.*)$")
+	public void verificarInexistenciaCameraCamera1(String nome) {
+		esperar(1);
+	    boolean valor = Na(CameraPage.class).cameraIsPresente(nome);
+	    assertFalse(valor);
 	}
 
 

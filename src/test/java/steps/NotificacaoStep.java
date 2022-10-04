@@ -125,11 +125,15 @@ public class NotificacaoStep extends MainSteps{
 			break;
 			
 		/**
-		 * TODO Notificações Page PDIs
+		 * TODO Notificações Page Cameras
 		 */
 
 		case "CameraSalva_CameraPage":
 			mensagemErro = "Salvo com sucesso!";
+			break;
+
+		case "CameraAtualizada_CameraPage":
+			mensagemErro = "Atualizado com sucesso!";
 			break;
 			
 		/**

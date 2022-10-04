@@ -55,8 +55,7 @@ Cenário: Validação parametro
 		| obrigatorio| sim		|
 	Então deletar parametro 1
 	Então confirmar que um parametro foi removido
-	Quando CRUD-PDI clicar no botão salvarPDI
-	Então sistema notifica parametrosalvo_PDIPage
+	Quando CRUD-PDI clicar no botão fecharCardPDI
 	Então deletar PDI todos 
 	
 	

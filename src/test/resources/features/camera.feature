@@ -1,11 +1,11 @@
 # language: pt
 
-@Camera
+@Camera @Geral
 Funcionalidade: Gerenciar CRUD Camera
 	Como um usuario
 	Eu quero gerenciar o CRUD de uma ou mais Cameras
 	
-Cenário: Usuario adciona uma camera com sucesso
+Cenário: Usuario Gerencia uma camera com sucesso
 	* remover usuario userteste1@user.com
 	Dado que existe a conta email userteste1@user.com e senha 123456
 	Dado que informei email userteste1@user.com e senha 123456
@@ -29,10 +29,10 @@ Cenário: Usuario adciona uma camera com sucesso
 	E que informei a longitude como 50
 	E que informei o limitadore de FPS como 90
 	Quando clicar no botão salvar 
-	Então sistema notifica CameraSalva_CameraPage
-	Então Desabilitar camera Camera1
-	Então excluir camera Camera1
-	Então verificar inexistencia camera Camera1
+	Então sistema notifica CameraAtualizada_CameraPage
+	Então Desabilitar camera Camera2
+	Então excluir camera Camera2
+	Então verificar inexistencia camera Camera2
 	
 	
 	
