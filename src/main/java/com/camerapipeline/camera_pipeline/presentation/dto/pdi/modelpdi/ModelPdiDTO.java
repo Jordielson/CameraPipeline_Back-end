@@ -41,7 +41,7 @@ public class ModelPdiDTO {
 		required = true
 	)
     @NotBlank
-    private String URL;
+    private String url;
     @Schema(
 		name = "description",
 		example = "image crop tool",
@@ -69,11 +69,6 @@ public class ModelPdiDTO {
 
     public ModelPdiDTO name(String name) {
         setName(name);
-        return this;
-    }
-
-    public ModelPdiDTO URL(String URL) {
-        setURL(URL);
         return this;
     }
 

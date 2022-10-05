@@ -51,7 +51,7 @@ public abstract class PipelineInputDTO {
 
     @Schema(
 		name = "location",
-		example = "http://localhost:8080/api/camera/96",
+		example = "http://localhost:8080/api/camera/cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
         description = "Access link to file information",
 		type = "string",
 		required = true

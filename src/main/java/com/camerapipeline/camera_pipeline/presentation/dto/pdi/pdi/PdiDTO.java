@@ -31,12 +31,14 @@ public class PdiDTO {
     )
     @NotNull
     private ModelPdiDTO modelPdi;
+
     @Schema(
         title = "PDI Value Parameters",
-        name = "modelPdi",
+        name = "valueParameters",
 		required = false
     )
     private List<ValueParameterDTO> valueParameters;
+
     @Schema(
         title = "Pipeline identifier",
         name = "pipelineId",
