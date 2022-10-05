@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class VideoData extends PipelineInput {
-    private String type;
+    private String format;
     private String filePath;
 }
