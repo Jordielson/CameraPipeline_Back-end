@@ -40,7 +40,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/image")
-public class ImageStorageContorller {
+public class ImageStorageController {
     @Autowired
     private ImageDataService service;
 
@@ -52,6 +52,7 @@ public class ImageStorageContorller {
         @RequestParam(value = "image") MultipartFile file,
         Principal principal
         ) {
+            
             ImageDTO upload = mapper.toDTO(
                 service.uploadImage(file, principal)
             );
