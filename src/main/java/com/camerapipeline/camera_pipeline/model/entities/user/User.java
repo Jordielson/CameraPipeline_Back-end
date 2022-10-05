@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.camerapipeline.camera_pipeline.core.validation.ExtendedEmailValidator;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
-import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 
 import lombok.Data;
@@ -71,7 +71,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
     @OneToMany(mappedBy = "user")
     private List<Pipeline> pipelines;
     @OneToMany(mappedBy = "user")
-    private List<Camera> cameras;
+    private List<PipelineInput> pipelineInputs;
 
     public User id(int id) {
         setId(id);
@@ -90,11 +90,6 @@ public class User implements UserDetails, ModelAbstract<Integer> {
 
     public User roles(List<Role> roles) {
         setRoles(roles);
-        return this;
-    }
-
-    public User cameras(List<Camera> cameras) {
-        setCameras(cameras);
         return this;
     }
 
@@ -142,7 +137,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
     public void setUser(User user) {
         setId(user.id);
         setEmail(user.email);
-        setCameras(user.cameras);
+        setPipelineInputs(user.pipelineInputs);
         setPipelines(user.pipelines);
         setPassword(user.password);
         setRoles(user.roles);

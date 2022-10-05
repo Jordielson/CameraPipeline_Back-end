@@ -3,19 +3,13 @@ package com.camerapipeline.camera_pipeline.model.entities.pipeline;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PreRemove;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +17,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
-import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 
@@ -55,23 +48,6 @@ public class Pipeline implements ModelAbstract<Integer> {
 
     @OneToMany(mappedBy = "pipeline")
     private List<PDI> PDIList;
-
-    @ManyToMany(cascade = CascadeType.REFRESH)
-	@JoinTable(name = "input_pipeline", 
-		joinColumns = @JoinColumn(
-			name = "pipeline_id", 
-			referencedColumnName = "id"
-		),
-		inverseJoinColumns = @JoinColumn(
-			name = "input_id",
-			referencedColumnName = "id"
-		),
-        uniqueConstraints = { @UniqueConstraint(
-            name = "UniquePipelineAndInput", 
-            columnNames = { "pipeline_id", "input_id" }) 
-        }
-	)
-	private List<PipelineInput> inputList;
 
     public Pipeline id(Integer id) {
         setId(id);
@@ -106,13 +82,6 @@ public class Pipeline implements ModelAbstract<Integer> {
     public Pipeline PDIList(List<PDI> PDIList) {
         setPDIList(PDIList);
         return this;
-    }
-
-    @PreRemove
-    private void removeAll() {
-        for (PipelineInput c : inputList) {
-            c.getPipelineList().remove(this);
-        }
     }
 
     @Override

@@ -45,7 +45,7 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
     private void validCamera(Camera model, UUID id, Principal principal) {
         if (!checkValidName(model.getName(), id, principal)) {
             throw new BusinessException(String.format("There is already a camera with the name %s", model.getName()));
-        }else if (!checkValidUrl(model.getUrl(), id, principal)) {
+        } else if (!checkValidUrl(model.getUrl(), id, principal)) {
             throw new BusinessException(String.format("There is already a camera with the url %s", model.getUrl()));
         }
     }
@@ -79,9 +79,12 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
         return update(cameraId, camera, principal);
     }
 
-    public boolean checkIfItUsed(UUID id, Principal principal) {
-        Camera camera = getById(id, principal);
-        return !camera.getPipelineList().isEmpty();
+    public boolean checkIfItValidName(UUID id, Principal principal) {
+        // Camera camera = getById(id, principal);
+        // return !camera.getPipelineList().isEmpty();
+
+        // TODO: Enquanto nao nao foi criado o mosaico return true
+        return true;
     }
 
     @Override

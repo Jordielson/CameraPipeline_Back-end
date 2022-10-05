@@ -227,7 +227,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
         @RequestParam UUID id
         ) {
         ValidDTO response = new ValidDTO(
-            ((CameraService) service).checkIfItUsed(id, principal)
+            ((CameraService) service).checkIfItValidName(id, principal)
         );
 		
 		return new ResponseEntity<ValidDTO>(response, HttpStatus.OK);

@@ -23,8 +23,10 @@ import lombok.NoArgsConstructor;
 public class Camera extends PipelineInput {
     @NotBlank
     private String url;
+    
     @NotNull
     private Boolean isPrivate;
+
     @NotNull
     private Boolean isActive;
     

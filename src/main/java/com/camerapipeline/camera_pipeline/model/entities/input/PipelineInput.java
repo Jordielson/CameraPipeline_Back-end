@@ -1,7 +1,6 @@
 package com.camerapipeline.camera_pipeline.model.entities.input;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,9 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.PreRemove;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,7 +19,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
-import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 
 import lombok.Data;
@@ -56,16 +52,6 @@ public abstract class PipelineInput implements ModelAbstract<UUID>{
     @NotNull
     @ManyToOne
     protected User user;
-
-    @ManyToMany(mappedBy = "inputList")
-    private List<Pipeline> pipelineList;
-
-    @PreRemove
-    private void removeAll() {
-        for (Pipeline p : pipelineList) {
-            p.getInputList().remove(this);
-        }
-    }
 
     @Override
     public User getUser() {
