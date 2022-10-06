@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,7 +57,7 @@ public class Pipeline implements ModelAbstract<Integer> {
     @OneToMany(mappedBy = "pipeline")
     private List<PDI> PDIList;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch= FetchType.EAGER)
 	@JoinTable(name = "camera_pipeline", 
 		joinColumns = @JoinColumn(
 			name = "pipeline_id", 

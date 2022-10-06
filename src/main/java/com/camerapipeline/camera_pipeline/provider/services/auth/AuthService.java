@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.camerapipeline.camera_pipeline.core.security.config.TokenProvider;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
@@ -29,6 +30,13 @@ public class AuthService {
     
     @Autowired
     private TokenProvider tokenProvider;
+    
+    public Authentication authenticateUser(String login, String password) {
+    	final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(login, password));
+    	
+    	return authentication;
+    }
 
     public UserDTO authenticateUserAndGetToken(String login, String password) {
         final Authentication authentication = authenticationManager.authenticate(

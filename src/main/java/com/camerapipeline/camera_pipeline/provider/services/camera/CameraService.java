@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CameraService extends ServiceAbstract<Camera, Integer> {

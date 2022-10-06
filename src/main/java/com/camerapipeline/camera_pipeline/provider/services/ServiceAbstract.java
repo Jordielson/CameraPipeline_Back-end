@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,6 +60,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
                 throw throwNotFoundEntity(id);
             }
         }).orElseThrow(() -> throwNotFoundEntity(id));
+        Hibernate.initialize(repository.findById(id));
         return model;
     }
 

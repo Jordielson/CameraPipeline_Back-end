@@ -12,4 +12,5 @@ import com.camerapipeline.camera_pipeline.model.repository.RepositoryAbstract;
 public interface UserRepository extends RepositoryAbstract<User, Integer> {
     
     Optional<User> findByEmail(@Param("email") String email);
+
 }
