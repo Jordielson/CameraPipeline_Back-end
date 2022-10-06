@@ -47,9 +47,48 @@ public class ImageStorageController {
     @Autowired
     private ImageMapper mapper;
 
+    @Operation(summary = "Apply pipeline to image")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully applied"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Pipeline with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @PostMapping(value = "/generateImage")
+    public ResponseEntity<ImageDTO> generateImage(
+        @RequestParam(value = "image") MultipartFile file,
+        @RequestParam(value = "pipeline") String pipelineId,
+        Principal principal) {
+
+            ImageDTO response = mapper.toDTO(
+                service.uploadImage(file, principal)
+            );
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
+    }
+
     @PostMapping(value = "/storage/upload")
     public ResponseEntity<ImageDTO> uploadImage(
         @RequestParam(value = "image") MultipartFile file,
+        @RequestParam(value = "pipeline") String pipelineId,
         Principal principal
         ) {
             

@@ -51,6 +51,43 @@ public class VideoStorageController {
     @Autowired
     VideoMapper mapper;
 
+    @Operation(summary = "Apply pipeline to video")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully applied"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Pipeline with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @PostMapping(value = "/generateVideo")
+    public ResponseEntity<VideoDTO> generateVideo(
+        @RequestParam(value = "video") MultipartFile file,
+        @RequestParam(value = "pipeline") String pipelineId,
+        Principal principal) {
+            VideoDTO response = mapper.toDTO(
+                service.uploadVideo(file, principal)
+            );
+
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
+    }
 
     @PostMapping(value = "/storage/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<VideoDTO> uploadVideo(

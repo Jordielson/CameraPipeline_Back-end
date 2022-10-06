@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/pipeline")
@@ -119,37 +118,5 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
             return new ResponseEntity<Page<PipelineDTO>>(list, HttpStatus.OK);
 	}
 
-    @Operation(summary = "View pipeline result")
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Successfully visualization"),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
-            content = @Content(mediaType = "application/json", 
-            schema = @Schema( implementation = ExceptionMessage.class))
-        ), 
-        @ApiResponse(responseCode = "401", description = "Unauthorized", 
-            content = @Content(mediaType = "application/json", 
-            schema = @Schema( implementation = ExceptionMessage.class))
-        ), 
-        @ApiResponse(responseCode = "403", description = "Access denied", 
-            content = @Content(mediaType = "application/json", 
-            schema = @Schema( implementation = ExceptionMessage.class))
-        ), 
-        @ApiResponse(responseCode = "404", description = "Pipeline with id supplied not found", 
-            content = @Content(mediaType = "application/json", 
-            schema = @Schema( implementation = ExceptionMessage.class))
-        ), 
-        @ApiResponse(responseCode = "500", 
-            description = "Server has encountered a situation with which it does not know", 
-            content = @Content(mediaType = "application/json", 
-            schema = @Schema( implementation = ExceptionMessage.class))
-        ),
-    })
-    @PostMapping(value = "/generate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> generate(
-        @RequestParam(value = "file") MultipartFile file,
-        @RequestParam(value = "pipeline") Integer pipelineId,
-        Principal principal) {
-        return new ResponseEntity<String>("rtsp://rtsp.stream/pattern", HttpStatus.OK);
-    }
 
 }
