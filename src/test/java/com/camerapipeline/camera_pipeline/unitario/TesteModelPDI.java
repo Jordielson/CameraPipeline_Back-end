@@ -147,13 +147,13 @@ public class TesteModelPDI {
 		
 		ModelPDI modelPDI = montarModelPDI("ModelPDITest");
 		modelPDI.setParameters(List.of(montarParameter("ParametroTest1",1)));
-		modelPDIService.create(modelPDI, principal);
+		ModelPDI modelPDIReturn = modelPDIService.create(modelPDI, principal);
 		
 		assertThrows(BusinessException.class, () -> {
 			modelPDIService.create(modelPDI, principal);
 		});
 		
-		modelPDIService.delete(modelPDI.getId(), principal);
+		modelPDIService.delete(modelPDIReturn.getId(), principal);
 	}
 	
 	@Test

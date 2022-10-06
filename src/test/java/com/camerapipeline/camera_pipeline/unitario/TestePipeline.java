@@ -1,12 +1,24 @@
 package com.camerapipeline.camera_pipeline.unitario;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.security.Principal;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,6 +29,7 @@ import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.camera.Coordinate;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
+import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 import com.camerapipeline.camera_pipeline.provider.services.camera.CameraService;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
@@ -46,14 +59,105 @@ public class TestePipeline {
 	public void preConfig() {
 		
 		principal = authService.authenticateUser("admin@admin.com", "123456");
-		
+		apagarBanco();
 	}
 	
 	/** sessão de sucesso **/
 	
+	@Test
+	public void testeCriarPipelineComSucesso() {
+		
+		//Dado
+		Pipeline pipeline = montarPipeline("PipelineTest");
+		
+		//Quando
+		Pipeline pipelineReturn = pipelineService.create(pipeline, principal);
+		
+		//Entao
+		assertNotNull(pipelineService.getById(pipelineReturn.getId(), principal));
+		assertTrue(pipelineService.getById(pipelineReturn.getId(), principal).getName().equals(pipeline.getName()));
+	
+	}
+	
+	@Test
+	public void testeAtualizarPipelineComSucesso() {
+		
+		//Dado
+		Pipeline pipeline = montarPipeline("PipelineTest");
+		Pipeline pipelineReturn = pipelineService.create(pipeline, principal);
+		Camera camera = cameraService.create(montarCamera("Camera1"), principal);
+		
+		//Quando
+		pipelineReturn.setName("PipelineUpdateTest");
+		pipelineReturn.setDescription("DescricaoDeUpdateTest");
+		pipelineReturn.setActive(false);
+		pipelineReturn.setCameraList(List.of(camera));
+		
+		pipelineService.update(pipelineReturn.getId(), pipelineReturn, principal);
+		
+		//Entao
+		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).getName(), pipelineReturn.getName());
+		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).getDescription(), pipelineReturn.getDescription());
+		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).isActive(), pipelineReturn.isActive());
+		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).getCameraList().size(), 1);
+		assertTrue((pipelineService.getById(pipelineReturn.getId(), principal).getCameraList().get(0).getName().equals(camera.getName())));
+		
+	}
+	
+	@Test
+	public void testeDeletarPipelineComSucesso() {
+		
+		//Dado
+		Pipeline pipelineReturn = pipelineService.create(montarPipeline("PipelineDeleteTest"), principal);
+		assertNotNull(pipelineService.getById(pipelineReturn.getId(), principal));
+		
+		//Quando
+		pipelineService.delete(pipelineReturn.getId(), principal);
+		
+		//Entao
+		assertThrows(EntityNotFoundException.class, () -> {
+			pipelineService.getById(pipelineReturn.getId(), principal);
+		});
+	}
 	
 	
 	/** sessão de falha **/
+	
+	@Test
+	public void testeErroCadastrarPipelineSemNome() {
+		
+		Pipeline pipeline = montarPipelineIncompleta();
+		
+		assertThrows(ConstraintViolationException.class, () -> {
+			 pipelineService.create(pipeline, principal);
+		});
+		
+	}
+	@Test
+	public void testeErroCadastrarPipelineComNomeMuitoExtenso() {
+		
+		String nome = "QWENamtquistnullattIntegertmalesuadattIntintenimtatarcutimperdi";
+		
+		assertTrue(nome.length() > 60);
+		
+		Pipeline pipeline = montarPipeline(nome);
+		
+		assertThrows(DataIntegrityViolationException.class, () -> {
+			 pipelineService.create(pipeline, principal);
+		});
+		
+	}
+	
+	@Test
+	public void testeErroDeletarPipelineNaoCadastrada() {
+		
+		assertFalse(pipelineService.getAll(pageable, principal).toList().size() > 0);
+		
+		assertThrows(CustomEntityNotFoundException.class, () -> {
+			pipelineService.delete(1, principal);
+		});
+		
+	}
 	
 	
 private void apagarBanco() {
@@ -93,6 +197,15 @@ private void apagarBanco() {
 		return pipeline;
 	}
 	
+	private Pipeline montarPipelineIncompleta() {
+		
+		Pipeline pipeline = new Pipeline();
+		pipeline.setUser(recuperarUserPrincipal());
+		pipeline.setPDIList(List.of());
+		
+		return pipeline;
+	}
+	
 	private Camera montarCamera(String nome) {
 		
 		Camera camera = new Camera();
@@ -105,6 +218,12 @@ private void apagarBanco() {
 		camera.setUser(recuperarUserPrincipal());
 		
 		return camera;
+	}
+	
+	
+	@AfterEach
+	public void posConfig() {
+		apagarBanco();
 	}
 	
 	
