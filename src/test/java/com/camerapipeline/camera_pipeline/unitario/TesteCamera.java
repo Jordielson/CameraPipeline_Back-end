@@ -12,7 +12,8 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -62,8 +63,9 @@ public class TesteCamera {
 	public void preConfig() {
 		
 		principal = authService.authenticateUser("admin@admin.com", "123456");
-		
+		apagarBanco();
 	}
+	
 	
 	/** sessão de sucesso **/
 	
@@ -114,9 +116,6 @@ public class TesteCamera {
 		assertEquals(cameraService.getById(camera.getId()).getURL(), cameraReturn.getURL());
 		assertEquals(cameraService.getById(camera.getId(), principal).getPipelineList().size(),1);
 		
-		
-		apagarBanco();
-		
 	}
 	
 	@Test
@@ -131,7 +130,7 @@ public class TesteCamera {
 		
 		//Entao
 		assertThrows(EntityNotFoundException.class, () -> {
-			cameraService.getById(camera.getId(), principal);;
+			cameraService.getById(camera.getId(), principal);
 		});
 		
 	}
@@ -142,7 +141,6 @@ public class TesteCamera {
 	@Test
 	public void testeErroCadastrarCameraComNomeExistente() {
 		
-		apagarBanco();
 		Camera camera = cameraService.create(montarCamera("Camera1"), principal);
 		
 		assertThrows(BusinessException.class, () -> {
@@ -155,7 +153,6 @@ public class TesteCamera {
 	@Test
 	public void testeErroLimitesCoordenadas() {
 		
-		apagarBanco();
 		Camera camera = cameraService.create(montarCamera("Camera1"), principal);
 		coordinate.setLatitude(-91.00);
 		coordinate.setLongitude(91.00);
@@ -171,8 +168,6 @@ public class TesteCamera {
 	@Test
 	public void testeErroDeletarCameraNaoCadastrada() {
 		
-		apagarBanco();
-
 		assertFalse(cameraService.getAll(pageable, principal).toList().size() > 0);
 		
 		assertThrows(CustomEntityNotFoundException.class, () -> {
@@ -231,9 +226,13 @@ public class TesteCamera {
 		camera.setIsActive(true);
 		camera.setIsPrivate(false);
 		camera.setUser(recuperarUserPrincipal());
-		camera.setPipelineList(pipelines);
 		
 		return camera;
+	}
+	
+	@AfterEach
+	public void posConfig() {
+		apagarBanco();
 	}
 
 }

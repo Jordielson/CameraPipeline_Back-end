@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
@@ -47,7 +51,8 @@ public class ModelPDI implements ModelAbstract<Integer>{
     @OneToMany(mappedBy = "modelPdi", cascade = CascadeType.ALL)
     private List<PDI> pdiList;
 
-    @OneToMany(mappedBy = "modelPdi", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "modelPdi", fetch=FetchType.EAGER , cascade = CascadeType.REMOVE)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Parameter> parameters;
 
     @Enumerated(EnumType.ORDINAL)
