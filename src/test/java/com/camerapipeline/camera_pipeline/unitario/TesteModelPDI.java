@@ -5,14 +5,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.security.Principal;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,26 +21,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.TransactionSystemException;
 
 import com.camerapipeline.camera_pipeline.CameraPipelineApplication;
-import com.camerapipeline.camera_pipeline.model.entities.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
-import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
-import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
-import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
-import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.enums.Category;
 import com.camerapipeline.camera_pipeline.model.enums.ParameterType;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
-import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 import com.camerapipeline.camera_pipeline.provider.services.pdi.ModelPDIService;
-import com.camerapipeline.camera_pipeline.provider.services.pdi.PDIService;
-import com.camerapipeline.camera_pipeline.provider.services.pdi.ValueParameterService;
-import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -53,17 +41,9 @@ public class TesteModelPDI {
 	@Autowired
     private AuthService authService;
 	
-	@Autowired
-	private PDIService pdiService;
 	
 	@Autowired
 	private ModelPDIService modelPDIService;
-	
-	@Autowired
-	private ValueParameterService valueParameterService;
-	
-	@Autowired
-	private PipelineService pipelineService;
 	
 	Pageable pageable = Pageable.unpaged();
 	
@@ -160,7 +140,7 @@ public class TesteModelPDI {
 	public void testeErroSalvarModelPDISemParametros() {
 		
 		assertThrows(NullPointerException.class, () -> {
-			ModelPDI modelPDI = modelPDIService.create(montarModelPDI("ModelPDITest"), principal);
+			modelPDIService.create(montarModelPDI("ModelPDITest"), principal);
 		});
 		
 	}
@@ -177,7 +157,7 @@ public class TesteModelPDI {
 	}
 	
 	
-private void apagarBanco() {
+	private void apagarBanco() {
 		
 		Pageable pageable = Pageable.unpaged();
 
@@ -188,11 +168,6 @@ private void apagarBanco() {
 		}
 		
 	}
-	
-	private User recuperarUserPrincipal() {
-		return authService.loadUserByUsername(principal.getName());
-	}
-	
 	
 	private ModelPDI montarModelPDI(String nome) {
 		ModelPDI modelPDI = new ModelPDI();
