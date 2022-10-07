@@ -26,6 +26,12 @@ public abstract class PipelineInputDTO {
     )
     private UUID id;
 
+    @Schema(
+		name = "name",
+		example = "Camera Centro, Monteiro-PB",
+		type = "string",
+		required = true
+	)
     @NotBlank
 	@Size(max=60)
     private String name;
