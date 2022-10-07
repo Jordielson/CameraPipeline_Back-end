@@ -89,6 +89,27 @@ public class VideoStorageController {
                 .body(response);
     }
 
+    @Operation(summary = "Upload video")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully saved"),
+        @ApiResponse(responseCode = "400", description = "Invalid multipart form data", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @PostMapping(value = "/storage/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<VideoDTO> uploadVideo(
         @RequestParam(value = "video") MultipartFile file,
@@ -106,6 +127,31 @@ public class VideoStorageController {
             return ResponseEntity.created(uri).body(upload);
     }
 
+    @Operation(summary = "Download video")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "video with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @GetMapping(value = "/storage/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> downloadVideo(
         @PathVariable UUID id
@@ -115,6 +161,31 @@ public class VideoStorageController {
             .body(new ByteArrayResource(videoData));
     }
 
+    @Operation(summary = "Get video data")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Video with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VideoDTO> getVideo(
         @PathVariable UUID id,
@@ -127,6 +198,31 @@ public class VideoStorageController {
         return ResponseEntity.status(HttpStatus.OK).body(video);
     }
 
+    @Operation(summary = "Update video")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully saved"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Video with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VideoDTO> update(
         @Parameter(
@@ -149,6 +245,31 @@ public class VideoStorageController {
             return ResponseEntity.created(selfLink).body(response);
     }
 
+    @Operation(summary = "Delete video")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully deleted"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Video with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
         @Parameter(
@@ -166,9 +287,9 @@ public class VideoStorageController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Get all entities")
+    @Operation(summary = "Get all videos")
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Successfully get"),
+        @ApiResponse(responseCode = "200", description = "Successfully"),
         @ApiResponse(responseCode = "401", description = "Unauthorized", 
             content = @Content(mediaType = "application/json", 
             schema = @Schema( implementation = ExceptionMessage.class))

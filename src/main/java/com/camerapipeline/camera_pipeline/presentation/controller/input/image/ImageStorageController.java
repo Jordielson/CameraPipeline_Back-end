@@ -50,7 +50,7 @@ public class ImageStorageController {
     @Operation(summary = "Apply pipeline to image")
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successfully applied"),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+        @ApiResponse(responseCode = "400", description = "Invalid multipart form data", 
             content = @Content(mediaType = "application/json", 
             schema = @Schema( implementation = ExceptionMessage.class))
         ), 
@@ -77,7 +77,7 @@ public class ImageStorageController {
         @RequestParam(value = "image") MultipartFile file,
         @RequestParam(value = "pipeline") String pipelineId,
         Principal principal) {
-
+            System.out.println(pipelineId);
             ImageDTO response = mapper.toDTO(
                 service.uploadImage(file, principal)
             );
@@ -85,13 +85,32 @@ public class ImageStorageController {
                 .body(response);
     }
 
+    @Operation(summary = "Upload image")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully saved"),
+        @ApiResponse(responseCode = "400", description = "Invalid multipart form data", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @PostMapping(value = "/storage/upload")
     public ResponseEntity<ImageDTO> uploadImage(
         @RequestParam(value = "image") MultipartFile file,
-        @RequestParam(value = "pipeline") String pipelineId,
         Principal principal
         ) {
-            
             ImageDTO upload = mapper.toDTO(
                 service.uploadImage(file, principal)
             );
@@ -103,6 +122,31 @@ public class ImageStorageController {
             return ResponseEntity.created(uri).body(upload);
     }
 
+    @Operation(summary = "Download image")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully send"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Image with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @GetMapping(value = "/storage/{id}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> downloadImage(
         @PathVariable UUID id
@@ -112,6 +156,31 @@ public class ImageStorageController {
             .body(imageData);
     }
 
+    @Operation(summary = "Get image data")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Image with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImageDTO> getImage(
         @PathVariable UUID id,
@@ -124,6 +193,31 @@ public class ImageStorageController {
         return ResponseEntity.status(HttpStatus.OK).body(image);
     }
 
+    @Operation(summary = "Update image data")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully saved"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Image with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImageDTO> update(
         @Parameter(
@@ -146,6 +240,31 @@ public class ImageStorageController {
             return ResponseEntity.created(selfLink).body(response);
     }
 
+    @Operation(summary = "Delete image")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully deleted"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Image with id supplied not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
         @Parameter(
@@ -163,9 +282,9 @@ public class ImageStorageController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Get all entities")
+    @Operation(summary = "Get all images")
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Successfully get"),
+        @ApiResponse(responseCode = "200", description = "Successfully"),
         @ApiResponse(responseCode = "401", description = "Unauthorized", 
             content = @Content(mediaType = "application/json", 
             schema = @Schema( implementation = ExceptionMessage.class))
