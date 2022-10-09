@@ -86,11 +86,10 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
         return update(cameraId, camera, principal);
     }
 
-    public boolean checkIfItValidName(UUID id, Principal principal) {
+    public boolean checkIfItCameraUsed(UUID id, Principal principal) {
         // Camera camera = getById(id, principal);
-        // return !camera.getPipelineList().isEmpty();
 
-        // TODO: Enquanto nao nao foi criado o mosaico return true
+        //TODO: retorna veradeiro enquando ainda nao estar implementado
         return true;
     }
 

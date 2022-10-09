@@ -230,7 +230,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
         @RequestParam UUID id
         ) {
         ValidDTO response = new ValidDTO(
-            ((CameraService) service).checkIfItValidName(id, principal)
+            ((CameraService) service).checkIfItCameraUsed(id, principal)
         );
 		
 		return new ResponseEntity<ValidDTO>(response, HttpStatus.OK);
@@ -332,13 +332,16 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
             name = "cameraId",
             description = "Camera ID to be generate",
             example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
-            required = false
+            required = true
         )
-        @RequestParam(required = false) UUID cameraId
+        @RequestParam UUID cameraId
         ) {
-        CameraDTO response = mapper.toDTO(((CameraService) service).create(
-            service.getById(cameraId, principal), 
-            principal
+        CameraDTO response = mapper.toDTO(
+            ((CameraService) service)
+            .applyPipeline(
+                cameraId, 
+                pipelineId,
+                principal
             )
         );
 
