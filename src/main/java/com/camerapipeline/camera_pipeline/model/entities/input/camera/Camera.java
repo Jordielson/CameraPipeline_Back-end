@@ -35,4 +35,20 @@ public class Camera extends PipelineInput {
 	private Coordinate coordinate;
 
     private Integer fpsLimiter;
+
+
+    public static Camera clone(Camera camera) {
+        Camera clone = new Camera(
+            camera.getUrl(), 
+            camera.getIsPrivate(), 
+            camera.getIsActive(), 
+            camera.getCoordinate(), 
+            camera.getFpsLimiter()
+        );
+        clone.setName(camera.getName());
+        clone.setPipeline(camera.getPipeline());
+        clone.setUser(camera.getUser());
+
+        return clone;
+    }
 }

@@ -1,10 +1,12 @@
 package com.camerapipeline.camera_pipeline.provider.services.input.camera;
 
 import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
+import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.repository.input.camera.CameraRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 import com.camerapipeline.camera_pipeline.provider.specification.input.camera.CameraSpecification;
 
 import java.security.Principal;
@@ -13,11 +15,16 @@ import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CameraService extends ServiceAbstract<Camera, UUID> {
+    @Autowired
+    private PipelineService pipelineService;
+
+
     public CameraService(CameraRepository repository) {
         super(repository);
     }
@@ -85,6 +92,16 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
 
         // TODO: Enquanto nao nao foi criado o mosaico return true
         return true;
+    }
+
+    public Camera applyPipeline(UUID cameraId, Integer pipelineId, Principal principal) {
+        Camera camera = getById(cameraId, principal);
+        Pipeline pipeline = pipelineService.getById(pipelineId, principal);
+
+        Camera cameraGenerate = Camera.clone(camera);
+        cameraGenerate.setName(cameraGenerate.getName() + "_" + pipeline.getName());
+
+        return create(cameraGenerate, principal);
     }
 
     @Override

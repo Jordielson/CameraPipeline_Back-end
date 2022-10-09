@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.input.camera;
 
+import java.net.URI;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
 import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
@@ -123,7 +125,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
         @Parameter(
             name = "id",
             description = "Camera ID to be verified",
-            example = "13",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
             required = false
         )
         @RequestParam(required = false) UUID id
@@ -176,7 +178,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
         @Parameter(
             name = "id",
             description = "Camera ID to check if being verified",
-            example = "25",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
             required = false
         )
         @RequestParam(required = false) UUID id
@@ -221,7 +223,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
         @Parameter(
             name = "id",
             description = "Camera ID to check if being used",
-            example = "25",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
             required = true
         )
         @RequestParam UUID id
@@ -266,7 +268,7 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
         @Parameter(
             name = "id",
             description = "Camera ID to be enabled or disabled",
-            example = "25",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
             required = true
         )
         @PathVariable("id") UUID id,
@@ -287,4 +289,60 @@ public class CameraController extends ControllerAbstract<Camera, CameraDTO, UUID
             HttpStatus.OK
         );
     }
+
+    @Operation(summary = "Apply a pipeline to a camera")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Pipeline applied", 
+            content = { 
+                @Content(mediaType = "application/json", 
+                    schema = @Schema( implementation = CameraDTO.class)
+                ) 
+            }
+        ),
+        @ApiResponse(responseCode = "400", description = "Invalid pipeline or camera supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @GetMapping("/generateCamera")
+	public ResponseEntity<CameraDTO> generateCamera(
+        Principal principal,
+        @Parameter(
+            name = "pipelineId",
+            description = "Pipeline ID that will be applied to pipeline",
+            example = "25",
+            required = true
+        )
+        @RequestParam Integer pipelineId,
+        @Parameter(
+            name = "cameraId",
+            description = "Camera ID to be generate",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
+            required = false
+        )
+        @RequestParam(required = false) UUID cameraId
+        ) {
+        CameraDTO response = mapper.toDTO(((CameraService) service).create(
+            service.getById(cameraId, principal), 
+            principal
+            )
+        );
+
+        URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}")
+            .buildAndExpand(response.getId()).toUri();
+        return ResponseEntity.created(uri).body(response);
+	}
 }
