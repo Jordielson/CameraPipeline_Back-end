@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class ImageDTO extends PipelineInputDTO {
     @Schema(
 		name = "format",
-		example = "image/mp4",
+		example = "image/png",
         description = "Format to image",
 		type = "string",
 		required = true

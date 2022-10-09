@@ -19,6 +19,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
+import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 
 import lombok.Data;
@@ -48,6 +49,9 @@ public abstract class PipelineInput implements ModelAbstract<UUID>{
     @Column(nullable = false)
     @UpdateTimestamp
     protected ZonedDateTime modificationTime;
+
+    @ManyToOne
+    protected Pipeline pipeline;
 
     @NotNull
     @ManyToOne
