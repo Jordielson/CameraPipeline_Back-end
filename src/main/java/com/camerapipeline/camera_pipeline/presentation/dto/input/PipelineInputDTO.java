@@ -37,6 +37,13 @@ public abstract class PipelineInputDTO {
     private String name;
 
     private PipelineInputType type;
+
+    @Schema(
+		name = "pipelineId",
+		example = "1",
+		type = "int"
+	)
+    private Integer pipelineId;
     
     @Schema(
 		name = "url",

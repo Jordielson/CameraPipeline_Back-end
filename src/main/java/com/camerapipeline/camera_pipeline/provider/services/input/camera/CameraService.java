@@ -52,9 +52,11 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
     private void validCamera(Camera model, UUID id, Principal principal) {
         if (!checkValidName(model.getName(), id, principal)) {
             throw new BusinessException(String.format("There is already a camera with the name %s", model.getName()));
-        } else if (!checkValidUrl(model.getUrl(), id, principal)) {
-            throw new BusinessException(String.format("There is already a camera with the url %s", model.getUrl()));
-        }
+        } 
+        // TODO: NAO VALIDA A URL ENQUANTO NAO TIVER A INTEGRACAO COM A API DE PDI
+        // else if (!checkValidUrl(model.getUrl(), id, principal)) {
+        //     throw new BusinessException(String.format("There is already a camera with the url %s", model.getUrl()));
+        // }
     }
 
     public boolean checkValidName(String name, UUID id, Principal p) {
@@ -99,8 +101,9 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
 
         Camera cameraGenerate = Camera.clone(camera);
         cameraGenerate.setName(cameraGenerate.getName() + "_" + pipeline.getName());
+        cameraGenerate.setPipeline(pipeline);
 
-        return create(cameraGenerate, principal);
+        return cameraGenerate;
     }
 
     @Override
