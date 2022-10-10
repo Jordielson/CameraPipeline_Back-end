@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.model.entities.pdi;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,11 +18,9 @@ import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.enums.ParameterType;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @ToString
-@EqualsAndHashCode
 @Data
 @Entity
 public class Parameter implements ModelAbstract<Integer>{
@@ -53,6 +53,23 @@ public class Parameter implements ModelAbstract<Integer>{
     @Override
     public void setUser(User user) {
         modelPdi.setUser(user);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Parameter)) {
+            return false;
+        }
+        Parameter parameter = (Parameter) o;
+        return Objects.equals(id, parameter.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, type, required, index, modelPdi);
     }
 
 
