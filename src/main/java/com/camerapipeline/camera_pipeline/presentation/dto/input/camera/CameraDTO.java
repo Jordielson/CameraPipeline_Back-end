@@ -45,6 +45,13 @@ public class CameraDTO extends PipelineInputDTO {
 		required = false
     )
     private Integer fpsLimiter;
+    
+    @Schema(
+        name = "baseCamera",
+        type = "CameraDTO",
+		required = false
+    )
+    private CameraDTO baseCamera;
 
     @Schema(
         title = "Camera identifier",

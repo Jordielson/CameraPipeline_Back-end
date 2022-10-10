@@ -96,6 +96,23 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
     public Camera applyPipeline(UUID cameraId, Integer pipelineId, Principal principal) {
         Camera camera = getById(cameraId, principal);
         Pipeline pipeline = pipelineService.getById(pipelineId, principal);
+        
+        if (pipeline.equals(camera.getPipeline())) {
+            throw new BusinessException(
+                "Pipeline has already been applied to this camera",
+                "ERR_PIPELINE_ALREADY_APPLIED",
+                "The camera provided is already applied to this pipeline"
+            );
+        } 
+        Optional<Camera> camOp = ((CameraRepository) repository).findByBaseCameraAndPipeline(cameraId, pipelineId);
+        if(camOp.isPresent()){
+            throw new BusinessException(
+                "There is already a camera with this pipeline",
+                "ERR_CAMERA_PIPELINE_ALREADY_EXISTS",
+                "The camera provided is already exists for this pipeline"
+            );
+        }
+
 
         Camera cameraGenerate = Camera.clone(camera);
         cameraGenerate.setName(cameraGenerate.getName() + "_" + pipeline.getName());
