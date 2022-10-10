@@ -1,8 +1,8 @@
 package com.camerapipeline.camera_pipeline.model.entities.user;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
@@ -29,12 +29,10 @@ import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@EqualsAndHashCode
 @Entity
 @Setter
 @Getter
@@ -66,12 +64,12 @@ public class User implements UserDetails, ModelAbstract<Integer> {
             columnNames = { "user_id", "role_id" }) 
         }
 	)
-	private List<Role> roles = new ArrayList<Role>();
+	private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Pipeline> pipelines;
-    @OneToMany(mappedBy = "user")
-    private List<PipelineInput> pipelineInputs;
+    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+    private Set<Pipeline> pipelines = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+    private Set<PipelineInput> pipelineInputs = new HashSet<>();
 
     public User id(int id) {
         setId(id);
@@ -88,7 +86,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
         return this;
     }
 
-    public User roles(List<Role> roles) {
+    public User roles(Set<Role> roles) {
         setRoles(roles);
         return this;
     }
@@ -142,5 +140,51 @@ public class User implements UserDetails, ModelAbstract<Integer> {
         setPassword(user.password);
         setRoles(user.roles);
     }
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		return result;
+	}
+	
+	
+    
+   
     
 }

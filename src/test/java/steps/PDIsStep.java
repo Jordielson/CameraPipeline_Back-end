@@ -36,6 +36,11 @@ public class PDIsStep extends MainSteps {
 
 			Na(PDIsPage.class).clicarBotaoSalvar();
 			break;
+			
+		case "fecharCardPDI":
+
+			Na(PDIsPage.class).clicarBotaoFecharCardPDI();
+			break;
 
 		default:
 			break;

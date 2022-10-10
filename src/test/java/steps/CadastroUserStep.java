@@ -56,7 +56,7 @@ public class CadastroUserStep extends MainSteps {
 	}
 
 
-	@Quando("^clicar no botão (.*)$")
+	@Quando("^clicar no botão (voltar|CameraPipeline|Cadastrar|Guia)$")
 	public void clicarNoBotão(String botao) {
 		switch (botao) {
 		

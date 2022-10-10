@@ -8,11 +8,12 @@ import io.cucumber.java.pt.Quando;
 import pages.LoginPage;
 import pages.RecuperacaoDeSenhaPage;
 import pages.SenhaResetPage;
+import static config.ConfigInit.*;
 
 public class RecuperarSenhaStep extends MainSteps {
 
 	@Dado("^que informo o emailrecuperacaosenha (.*)$")
-	public void queInformoOEmailUserteste1UserCom(String email) {
+	public void queInformoOEmail(String email) {
 		this.email = email;
 		Na(RecuperacaoDeSenhaPage.class).inserirCampoEmail(email);
 	}
@@ -24,20 +25,24 @@ public class RecuperarSenhaStep extends MainSteps {
 	
 	@Dado("que usuario solicita recuperação de senha")
 	public void queUsuarioSolicitaRecuperaçãoDeSenha() {
+//	    clicarEmRecuperarSenha();
+//	    esperar(1);
+//	    queInformoOEmail("userteste1@user.com");
+//	    clicarEm("Enviar");
 	    
 	}
 	
-	@Dado("que informo a novasenharecuperacao {int} e confirmo")
-	public void queInformoANovasenharecuperacaoEConfirmo(Integer int1) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	@Dado("^que informo a novasenharecuperacao (.*) e confirmo (.*)$")
+	public void queInformoANovasenharecuperacaoEConfirmo(String senha , String confirmacaoDeSenha) {
+	    Na(SenhaResetPage.class).inserirSenha(senha);
+	    Na(SenhaResetPage.class).inserirConfirmSenha(confirmacaoDeSenha);
 	}
 
 
 	@Quando("acessar o link enviado por email")
 	public void acessarOLinkEnviadoPorEmail() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		String link = userService.forgotPassword("userteste1@user.com", "http://localhost:3000/password-reset");
+	    alterarJanela(link);
 	}
 	
 

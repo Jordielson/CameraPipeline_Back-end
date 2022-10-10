@@ -21,6 +21,12 @@ public class PDIsPage {
 	@FindBy(xpath = "//*[@class=\"modal-content\"]/div[1]/div/div[2]/input")
 	private WebElement campoURL;
 	
+	@FindBy(xpath = "//*[@class=\"modal-content\"]/div[1]/button")
+	private WebElement botaoFecharCardParametro;
+
+	@FindBy(xpath = "//*[@class=\"Pdi_modal__2LEg0 modal-body\"]/div/textarea")
+	private WebElement campoDescricaoPDI;
+
 	@FindBy(xpath = "/html/body/div[3]/div/div/div[3]/div[2]/button")
 	private WebElement botaoSalvar;
 	
@@ -43,6 +49,19 @@ public class PDIsPage {
 		}
 	}
 	
+	public void clicarBotaoFecharCardPDI() {
+		botaoFecharCardParametro.click();
+	}
+	
+	public void inserirCampoDescricaoPDI(String value) {
+		campoDescricaoPDI.clear();
+		campoDescricaoPDI.sendKeys(value);
+	}
+	
+	public String getCampoDescricaoPDI(String value) {
+		return campoDescricaoPDI.getAttribute("innerText");
+	}
+	
 	private void deletarPDIPorWebElement(WebElement element) {
 		WebElement botao = element.findElement(By.xpath("//*[@class=\"buttons\"]/button[@title=\"EXCLUIR\"]"));
 		botao.click();
@@ -50,7 +69,7 @@ public class PDIsPage {
 	
 	public void inserirCampoNomeParametro(int posicao, String value) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div/input"));
+		WebElement input = temp.findElement(By.xpath("div[1]/input"));
 		input.clear();
 		input.sendKeys(value);
 //		WebElement imput = temp.findElement(By.xpath("//*div[@class=\"card\" and position()="+posicao+"]/div/input[@id=\""+ (posicao-1) +"\"]"));
@@ -58,28 +77,28 @@ public class PDIsPage {
 	
 	public String getNomeParametro(int posicao) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div/input"));
+		WebElement input = temp.findElement(By.xpath("div[1]/input"));
 		return input.getAttribute("value");
 	}
 	
 	public void selecionarTipoParametro(int posicao,int tipo) {
 		WebElement temp = parametros.get(posicao-1);
-		Select select = new Select( temp.findElement(By.xpath("div/select")));
-		select.selectByVisibleText(tipo == 0? "STRING" : tipo == 1 ? "NUMBER": null );
+		Select select = new Select( temp.findElement(By.xpath("div[1]/select")));
+		select.selectByVisibleText(tipo == 0? "STRING" : tipo == 1 ? "NUMBER": tipo == 2 ? "BOOLEAN" : tipo == 3? "FILE" : null);
 		
 	}
 	
 	public int getTipoParametro(int posicao) {
 		WebElement temp = parametros.get(posicao-1);
-		Select select = new Select( temp.findElement(By.xpath("div/select")));
+		Select select = new Select( temp.findElement(By.xpath("div[1]/select")));
 		String opcao = select.getFirstSelectedOption().getAttribute("innerText");
-		return opcao.equals("STRING")? 0: opcao.equals("NUMBER")? 1 : null;
+		return opcao.equals("STRING")? 0: opcao.equals("NUMBER")? 1 : opcao.equals("BOOLEAN")? 2: opcao.equals("FILE")? 3 : null;
 	}
 	
 	
 	public void setObrigatoriedadeDoParametro(int posicao, boolean isObrigatorio) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div/div/input"));
+		WebElement input = temp.findElement(By.xpath("div[1]/div/input"));
 		boolean checkbox = input.isSelected(); 
 		if(checkbox != isObrigatorio) {
 			input.click();
@@ -88,15 +107,28 @@ public class PDIsPage {
 
 	public boolean getObrigatoriedadeDoParametro(int posicao) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div/div/input"));
+		WebElement input = temp.findElement(By.xpath("div[1]/div/input"));
 		return input.isSelected(); 
 	}
 	
 	public void ClicarDeletarParametro(int posicao) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div/i"));
+		WebElement input = temp.findElement(By.xpath("div[1]/i"));
 		input.click();
 		
+	}
+	
+	public void InserirDescricaoParametro(int posicao, String value) {
+		WebElement temp = parametros.get(posicao-1);
+		WebElement input = temp.findElement(By.xpath("div[2]/textarea"));
+		input.clear();
+		input.sendKeys(value);
+	}
+	
+	public String getDescricaoParametro(int posicao) {
+		WebElement temp = parametros.get(posicao-1);
+		WebElement input = temp.findElement(By.xpath("div[2]/textarea"));
+		return input.getAttribute("innerText");
 	}
 	
 	public void clicarBotaoAdicionarNovoPDI() {

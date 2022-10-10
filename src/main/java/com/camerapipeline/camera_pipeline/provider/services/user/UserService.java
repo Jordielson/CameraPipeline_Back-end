@@ -2,9 +2,9 @@ package com.camerapipeline.camera_pipeline.provider.services.user;
 
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -68,7 +68,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
                 passwordEncoder.encode(u.getPassword())
             );
 
-        user.setRoles(List.of(new Role("ROLE_USER")));
+        user.setRoles(Set.of(new Role("ROLE_USER")));
         
         return super.create(user);
     }
@@ -76,7 +76,7 @@ public class UserService extends ServiceAbstract<User, Integer> {
     @Override
     public User create(User u) {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
-        u.setRoles(List.of(new Role("ROLE_USER")));
+        u.setRoles(Set.of(new Role("ROLE_USER")));
         return super.create(u);
     }
 

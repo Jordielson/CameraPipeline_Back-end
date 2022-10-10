@@ -29,6 +29,13 @@ public class AuthService {
     
     @Autowired
     private TokenProvider tokenProvider;
+    
+    public Authentication authenticateUser(String login, String password) {
+    	final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(login, password));
+    	
+    	return authentication;
+    }
 
     public UserDTO authenticateUserAndGetToken(String login, String password) {
         final Authentication authentication = authenticationManager.authenticate(

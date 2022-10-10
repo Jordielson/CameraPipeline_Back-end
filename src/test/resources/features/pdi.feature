@@ -26,7 +26,7 @@ Cenário: teste
 	Então editar parametro
 		| posicao 	 | 2 			| 
 		| nome 			 | teste2 |
-		| tipo 			 | number |
+		| tipo 			 | string |
 		| obrigatorio| nao		|
 	Quando CRUD-PDI clicar no botão salvarPDI
 	Então sistema notifica parametrosalvo_PDIPage
@@ -46,14 +46,16 @@ Cenário: Validação parametro
 	Então editar parametro 
 		| posicao 	 | 1			|
 		| nome 			 | teste1 |
-		| tipo 			 | number |
+		| tipo 			 | string |
 		| obrigatorio| sim		|
 	Então confirmar atributos do parametro
 		| posicao 	 | 1			|
 		| nome 			 | teste1 |
-		| tipo 			 | number |
+		| tipo 			 | string |
 		| obrigatorio| sim		|
 	Então deletar parametro 1
 	Então confirmar que um parametro foi removido
+	Quando CRUD-PDI clicar no botão fecharCardPDI
+	Então deletar PDI todos 
 	
 	

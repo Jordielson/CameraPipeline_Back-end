@@ -62,6 +62,7 @@ public class UtilStep extends MainSteps{
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/forgotten-password");
 			break;
 			
+			
 		default:
 			assertEquals("Tem que colocar a URL aqui jovem", ":)");
 			break;
