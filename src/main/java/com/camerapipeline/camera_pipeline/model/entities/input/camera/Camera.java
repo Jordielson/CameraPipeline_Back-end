@@ -2,7 +2,6 @@ package com.camerapipeline.camera_pipeline.model.entities.input.camera;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,9 +36,6 @@ public class Camera extends PipelineInput {
 
     private Integer fpsLimiter;
 
-    @OneToOne
-    private Camera baseCamera;
-
 
     public static Camera clone(Camera camera) {
         Camera clone = new Camera(
@@ -47,8 +43,7 @@ public class Camera extends PipelineInput {
             camera.getIsPrivate(), 
             camera.getIsActive(), 
             camera.getCoordinate(), 
-            camera.getFpsLimiter(),
-            camera
+            camera.getFpsLimiter()
         );
         clone.setName(camera.getName());
         clone.setPipeline(camera.getPipeline());

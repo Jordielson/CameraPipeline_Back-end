@@ -53,7 +53,7 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
         if (!checkValidName(model.getName(), id, principal)) {
             throw new BusinessException(String.format("There is already a camera with the name %s", model.getName()));
         } 
-        // TODO: NAO VALIDA A URL ENQUANTO NAO TIVER A INTEGRACAO COM A API DE PDI
+        // TODO: NAO EH PARA VALIDAR A URL ENQUANTO NAO TIVER A INTEGRACAO COM A API DE PDI
         // else if (!checkValidUrl(model.getUrl(), id, principal)) {
         //     throw new BusinessException(String.format("There is already a camera with the url %s", model.getUrl()));
         // }
@@ -65,9 +65,9 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
                 name, 
                 getUserByPrincipal(p).getId()
             );
-            
+
         return (camOptional.isPresent() 
-            && camOptional.get().getId() != id) 
+            && !camOptional.get().getId().equals(id)) 
             ? false : true;
     }
 
@@ -78,7 +78,7 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
                 getUserByPrincipal(p).getId()
             );
         return (camOptional.isPresent()
-            && camOptional.get().getId() != id) 
+            && !camOptional.get().getId().equals(id)) 
             ? false : true;
     }
 
@@ -89,10 +89,8 @@ public class CameraService extends ServiceAbstract<Camera, UUID> {
     }
 
     public boolean checkIfItCameraUsed(UUID id, Principal principal) {
-        // Camera camera = getById(id, principal);
-
-        //TODO: retorna veradeiro enquando ainda nao estar implementado
-        return true;
+        Camera camera = getById(id, principal);
+        return camera.getPipeline() != null;
     }
 
     public Camera applyPipeline(UUID cameraId, Integer pipelineId, Principal principal) {
