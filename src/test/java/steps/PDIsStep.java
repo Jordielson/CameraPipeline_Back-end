@@ -63,6 +63,13 @@ public class PDIsStep extends MainSteps {
 		Na(PDIsPage.class).inserirCampoURL(url);
 	}
 	
+	@Então("^editar descricao (.*)$")
+	public void editarDescricaoTeste(String descricao) {
+		Na(PDIsPage.class).inserirCampoDescricaoPDI(descricao);
+	}
+	
+	
+	
 	@Então("^deletar parametro (.*)$")
 	public void deletarParametro(String posicao) {
 		Na(PDIsPage.class).ClicarDeletarParametro(Integer.parseInt(posicao));

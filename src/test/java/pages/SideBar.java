@@ -11,6 +11,15 @@ public class SideBar {
 	@FindBy(xpath = "//*[@id=\"sidebar\"]/div[1]/ul/li[2]/a")
 	private WebElement abaEdicao;
 	
+	@FindBy(xpath = "//*[@id=\"sidebar\"]/div[1]/ul/li[2]/li/a[1]")
+	private WebElement abaEdicaoImagem;
+
+	@FindBy(xpath = "//*[@id=\"sidebar\"]/div[1]/ul/li[2]/li/a[2]")
+	private WebElement abaEdicaoVideo;
+	
+	@FindBy(xpath = "//*[@id=\"sidebar\"]/div[1]/ul/li[2]/li/a[3]")
+	private WebElement abaEdicaoCamera;
+	
 	@FindBy(xpath = "//*[@id=\"sidebar\"]/div[1]/ul/li[3]/a")
 	private WebElement abaPipeline;
 	
@@ -28,6 +37,21 @@ public class SideBar {
 	
 	@FindBy(xpath = "//*[@id=\"sidebar\"]/div[2]/div/a")
 	private WebElement botaoSair;
+	
+	public void clickAbaEdicaoImagem() {
+		clickAbaEdicao();
+		abaEdicaoImagem.click();
+	}
+	
+	public void clickAbaEdicaoVideo() {
+		clickAbaEdicao();
+		abaEdicaoVideo.click();
+	}
+	
+	public void clickAbaEdicaoCamera() {
+		clickAbaEdicao();
+		abaEdicaoCamera.click();
+	}
 	
 	public void clickAbaHome() {
 		abaHome.click();
