@@ -44,15 +44,15 @@ Exemplos:
 	
 	
 Cenário: usuario não confirmou a senha
-	Dado que eu passe o email userteste2@user.com
-	E passe a senha "senha2"
+	Dado que eu passe o email userteste1@user.com
+	E passe a senha "123456"
 	E não passe confirme a senha
 	Quando cadastrar 
 	Então sistema notifica campoconfirmarsenha_Cadastrousuario	
 	
 Esquema do Cenário: usuario digita senhas diferentes
-	* remover usuario userteste2@user.com
-	Dado que eu passe o email userteste2@user.com
+	* remover usuario userteste1@user.com
+	Dado que eu passe o email userteste1@user.com
 	E passe a senha <senha>
 	E passe confirme a senha <confirmsenha>
 	Quando cadastrar
@@ -68,25 +68,25 @@ Esquema do Cenário: usuario digita senhas diferentes
 	
 	
 Cenário: Cadastro de um usuario com sucesso
-	* remover usuario userteste2@user.com
-	Dado que eu passe o email userteste2@user.com
-	E passe a senha "senha2"
-	E passe confirme a senha "senha2"
+	* remover usuario userteste1@user.com
+	Dado que eu passe o email userteste1@user.com
+	E passe a senha "123456"
+	E passe confirme a senha "123456"
 	Quando cadastrar 
 	Então sistema notifica contacriada_Cadastrousuario
-	Então usuario userteste2@user.com deve estar no banco
- 	Então remover usuario userteste2@user.com
+	Então usuario userteste1@user.com deve estar no banco
+ 	Então remover usuario userteste1@user.com
 
 	
 Cenário: Email informado já cadastrado
-	* remover usuario userteste2@user.com
-	Dado que existe a conta email userteste2@user.com e senha "senha2"
-	Dado que eu passe o email userteste2@user.com
-	E passe a senha "senha2"
-	E passe confirme a senha "senha2"
+	* remover usuario userteste1@user.com
+	Dado que existe a conta email userteste1@user.com e senha "123456"
+	Dado que eu passe o email userteste1@user.com
+	E passe a senha "123456"
+	E passe confirme a senha "123456"
 	Quando cadastrar 
 	Então sistema notifica emailexistente_Cadastrousuario
-	Então usuario userteste2@user.com deve estar no banco
-	Então remover usuario userteste2@user.com
+	Então usuario userteste1@user.com deve estar no banco
+	Então remover usuario userteste1@user.com
 
 

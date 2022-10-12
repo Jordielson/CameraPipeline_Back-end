@@ -14,11 +14,14 @@ Funcionalidade: Validar a aplicação de pipeline em imagens
 	Quando tentar logar
 	Dado que tenho uma Pipeline
 	Entao acessar aba Edição-Camera
+	Então devo estar na pagina de edicao-Imagem
 	Entao passar file "C:\Users\plgon\Downloads\Power Rangers.jpeg"
 	Entao EI clicar no botão Proximo
 	Entao selecionar Pipeline "Pipeline Test"
+	Então verificar processamento salvo
 	Entao EI clicar no botão Voltar
 	Entao selecionar Pipeline "Pipeline Test"
+	Então verificar processamento salvo
 	Entao EI clicar no botão Baixar
 	Entao EI clicar no botão Reiniciar
 	 

@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class EdicaoImagemPage {
+	
+	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/*[position()=1]")
+	private WebElement tituloLabel;
 
 	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/input[2]")
 	private WebElement campoURLFile;
@@ -36,6 +39,10 @@ public class EdicaoImagemPage {
 				break;
 			}
 		}
+	}
+	
+	public String getTituloLabel() {
+		return tituloLabel.getText();
 	}
 
 	public void inserirFile(String endereco) {

@@ -22,7 +22,6 @@ public class CadastroUserStep extends MainSteps {
 	@Dado("^que eu(\" não\")? passe o email( (.*))?$")
 	public void queEuPasseOEmail(String condicao, String string) {
 		if (condicao == null) {
-			this.email = string;
 			Na(CriarContaPage.class).inserirEmail(string);
 		}
 	}
@@ -31,7 +30,6 @@ public class CadastroUserStep extends MainSteps {
 	public void passeASenha(String condicao, String string) {
 
 		if (condicao == null) {
-			this.senha = string;
 			Na(CriarContaPage.class).inserirSenha(string);
 		}
 	}
@@ -42,19 +40,6 @@ public class CadastroUserStep extends MainSteps {
 			Na(CriarContaPage.class).inserirConfirmacaoSenha(string);
 		}
 	}
-
-	@Dado("que o email já está cadastrado")
-	public void queOEmailJáEstáCadastrado() {
-		if (!email.isEmpty()) {
-			UserResquest user = new UserResquest();
-			user.setEmail(email);
-			user.setPassword(senha);
-
-			userService.create(user);
-
-		}
-	}
-
 
 	@Quando("^clicar no botão (voltar|CameraPipeline|Cadastrar|Guia)$")
 	public void clicarNoBotão(String botao) {

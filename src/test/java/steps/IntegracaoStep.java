@@ -32,13 +32,15 @@ public class IntegracaoStep extends MainSteps{
 
 	@Dado("^que existe a conta email (.*) e senha (.*)$")
 	public void queExisteAContaEmailESenha(String email, String senha) {
-		this.email = email;
-		this.senha = senha;
-		UserResquest user = new UserResquest();
-		user.setEmail(email);
-		user.setPassword(senha);
-
-		userService.create(user);
+		System.out.println(senha);
+		System.out.println(senha.replace("\"", ""));
+		User novoUser = new User();
+		novoUser.setEmail(email);
+		novoUser.setPassword(senha.replace("\"", ""));
+		novoUser.setPipelineInputs(Set.of());
+		novoUser.setPipelines(Set.of());
+		
+		userService.create(novoUser);
 	}
 	
 	@Então("^usuario (.*)( não)? deve estar no banco$")
@@ -56,13 +58,8 @@ public class IntegracaoStep extends MainSteps{
 	@Então("^remover usuario( (.*))?$")
 	public void removerUsuario(String emailpassado) {
 		esperar(1);
-		Optional<User> userRecuperado;
+		Optional<User> userRecuperado = userRecuperado = userRepository.findByEmail(emailpassado);
 
-		if (emailpassado == null) {
-			userRecuperado = userRepository.findByEmail(email);
-		} else {
-			userRecuperado = userRepository.findByEmail(emailpassado);
-		}
 		if (userRecuperado.isPresent()) {
 			limparUser();
 			userRepository.deleteById(userRecuperado.get().getId());
@@ -70,14 +67,18 @@ public class IntegracaoStep extends MainSteps{
 	}
 	
 	private void limparUser() {
-		Set<Pipeline> pipelines = recuperarUser().getPipelines();
-		for(Pipeline p: pipelines) {
-			pipelineService.delete(p.getId(), recuperarPrincipal());
+		if(recuperarUser().getPipelines() != null) {
+			Set<Pipeline> pipelines = recuperarUser().getPipelines();
+			for(Pipeline p: pipelines) {
+				pipelineService.delete(p.getId(), recuperarPrincipal());
+			}
 		}
 		
-		List<ImageData> imagens = imageDataService.getAll(pageable, recuperarPrincipal()).toList();
-		for(ImageData i : imagens) {
-			imageDataService.deleteImage(i.getId(), recuperarPrincipal());
+		if(recuperarUser().getPipelineInputs() != null) {
+			List<ImageData> imagens = imageDataService.getAll(pageable, recuperarPrincipal()).toList();
+			for(ImageData i : imagens) {
+				imageDataService.deleteImage(i.getId(), recuperarPrincipal());
+			}
 		}
 		
 	}

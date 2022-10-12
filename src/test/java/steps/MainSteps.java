@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import static config.ConfigInit.*;
 
 import java.security.Principal;
+import java.util.List;
 
 import com.camerapipeline.camera_pipeline.CameraPipelineApplication;
+import com.camerapipeline.camera_pipeline.model.entities.input.image.ImageData;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
@@ -37,17 +39,38 @@ public class MainSteps {
 	@Autowired
 	protected ImageDataService imageDataService;
 
-	protected String email;
-	protected String senha;
 	protected Pageable pageable = Pageable.unpaged();
 	
 	protected Principal recuperarPrincipal() {
-		return authService.authenticateUser("userteste1@user.com", "123456");
+		List<String> senhas = List.of("123456", "654321");
+		Principal principal = null ;
+		
+		for(String senha : senhas) {
+			try {
+				principal = authService.authenticateUser("userteste1@user.com", senha);
+				break;
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		return principal;
 	}
 	
 	protected User recuperarUser() {
 		return authService.loadUserByUsername(recuperarPrincipal().getName());
 	}
 	
+	protected List<ImageData> getAllImageData() {
+		return imageDataService.getAll(pageable, recuperarPrincipal()).toList();
+	}
+	
+	protected int getAllImageDataSize() {
+		return getAllImageData().size();
+	}
+	
+//	private Principal principalLogProvider(String index) {
+//		
+//	}
+//	
 	
 }

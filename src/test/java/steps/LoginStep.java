@@ -14,8 +14,6 @@ public class LoginStep extends MainSteps{
 	
 	@Dado("^que informei email (.*) e senha (.*)$")
 	public void que_informei_email_e_senha(String email, String senha) {
-		this.email = email;
-		this.senha = senha;
 	    Na(LoginPage.class).inserirEmailLogin(email);
 	    Na(LoginPage.class).inserirSenhaLogin(senha);
 	}
