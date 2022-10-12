@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.input.image.ImageData;
+import com.camerapipeline.camera_pipeline.model.entities.input.video.VideoData;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.presentation.dto.user.UserResquest;
@@ -32,8 +33,6 @@ public class IntegracaoStep extends MainSteps{
 
 	@Dado("^que existe a conta email (.*) e senha (.*)$")
 	public void queExisteAContaEmailESenha(String email, String senha) {
-		System.out.println(senha);
-		System.out.println(senha.replace("\"", ""));
 		User novoUser = new User();
 		novoUser.setEmail(email);
 		novoUser.setPassword(senha.replace("\"", ""));
@@ -78,6 +77,13 @@ public class IntegracaoStep extends MainSteps{
 			List<ImageData> imagens = imageDataService.getAll(pageable, recuperarPrincipal()).toList();
 			for(ImageData i : imagens) {
 				imageDataService.deleteImage(i.getId(), recuperarPrincipal());
+			}
+		}
+		
+		if(recuperarUser().getPipelineInputs() != null) {
+			List<VideoData> videos = videoDataService.getAll(pageable, recuperarPrincipal()).toList();
+			for(VideoData v : videos) {
+				videoDataService.deleteVideo(v.getId(), recuperarPrincipal());
 			}
 		}
 		

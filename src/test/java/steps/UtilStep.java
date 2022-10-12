@@ -67,6 +67,10 @@ public class UtilStep extends MainSteps{
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/editar-imagem");
 			break;
 			
+		case "edicao-Video":
+
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/editar-video");
+			break;
 			
 			
 		default:

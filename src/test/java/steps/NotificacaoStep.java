@@ -137,6 +137,19 @@ public class NotificacaoStep extends MainSteps{
 			break;
 			
 		/**
+		 * TODO Notificações Page Edição
+		 */
+			
+		case "ArquivoNaoSelecionado_EdicaoImagemPage":
+			mensagemErro = "Selecione um(a) imagem antes de prosseguir";
+			break;
+		
+		case "ArquivoNaoSelecionado_EdicaoVideoPage":
+			mensagemErro = "Selecione um(a) video antes de prosseguir";
+			break;
+			
+			
+		/**
 		 * TODO Notificações Gerais
 		 */
 			
