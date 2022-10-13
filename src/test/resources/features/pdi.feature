@@ -17,6 +17,7 @@ Cenário: teste
 	Quando CRUD-PDI clicar no botão novoparametro
 	Então editar nome PDI teste
 	Então editar URL teste
+	Então editar descricao descricao teste
 	Então editar parametro 
 		| posicao 	 | 1			|
 		| nome 			 | teste1 |

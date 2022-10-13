@@ -11,10 +11,11 @@ import pages.SenhaResetPage;
 import static config.ConfigInit.*;
 
 public class RecuperarSenhaStep extends MainSteps {
+	
+	String link = null;
 
 	@Dado("^que informo o emailrecuperacaosenha (.*)$")
 	public void queInformoOEmail(String email) {
-		this.email = email;
 		Na(RecuperacaoDeSenhaPage.class).inserirCampoEmail(email);
 	}
 
@@ -25,10 +26,7 @@ public class RecuperarSenhaStep extends MainSteps {
 	
 	@Dado("que usuario solicita recuperação de senha")
 	public void queUsuarioSolicitaRecuperaçãoDeSenha() {
-//	    clicarEmRecuperarSenha();
-//	    esperar(1);
-//	    queInformoOEmail("userteste1@user.com");
-//	    clicarEm("Enviar");
+		link = userService.forgotPassword("userteste1@user.com", "http://localhost:3000/password-reset");
 	    
 	}
 	
@@ -41,7 +39,6 @@ public class RecuperarSenhaStep extends MainSteps {
 
 	@Quando("acessar o link enviado por email")
 	public void acessarOLinkEnviadoPorEmail() {
-		String link = userService.forgotPassword("userteste1@user.com", "http://localhost:3000/password-reset");
 	    alterarJanela(link);
 	}
 	

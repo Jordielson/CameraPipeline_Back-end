@@ -21,6 +21,9 @@ public class PDIsPage {
 	@FindBy(xpath = "//*[@class=\"modal-content\"]/div[1]/div/div[2]/input")
 	private WebElement campoURL;
 	
+	@FindBy(xpath = "//*[@class=\"modal-content\"]/div[2]/div/textarea")
+	private WebElement campoDescriçãoDPI;
+	
 	@FindBy(xpath = "//*[@class=\"modal-content\"]/div[1]/button")
 	private WebElement botaoFecharCardParametro;
 

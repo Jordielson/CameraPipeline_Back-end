@@ -3,6 +3,8 @@ package config;
 import java.time.Duration;
 import java.util.Set;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -14,7 +16,7 @@ public class ConfigInit {
 	public ConfigInit() {}
 	
 	public static void acessarSistema() {
-		System.setProperty("webdriver.chrome.driver","/home/jordielson/Downloads/chromedriver");
+		System.setProperty("webdriver.chrome.driver","src/test/resources/drivers/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -23,7 +25,7 @@ public class ConfigInit {
 	}
 	
 	public static void acessarSistema(String URL) {
-		System.setProperty("webdriver.chrome.driver", "/home/jordielson/Downloads/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -51,6 +53,12 @@ public class ConfigInit {
 	
 	public static <T> T Na(Class<T>classe){
 		return PageFactory.initElements(driver, classe);
+	}
+	
+	public static void aceitarAlerta() {
+		driver.switchTo().alert().accept();
+		driver.switchTo().defaultContent();
+		
 	}
 	
 	public static void esperar(int segundos) {

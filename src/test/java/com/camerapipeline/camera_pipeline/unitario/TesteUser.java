@@ -143,7 +143,7 @@ public class TesteUser {
 	public void limparBanco() {
 		Optional<User> preUser = userRepository.findByEmail(user.getEmail());
 		if(preUser.isPresent()) {
-			userRepository.deleteById(user.getId());
+			userRepository.deleteById(preUser.get().getId());
 		}
 		
 	}
