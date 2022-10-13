@@ -147,6 +147,18 @@ public class NotificacaoStep extends MainSteps{
 		case "ArquivoNaoSelecionado_EdicaoVideoPage":
 			mensagemErro = "Selecione um(a) video antes de prosseguir";
 			break;
+
+		case "PipelineAplicadaEmCamera_EdicaoCameraPage":
+			mensagemErro = "Pipeline aplicada a câmera com sucesso";
+			break;
+
+		case "ErroCameraJaProcessada_EdicaoCameraPage":
+			mensagemErro = "Pipeline já foi aplicada a esta câmera";
+			break;
+			
+		case "ErroPipelineJaAplicadaEmCamera_EdicaoCameraPage":
+			mensagemErro = "Já existe uma câmera com esse pipeline";
+			break;
 			
 			
 		/**

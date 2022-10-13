@@ -18,7 +18,7 @@ public class EdicaoImagemStep extends MainSteps {
 		assertEquals(qtdImageData, getAllImageDataSize());
 	}
 
-	@Entao("acessar aba Edição-Camera")
+	@Entao("acessar aba Edicao-Imagem")
 	public void acessarAbaEdiçãoCamera() {
 		Na(SideBar.class).clickAbaEdicaoImagem();
 	}

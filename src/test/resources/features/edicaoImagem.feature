@@ -13,7 +13,7 @@ Funcionalidade: Validar a aplicação de pipeline em imagens
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Dado que tenho uma Pipeline
-	Entao acessar aba Edição-Camera
+	Entao acessar aba Edicao-Imagem
 	Então devo estar na pagina de edicao-Imagem
 	Entao EI passar file "src\test\resources\util\TestImage.jpg"
 	Entao EI clicar no botão Proximo
@@ -36,7 +36,7 @@ Funcionalidade: Validar a aplicação de pipeline em imagens
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Dado que tenho uma Pipeline
-	Entao acessar aba Edição-Camera
+	Entao acessar aba Edicao-Imagem
 	Então devo estar na pagina de edicao-Imagem
   Entao EI devo estar na primeira etapa
 	* EI clicar no botão Proximo
