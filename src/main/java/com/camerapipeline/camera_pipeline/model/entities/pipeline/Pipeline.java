@@ -1,6 +1,5 @@
 package com.camerapipeline.camera_pipeline.model.entities.pipeline;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,9 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
@@ -30,18 +26,16 @@ public class Pipeline implements ModelAbstract<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
     @NotBlank
     @Column(length = 60)
     private String name;
+
     private String description;
-    @CreatedDate
-    @Column(name = "creation_date", columnDefinition = "TIMESTAMP")
-    private LocalDateTime creationDate;
-    @LastModifiedDate
-    @Column(name = "last_change", columnDefinition = "TIMESTAMP")
-    private LocalDateTime modificationTime;
+
     @NotNull
     private boolean isActive;
+
     @NotNull
     @ManyToOne
     private User user;
@@ -61,16 +55,6 @@ public class Pipeline implements ModelAbstract<Integer> {
 
     public Pipeline description(String description) {
         setDescription(description);
-        return this;
-    }
-
-    public Pipeline creationDate(LocalDateTime creationDate) {
-        setCreationDate(creationDate);
-        return this;
-    }
-
-    public Pipeline modificationTime(LocalDateTime modificationTime) {
-        setModificationTime(modificationTime);
         return this;
     }
 

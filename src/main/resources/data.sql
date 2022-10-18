@@ -13,3 +13,5 @@ INSERT INTO public.role_user
 VALUES(1, 'ROLE_USER')
 ON CONFLICT DO NOTHING;
 
+-- UUID generator for Postgres
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; 
