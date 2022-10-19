@@ -45,11 +45,26 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
 
     @Override
     public Pipeline update(Integer id, Pipeline model, Principal principal) {
-        Pipeline pipeline = super.update(id, model, principal);
+        Pipeline oldPipeline = this.repository.findById(id)
+                .map(existing -> existing
+                ).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+            
         for (PDI pdi : model.getPDIList()) {
-            pdi.setPipeline(model);
-            pdiService.update(pdi.getId(), pdi, principal);
+            pdi.setPipeline(oldPipeline);
+            if(pdi.getId() != null && pdi.getId() != 0) {
+                pdiService.update(pdi.getId(), pdi, principal);
+            } else {
+                pdiService.create(pdi);
+            }
         }
+
+        oldPipeline.getPDIList().forEach(oldPdi -> {
+            if(!model.getPDIList().contains(oldPdi)) {
+                pdiService.delete(oldPdi.getId(), principal);
+            }
+        });
+
+        Pipeline pipeline = super.update(id, model, principal);
 
         historyService.register(DataHistoryEnum.UPDATE, pipeline);
 

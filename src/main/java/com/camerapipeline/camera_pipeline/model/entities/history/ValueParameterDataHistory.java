@@ -7,12 +7,16 @@ import javax.validation.constraints.NotNull;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ValueParameterDataHistory extends DataHistory {
     @NotNull

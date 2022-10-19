@@ -16,8 +16,10 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@Data
 @EqualsAndHashCode
 @MappedSuperclass
 public abstract class DataHistory {

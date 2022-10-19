@@ -43,8 +43,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
         model.setId(id);
         for (ValueParameter value : model.getValueParameters()) {
             value.setPdi(model);
-            if(value.getId() != null && value.getId() != 0 &&
-               id.equals(valueService.getById(value.getId()).getPdi().getId())) {
+            if(value.getId() != null && value.getId() > 0) {
                 valueService.update(value.getId(), value, principal);
             } else {
                 valueService.create(value);
@@ -57,7 +56,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
             }
         });
 
-        return super.repository.save(model);
+        return super.update(id, model, principal);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PdiDTO {
         example = "65",
 		required = false
     )
-    private int id;
+    private Integer id;
     @Schema(
         title = "Model PDI",
         name = "modelPdi",
