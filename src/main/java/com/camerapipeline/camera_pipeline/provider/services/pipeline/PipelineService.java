@@ -32,12 +32,12 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
 
     @Transactional
     @Override
-    public Pipeline create(Pipeline model) {
-        Pipeline pipeline = super.create(model);
+    public Pipeline create(Pipeline model, Principal principal) {
+        Pipeline pipeline = super.create(model, principal);
         
         for (PDI pdi : model.getPDIList()) {
             pdi.setPipeline(pipeline);
-            pdiService.create(pdi);
+            pdiService.create(pdi, principal);
         }
 
         historyService.register(DataHistoryEnum.INSERT, pipeline);

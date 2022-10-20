@@ -20,9 +20,19 @@ import com.camerapipeline.camera_pipeline.provider.specification.pdi.PDISpecific
 public class PDIService extends ServiceAbstract<PDI, Integer> {
     @Autowired
     ValueParameterService valueService;
+    @Autowired
+    ModelPDIService modelPdiService;
     
     public PDIService(PDIRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public PDI create(PDI model, Principal principal) {
+        model.setModelPdi(
+            modelPdiService.getById(model.getModelPdi().getId(), principal)
+        );
+        return super.create(model, principal);
     }
     
     @Transactional
@@ -39,6 +49,10 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
     @Transactional
     @Override
     public PDI update(Integer id, PDI model, Principal principal) {
+        model.setModelPdi(
+            modelPdiService.getById(model.getModelPdi().getId(), principal)
+        );
+
         PDI oldPDI = this.repository.findById(id)
                 .map(existing -> existing
                 ).orElseThrow(() -> new EntityNotFoundException(id.toString()));

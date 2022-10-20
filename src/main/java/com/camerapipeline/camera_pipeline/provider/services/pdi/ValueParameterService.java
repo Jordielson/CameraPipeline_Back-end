@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.provider.services.pdi;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,17 @@ import com.camerapipeline.camera_pipeline.provider.specification.pdi.ValueParame
 
 @Service
 public class ValueParameterService extends ServiceAbstract<ValueParameter, Integer> {
+    @Autowired
+    ParameterService paramService;
+    
     public ValueParameterService(ValueParameterRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public ValueParameter create(ValueParameter model) {
+        model.setParameter(paramService.getById(model.getParameter().getId()));
+        return super.create(model);
     }
 
     @Override
