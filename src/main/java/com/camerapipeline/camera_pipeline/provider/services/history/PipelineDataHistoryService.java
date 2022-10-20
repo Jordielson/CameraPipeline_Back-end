@@ -14,7 +14,6 @@ import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 import com.camerapipeline.camera_pipeline.model.repository.history.PipelineDataHistoryRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
-import com.camerapipeline.camera_pipeline.provider.mapper.history.PipelineDataHistoryMapper;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 
 @Service
@@ -23,8 +22,6 @@ public class PipelineDataHistoryService {
     PipelineDataHistoryRepository repository;
     @Autowired
     PdiDataHistoryService pdiService;
-    @Autowired
-    PipelineDataHistoryMapper mapper;
     @Autowired
     AuthService authService;
 
@@ -48,24 +45,20 @@ public class PipelineDataHistoryService {
         return pipelineData;
     }
 
-    public Page<Pipeline> getHistoryByPipeline(Pageable pageable, Integer pipelineID, Principal principal) {
-        return mapper.toDTOPage(
-            repository.findAllByPipeline(
-                pageable, 
-                pipelineID,
-                authService.loadUserByUsername(principal.getName()).getId()
-            )
+    public Page<PipelineDataHistory> getHistoryByPipeline(Pageable pageable, Integer pipelineID, Principal principal) {
+        return repository.findAllByPipeline(
+            pageable, 
+            pipelineID,
+            authService.loadUserByUsername(principal.getName()).getId()
         );
     }
 
-    public Pipeline getById(UUID id, Principal principal) {
-        return mapper.toDTO(
-            repository.findById(id)
+    public PipelineDataHistory getById(UUID id, Principal principal) {
+        return repository.findById(id)
             .orElseThrow(
-                () -> new CustomEntityNotFoundException(
-                    "PDI", 
-                    id.toString()
-                )
+            () -> new CustomEntityNotFoundException(
+                "PDI", 
+                id.toString()
             )
         );
     }

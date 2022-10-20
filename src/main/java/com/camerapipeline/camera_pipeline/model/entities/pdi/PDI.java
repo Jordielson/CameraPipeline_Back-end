@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.model.entities.pdi;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,12 +17,10 @@ import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@EqualsAndHashCode
 @ToString
 @Getter
 @Setter
@@ -51,5 +50,21 @@ public class PDI implements ModelAbstract<Integer>{
     @Override
     public void setUser(User user) {
         pipeline.setUser(user);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof PDI)) {
+            return false;
+        }
+        PDI pDI = (PDI) o;
+        return Objects.equals(id, pDI.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, modelPdi, pipeline, valueParameters);
     }
 }

@@ -1,6 +1,7 @@
-package com.camerapipeline.camera_pipeline.presentation.dto.pipeline;
+package com.camerapipeline.camera_pipeline.presentation.dto.history;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PipelineDTO {
+public class PipelineDataHistoryDTO {
     @Schema(
         title = "Pipeline identifier",
         name = "id",
@@ -28,6 +29,14 @@ public class PipelineDTO {
 		required = false
     )
     private Integer id;
+
+    @Schema(
+        title = "Pipeline revision identifier",
+        name = "revision",
+        type = "uuid",
+		required = false
+    )
+    private UUID revision;
 
     @Schema(
 		name = "name",
@@ -62,30 +71,4 @@ public class PipelineDTO {
 		required = false
     )
     private List<PdiDTO> PDIList;
-
-
-    public PipelineDTO id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public PipelineDTO name(String name) {
-        setName(name);
-        return this;
-    }
-
-    public PipelineDTO description(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public PipelineDTO isActive(boolean isActive) {
-        setActive(isActive);
-        return this;
-    }
-
-    public PipelineDTO PDIList(List<PdiDTO> PDIList) {
-        setPDIList(PDIList);
-        return this;
-    }
 }

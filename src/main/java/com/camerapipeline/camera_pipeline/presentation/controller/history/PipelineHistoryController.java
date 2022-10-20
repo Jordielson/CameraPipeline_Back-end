@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
-import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
-import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMapper;
+import com.camerapipeline.camera_pipeline.presentation.dto.history.PipelineDataHistoryDTO;
+import com.camerapipeline.camera_pipeline.provider.mapper.history.PipelineDataHistoryMapper;
 import com.camerapipeline.camera_pipeline.provider.services.history.PipelineDataHistoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,13 +29,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/pipeline-data-history")
-public class HistoryController {
+public class PipelineHistoryController {
     @Autowired
     private PipelineDataHistoryService service;
     @Autowired
-    private PipelineMapper mapper;
+    private PipelineDataHistoryMapper mapper;
 
-    @Operation(summary = "Get all entities")
+    @Operation(summary = "Get history of a pipeline")
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successfully get"),
         @ApiResponse(responseCode = "401", description = "Unauthorized", 
@@ -53,17 +53,23 @@ public class HistoryController {
         ),
     })
     @GetMapping(value = "/pipeline/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<PipelineDTO>> getAll(
+    public ResponseEntity<Page<PipelineDataHistoryDTO>> getAll(
         @ParameterObject Pageable pageable, 
+        @Parameter(
+            name = "id",
+            description = "Pipeline identify to fetch",
+            example = "256",
+            required = true
+        )
         @PathVariable("id") Integer id, 
         Principal principal) {
-        Page<PipelineDTO> list = mapper.toDTOPage(
+        Page<PipelineDataHistoryDTO> list = mapper.toDTOPage(
             service.getHistoryByPipeline(pageable, id, principal)
         );
-        return new ResponseEntity<Page<PipelineDTO>>(list, HttpStatus.OK);
+        return new ResponseEntity<Page<PipelineDataHistoryDTO>>(list, HttpStatus.OK);
     }
     
-    @Operation(summary = "Get a entity by its id")
+    @Operation(summary = "Get from a specific version of the pipeline")
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successfully found"),
         @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
@@ -78,7 +84,7 @@ public class HistoryController {
             content = @Content(mediaType = "application/json", 
             schema = @Schema( implementation = ExceptionMessage.class))
         ), 
-        @ApiResponse(responseCode = "404", description = "Entity not found", 
+        @ApiResponse(responseCode = "404", description = "Historic not found", 
             content = @Content(mediaType = "application/json", 
             schema = @Schema( implementation = ExceptionMessage.class))
         ),
@@ -88,22 +94,22 @@ public class HistoryController {
             schema = @Schema( implementation = ExceptionMessage.class))
         ),
     })
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PipelineDTO> get(
+    @GetMapping(value = "/{version}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PipelineDataHistoryDTO> get(
         @Parameter(
-            name = "id",
-            description = "Entity Integer to fetch",
-            example = "253",
+            name = "version",
+            description = "Pipeline version to fetch",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
             required = true
         )
-        @PathVariable("id") UUID id, 
+        @PathVariable("version") UUID id, 
         Principal principal) {
-        PipelineDTO dto = mapper.toDTO(
+        PipelineDataHistoryDTO dto = mapper.toDTO(
             service.getById(
                 id,
                 principal
             )
         );
-        return new ResponseEntity<PipelineDTO>(dto, HttpStatus.OK);
+        return new ResponseEntity<PipelineDataHistoryDTO>(dto, HttpStatus.OK);
     }
 }

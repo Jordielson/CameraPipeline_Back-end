@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
@@ -24,6 +25,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
         super(repository);
     }
     
+    @Transactional
     @Override
     public PDI create(PDI model) {
         PDI pdi = super.create(model);
@@ -34,6 +36,7 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
         return pdi;
     }
 
+    @Transactional
     @Override
     public PDI update(Integer id, PDI model, Principal principal) {
         PDI oldPDI = this.repository.findById(id)

@@ -83,8 +83,8 @@ public class ApplicationExceptionHandler {
             = new ExceptionMessage(
                 HttpStatus.NOT_FOUND, 
                 "ERR_NOT_FOUND", 
-                ex.getLocalizedMessage(), 
-                ex.getMessage()
+                ex.getMessage(),
+                String.format("Entity with identify %s is not fount", ex.getMessage())
                 );
 
         log.warn("ERR_NOT_FOUND - [{}].", ex.getMessage(), ex);

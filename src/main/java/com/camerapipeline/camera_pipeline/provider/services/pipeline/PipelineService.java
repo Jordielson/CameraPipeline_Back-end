@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
@@ -29,6 +30,7 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
         super(repository);
     }
 
+    @Transactional
     @Override
     public Pipeline create(Pipeline model) {
         Pipeline pipeline = super.create(model);
@@ -43,6 +45,7 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
         return pipeline;
     }
 
+    @Transactional
     @Override
     public Pipeline update(Integer id, Pipeline model, Principal principal) {
         Pipeline oldPipeline = this.repository.findById(id)
@@ -69,6 +72,14 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
         historyService.register(DataHistoryEnum.UPDATE, pipeline);
 
         return pipeline;
+    }
+
+    @Transactional
+    @Override
+    public Pipeline delete(Integer id, Principal principal) {
+        Pipeline pipe = super.delete(id, principal);
+        historyService.register(DataHistoryEnum.DELETE, pipe);
+        return pipe;
     }
 
     @Override
