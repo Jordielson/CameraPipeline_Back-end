@@ -73,7 +73,8 @@ public class ModelPDIController extends ControllerAbstract<ModelPDI, ModelPdiDTO
             )
 			@RequestParam String name,
 			@ParameterObject Pageable pageable) {
-        ModelPdiDTO search = new ModelPdiDTO().name(name);
+        ModelPdiDTO search = new ModelPdiDTO();
+        search.setName(name);
         Page<ModelPdiDTO> list = mapper.toDTOPage(
             service.search(
                 pageable, 

@@ -20,7 +20,7 @@ public class PdiDataHistoryService {
     public PdiDataHistory register(DataHistoryEnum actions, PDI pdi, PipelineDataHistory pipeline) {
         PdiDataHistory data = PdiDataHistory.builder()
             .action(actions)
-            .modelPdi(pdi.getModelPdi())
+            .digitalProcess(pdi.getDigitalProcess())
             .pdiID(pdi.getId())
             .pipeline(pipeline)
             .build();

@@ -7,11 +7,11 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
-import com.camerapipeline.camera_pipeline.presentation.dto.pdi.modelpdi.ModelPdiDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProcessDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.ValueParameterDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
@@ -22,7 +22,7 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
     @Autowired
     ValueParameterMapper valueParameterMapper;
     @Autowired
-    ModelPDIMapper modelPDIMapper;
+    DigitalProcessMapper digitalProcessMapper;
     @Autowired
     PipelineService pipelineService;
 
@@ -34,10 +34,11 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
                 valueParameterMapper.toDTOList(
                     ctx.getSource()
                 );
-        Converter<ModelPDI, ModelPdiDTO> converterModelPDI =
+        Converter<DigitalProcess, DigitalProcessDTO> converterDigitalProcess =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                modelPDIMapper.toDTO(
+                digitalProcessMapper
+                .toDTO(
                     ctx.getSource()
                 );
         TypeMap<PDI, PdiDTO> typeMap = getTypeMap(
@@ -46,18 +47,18 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
         );
         typeMap.addMappings(
             mapper -> {
-                mapper.using(converterModelPDI)
+                mapper.using(converterDigitalProcess)
                     .map(
-                    PDI::getModelPdi,
-                    PdiDTO::setModelPdi
-                );
+                        PDI::getDigitalProcess,
+                        PdiDTO::setDigitalProcess
+                    );
                 mapper.using(converterListValueParameter)
                     .map(
                         PDI::getValueParameters, 
                         PdiDTO::setValueParameters
                     );
                 mapper.map(
-                    src -> src.getPipeline().getId(), 
+                    src -> src.getDigitalProcess().getId(), 
                     PdiDTO::setPipelineId
                 );
             }
@@ -77,10 +78,10 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
                 valueParameterMapper.fromDTOList(
                     ctx.getSource()
                 );
-        Converter<ModelPdiDTO, ModelPDI> converterModelPDI =
+        Converter<DigitalProcessDTO, DigitalProcess> converterDigitalProcess =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                modelPDIMapper.fromDTO(
+                digitalProcessMapper.fromDTO(
                     ctx.getSource()
                 );
         TypeMap<PdiDTO, PDI> typeMap = getTypeMap(
@@ -95,10 +96,10 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
                 );
         typeMap.addMappings(
             mapper -> {
-                mapper.using(converterModelPDI)
+                mapper.using(converterDigitalProcess)
                     .map(
-                        PdiDTO::getModelPdi,
-                        PDI::setModelPdi
+                        PdiDTO::getDigitalProcess,
+                        PDI::setDigitalProcess
                     );
                 mapper.using(converterListValueParameter)
                     .map(

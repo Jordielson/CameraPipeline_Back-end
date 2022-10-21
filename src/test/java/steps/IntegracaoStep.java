@@ -52,7 +52,8 @@ public class IntegracaoStep extends MainSteps{
 		novoUser.setEmail(email);
 		novoUser.setPassword(senha.replace("\"", ""));
 		novoUser.setPipelineInputs(Set.of());
-		novoUser.setPipelines(Set.of());
+		// TODO user agora possui DigitalProcess que eh a classe pai do Pipeline
+		// novoUser.setPipelines(Set.of());
 		
 		userService.create(novoUser);
 	}
@@ -109,12 +110,13 @@ public class IntegracaoStep extends MainSteps{
 			userService.update(recuperarUser().getId(), userUpdate, recuperarPrincipal());
 		}
 		
-		if(recuperarUser().getPipelines() != null) {
-		  	Set<Pipeline> pipelines = recuperarUser().getPipelines();
-			for(Pipeline p: pipelines) {
-				pipelineService.delete(p.getId(), recuperarPrincipal());
-			}
-		}
+		// TODO user agora possui DigitalProcess que eh a classe pai do Pipeline
+		// if(recuperarUser().getPipelines() != null) {
+		//   	Set<Pipeline> pipelines = recuperarUser().getPipelines();
+		// 	for(Pipeline p: pipelines) {
+		// 		pipelineService.delete(p.getId(), recuperarPrincipal());
+		// 	}
+		// }
 		
 		if(recuperarUser().getPipelineInputs() != null) {
 			List<ImageData> imagens = getAllImageData();

@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 import com.camerapipeline.camera_pipeline.model.entities.history.PdiDataHistory;
 import com.camerapipeline.camera_pipeline.model.entities.history.ValueParameterDataHistory;
-import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
-import com.camerapipeline.camera_pipeline.presentation.dto.pdi.modelpdi.ModelPdiDTO;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProcessDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.ValueParameterDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
-import com.camerapipeline.camera_pipeline.provider.mapper.pdi.ModelPDIMapper;
+import com.camerapipeline.camera_pipeline.provider.mapper.pdi.DigitalProcessMapper;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 @Component
@@ -22,7 +22,7 @@ public class PdiDataHistoryMapper extends Mapper<PdiDataHistory, PdiDTO>{
     @Autowired
     ValueParameterDataHistoryMapper valueParameterMapper;
     @Autowired
-    ModelPDIMapper modelPDIMapper;
+    DigitalProcessMapper digitalProcessMapper;
     @Autowired
     PipelineService pipelineService;
 
@@ -34,10 +34,11 @@ public class PdiDataHistoryMapper extends Mapper<PdiDataHistory, PdiDTO>{
                 valueParameterMapper.toDTOList(
                     ctx.getSource()
                 );
-        Converter<ModelPDI, ModelPdiDTO> converterModelPDI =
+        Converter<DigitalProcess, DigitalProcessDTO> converterDigitalProcess =
             ctx -> ctx.getSource() == null ? 
                 null : 
-                modelPDIMapper.toDTO(
+                digitalProcessMapper
+                .toDTO(
                     ctx.getSource()
                 );
         TypeMap<PdiDataHistory, PdiDTO> typeMap = getTypeMap(
@@ -46,10 +47,10 @@ public class PdiDataHistoryMapper extends Mapper<PdiDataHistory, PdiDTO>{
         );
         typeMap.addMappings(
             mapper -> {
-                mapper.using(converterModelPDI)
+                mapper.using(converterDigitalProcess)
                     .map(
-                        PdiDataHistory::getModelPdi,
-                        PdiDTO::setModelPdi
+                        PdiDataHistory::getDigitalProcess,
+                        PdiDTO::setDigitalProcess
                     );
                 mapper.using(converterListValueParameter)
                     .map(

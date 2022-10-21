@@ -1,10 +1,10 @@
 package com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.camerapipeline.camera_pipeline.presentation.dto.pdi.modelpdi.ModelPdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.ValueParameterDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,25 +24,26 @@ public class PdiDTO {
 		required = false
     )
     private Integer id;
+
     @Schema(
-        title = "Model PDI",
-        name = "modelPdi",
+        title = "Digital process (Pipeline or ModelPDI)",
+        name = "digitalProcess",
 		required = true
     )
     @NotNull
-    private ModelPdiDTO modelPdi;
-
+    private DigitalProcessDTO digitalProcess;
+    
     @Schema(
         title = "PDI Value Parameters",
         name = "valueParameters",
 		required = false
     )
-    private List<ValueParameterDTO> valueParameters;
+    private List<ValueParameterDTO> valueParameters = new ArrayList<>();
 
     @Schema(
         title = "Pipeline identifier",
         name = "pipelineId",
-        example = "25",
+        example = "22",
         type = "int",
 		required = true
     )

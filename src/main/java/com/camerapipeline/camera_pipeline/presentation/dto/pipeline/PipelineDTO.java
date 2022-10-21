@@ -2,9 +2,7 @@ package com.camerapipeline.camera_pipeline.presentation.dto.pipeline;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProcessDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,11 +13,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PipelineDTO {
+public class PipelineDTO extends DigitalProcessDTO {
     @Schema(
         title = "Pipeline identifier",
         name = "id",
@@ -27,7 +25,10 @@ public class PipelineDTO {
         example = "22",
 		required = false
     )
-    private Integer id;
+    @Override
+    public int getId() {
+        return super.getId();
+    }
 
     @Schema(
 		name = "name",
@@ -35,9 +36,10 @@ public class PipelineDTO {
 		type = "string",
 		required = true
 	)
-    @NotBlank
-    @Size(max = 60)
-    private String name;
+    @Override
+    public String getName() {
+        return super.getName();
+    }
 
     @Schema(
 		name = "description",
@@ -46,7 +48,10 @@ public class PipelineDTO {
 		type = "string",
 		required = false
 	)
-    private String description;
+    @Override
+    public String getDescription() {
+        return super.getDescription();
+    }
     
     @Schema(
         name = "isActive",

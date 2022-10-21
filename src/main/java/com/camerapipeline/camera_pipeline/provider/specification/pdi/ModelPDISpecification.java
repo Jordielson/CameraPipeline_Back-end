@@ -26,9 +26,6 @@ public class ModelPDISpecification implements Specification<ModelPDI> {
         if(criteria.getName()!=null) {
             predicates.add(cb.like(cb.lower(root.get("name")), "%" + criteria.getName().toLowerCase() + "%"));
         }
-        if(criteria.getCategory()!=null) {
-            predicates.add(cb.equal(root.get("category"), criteria.getCategory()));
-        }
         if(criteria.getUser()!=null) {
             predicates.add(cb.equal(root.get("user"), criteria.getUser()));
         }

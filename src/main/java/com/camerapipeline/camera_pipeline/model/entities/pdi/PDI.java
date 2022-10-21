@@ -33,8 +33,8 @@ public class PDI implements ModelAbstract<Integer>{
     
     @NotNull
     @ManyToOne
-    private ModelPDI modelPdi;
-
+    private DigitalProcess digitalProcess;
+    
     @NotNull
     @ManyToOne
     private Pipeline pipeline;
@@ -44,12 +44,12 @@ public class PDI implements ModelAbstract<Integer>{
 
     @Override
     public User getUser() {
-        return pipeline.getUser();
+        return digitalProcess.getUser();
     }
 
     @Override
     public void setUser(User user) {
-        pipeline.setUser(user);
+        digitalProcess.setUser(user);
     }
 
     @Override
@@ -65,6 +65,6 @@ public class PDI implements ModelAbstract<Integer>{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, modelPdi, pipeline, valueParameters);
+        return Objects.hash(id, digitalProcess, valueParameters);
     }
 }

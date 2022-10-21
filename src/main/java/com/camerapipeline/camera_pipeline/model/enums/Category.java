@@ -1,7 +1,7 @@
 package com.camerapipeline.camera_pipeline.model.enums;
 
 public enum Category {
-    PDI(1),
+    MODEL_PDI(1),
     PIPELINE(2);
 
     private int value;

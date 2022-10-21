@@ -173,7 +173,8 @@ public class TesteModelPDI {
 		ModelPDI modelPDI = new ModelPDI();
 		modelPDI.setName(nome);
 		modelPDI.setURL("www.modelPDITest1.com.br");
-		modelPDI.setCategory(Category.PDI);
+		// TODO: Alteração na categoria que foi movido para o PDI 
+		// modelPDI.setCategory(Category.PDI);
 		return modelPDI;
 	}
 	

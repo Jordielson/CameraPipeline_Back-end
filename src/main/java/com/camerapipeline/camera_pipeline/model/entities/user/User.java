@@ -26,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.camerapipeline.camera_pipeline.core.validation.ExtendedEmailValidator;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
-import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 
 import lombok.Data;
 import lombok.Getter;
@@ -67,7 +67,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
 	private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
-    private Set<Pipeline> pipelines = new HashSet<>();
+    private Set<DigitalProcess> digitalProcess = new HashSet<>();
     @OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
     private Set<PipelineInput> pipelineInputs = new HashSet<>();
 
@@ -136,7 +136,7 @@ public class User implements UserDetails, ModelAbstract<Integer> {
         setId(user.id);
         setEmail(user.email);
         setPipelineInputs(user.pipelineInputs);
-        setPipelines(user.pipelines);
+        setDigitalProcess(user.digitalProcess);
         setPassword(user.password);
         setRoles(user.roles);
     }

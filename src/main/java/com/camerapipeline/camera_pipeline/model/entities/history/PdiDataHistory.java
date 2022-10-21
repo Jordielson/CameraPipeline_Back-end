@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
-import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class PdiDataHistory extends DataHistory {
     
     @NotNull
     @ManyToOne
-    private ModelPDI modelPdi;
+    private DigitalProcess digitalProcess;
 
     @NotNull
     @ManyToOne
@@ -35,8 +35,8 @@ public class PdiDataHistory extends DataHistory {
     private List<ValueParameterDataHistory> valueParameters;
 
     @Builder
-    public PdiDataHistory(ModelPDI modelPdi, PipelineDataHistory pipeline, DataHistoryEnum action, Integer pdiID) {
-        this.modelPdi = modelPdi;
+    public PdiDataHistory(DigitalProcess digitalProcess, PipelineDataHistory pipeline, DataHistoryEnum action, Integer pdiID) {
+        this.digitalProcess = digitalProcess;
         this.pipeline = pipeline;
         this.action = action;
         this.id = pdiID;

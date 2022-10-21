@@ -21,54 +21,54 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 public class PipelineDataHistoryDTO {
-    @Schema(
-        title = "Pipeline identifier",
-        name = "id",
-        type = "int",
-        example = "22",
+  @Schema(
+    title = "Pipeline identifier",
+    name = "id",
+    type = "int",
+    example = "22",
 		required = false
-    )
-    private Integer id;
+  )
+  private Integer id;
 
-    @Schema(
-        title = "Pipeline revision identifier",
-        name = "revision",
-        type = "uuid",
-		required = false
-    )
-    private UUID revision;
+  @Schema(
+    title = "Pipeline revision identifier",
+    name = "revision",
+    type = "uuid",
+    required = false
+  )
+  private UUID revision;
 
-    @Schema(
-		name = "name",
-		example = "Ergonomic Risk Analysis",
-		type = "string",
-		required = true
-	)
-    @NotBlank
-    @Size(max = 60)
-    private String name;
+  @Schema(
+    name = "name",
+    example = "Ergonomic Risk Analysis",
+    type = "string",
+    required = true
+  )
+  @NotBlank
+  @Size(max = 60)
+  private String name;
 
-    @Schema(
-		name = "description",
-		example = "AI-based ergonomic risk analysis"+
+  @Schema(
+    name = "description",
+    example = "AI-based ergonomic risk analysis"+
             " using cameras to detect the human posture of employees",
-		type = "string",
-		required = false
+    type = "string",
+    required = false
 	)
-    private String description;
+  private String description;
     
-    @Schema(
-        name = "isActive",
-        type = "boolean",
-        example = "true",
-		required = false
-    )
-    private boolean isActive;
+  @Schema(
+    name = "isActive",
+    type = "boolean",
+    example = "true",
+    required = false
+  )
+  private boolean isActive;
 
-    @Schema(
-        name = "PDIList",
-        type = "[PdiDTO]",
-		required = false
-    )
-    private List<PdiDTO> PDIList;
+  @Schema(
+    name = "PDIList",
+    type = "[PdiDTO]",
+    required = false
+  )
+  private List<PdiDTO> PDIList;
 }
