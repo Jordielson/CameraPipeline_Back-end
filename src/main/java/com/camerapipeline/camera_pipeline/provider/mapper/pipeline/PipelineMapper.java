@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
+import com.camerapipeline.camera_pipeline.model.enums.Category;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
@@ -41,6 +42,8 @@ public class PipelineMapper extends Mapper<Pipeline, PipelineDTO>{
             model, 
             PipelineDTO.class
         );
+
+        dto.setCategory(Category.PIPELINE);
         return dto;
     }
 

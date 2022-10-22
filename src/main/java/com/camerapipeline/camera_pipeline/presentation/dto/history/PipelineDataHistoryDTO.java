@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.presentation.dto.history;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,4 +72,6 @@ public class PipelineDataHistoryDTO {
     required = false
   )
   private List<PdiDTO> PDIList;
+
+  private ZonedDateTime dateTime;
 }

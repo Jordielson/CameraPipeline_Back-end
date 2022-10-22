@@ -7,6 +7,7 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.camerapipeline.camera_pipeline.model.entities.history.PdiDataHistory;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
@@ -15,6 +16,7 @@ import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProces
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.ValueParameterDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.core.Mapper;
+import com.camerapipeline.camera_pipeline.provider.mapper.history.PdiDataHistoryMapper;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 @Component
@@ -23,6 +25,8 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
     ValueParameterMapper valueParameterMapper;
     @Autowired
     DigitalProcessMapper digitalProcessMapper;
+    @Autowired
+    PdiDataHistoryMapper pdiDataHistoryMapper;
     @Autowired
     PipelineService pipelineService;
 
@@ -118,5 +122,11 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
             PDI.class
         );
         return pdi;
+    }
+
+    public List<PDI> fromHistoryList(List<PdiDataHistory> model) {
+        return fromDTOList(
+            pdiDataHistoryMapper.toDTOList(model)
+        );
     }
 }

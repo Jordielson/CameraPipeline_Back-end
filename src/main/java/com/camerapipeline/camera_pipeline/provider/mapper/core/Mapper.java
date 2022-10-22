@@ -1,7 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.mapper.core;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -17,18 +17,10 @@ public abstract class Mapper<M, DTO> {
     public abstract DTO toDTO(M model);
     public abstract M fromDTO(DTO dto);
     public List<DTO> toDTOList(List<M> modelList) {
-        List<DTO> list = new ArrayList<>();
-        for (M model : modelList) {
-            list.add(toDTO(model));
-        }
-        return list;
+        return modelList.stream().map(this::toDTO).collect(Collectors.toList());
     }
     public List<M> fromDTOList(List<DTO> dtoList) {
-        List<M> list = new ArrayList<>();
-        for (DTO dto : dtoList) {
-            list.add(fromDTO(dto));
-        }
-        return list;
+        return dtoList.stream().map(this::fromDTO).collect(Collectors.toList());
     }
     protected <S,R> TypeMap<S, R> getTypeMap(Class<S> sourceClass, Class<R> resultClass) {
         TypeMap<S, R> typeMap 

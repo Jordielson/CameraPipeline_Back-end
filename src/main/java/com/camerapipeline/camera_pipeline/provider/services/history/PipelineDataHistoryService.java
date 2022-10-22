@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.camerapipeline.camera_pipeline.model.entities.history.PipelineDataHistory;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 import com.camerapipeline.camera_pipeline.model.repository.history.PipelineDataHistoryRepository;
+import com.camerapipeline.camera_pipeline.model.repository.pdi.PDIRepository;
+import com.camerapipeline.camera_pipeline.model.repository.pdi.ValueParameterRepository;
+import com.camerapipeline.camera_pipeline.model.repository.pipeline.PipelineRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 
@@ -21,9 +26,15 @@ public class PipelineDataHistoryService {
     @Autowired
     PipelineDataHistoryRepository repository;
     @Autowired
-    PdiDataHistoryService pdiService;
+    PdiDataHistoryService pdiHistoryService;
     @Autowired
     AuthService authService;
+    @Autowired
+    PipelineRepository pipelineRepository;
+    @Autowired
+    PDIRepository pdiRepository;
+    @Autowired
+    ValueParameterRepository valueRepository;
 
     public PipelineDataHistory register(DataHistoryEnum actions, Pipeline pipeline) {
         PipelineDataHistory pipelineData = PipelineDataHistory.builder()
@@ -39,7 +50,7 @@ public class PipelineDataHistoryService {
 
         for (PDI pdi : pipeline.getPDIList()) {
             pdi.setPipeline(pipeline);
-            pdiService.register(actions, pdi, pipelineData);
+            pdiHistoryService.register(actions, pdi, pipelineData);
         }
 
         return pipelineData;
@@ -61,5 +72,25 @@ public class PipelineDataHistoryService {
                 id.toString()
             )
         );
+    }
+
+    @Transactional
+    public Pipeline restore(Pipeline pipeline) {
+        valueRepository.deleteInBatch(pipeline.getId());
+        valueRepository.flush();
+
+        pdiRepository.deleteInBatch(pipeline.getId());
+        pdiRepository.flush();
+        
+        for (PDI pdi : pipeline.getPDIList()) {
+            pdi.setId(null);
+            pdiRepository.save(pdi);
+
+            for (ValueParameter value : pdi.getValueParameters()) {
+                value.setPdi(pdi);
+                valueRepository.save(value);
+            }
+        }
+        return pipelineRepository.save(pipeline);
     }
 }

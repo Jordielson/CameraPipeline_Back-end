@@ -23,7 +23,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
 public class Pipeline extends DigitalProcess {
 
     @NotNull
