@@ -82,6 +82,12 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
         return pipe;
     }
 
+    public Pipeline setActive(Integer id, Boolean active, Principal principal) {
+        Pipeline pipeline = getById(id);
+        pipeline.setActive(active);
+        return update(id, pipeline, principal);
+    }
+
     @Override
     protected Specification<Pipeline> getSpecification(Pipeline search) {
         return new PipelineSpecification(search);

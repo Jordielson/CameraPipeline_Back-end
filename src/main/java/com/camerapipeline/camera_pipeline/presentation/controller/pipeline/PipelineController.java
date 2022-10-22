@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,5 +119,59 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
             return new ResponseEntity<Page<PipelineDTO>>(list, HttpStatus.OK);
 	}
 
+    @Operation(summary = "Enable or disable a pipeline's functionality")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Pipeline on or off", 
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = PipelineDTO.class)) }),
+        @ApiResponse(responseCode = "400", description = "Invalid id or active supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Camera not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @PatchMapping("/{id}/state")
+	public ResponseEntity<PipelineDTO> setStatus(
+        Principal principal,
+        @Parameter(
+            name = "id",
+            description = "Pipeline ID to be enabled or disabled",
+            example = "22",
+            required = true
+        )
+        @PathVariable("id") Integer id,
+        @Parameter(
+            name = "active",
+            description = "Pipeline status whether or not it is working",
+            example = "true",
+            required = true
+        )
+        @RequestParam(name="active", required=true) Boolean active) {
 
+        PipelineDTO response = mapper.toDTO(
+            ((PipelineService) service)
+                .setActive(id, active, principal)
+        );
+
+        return new ResponseEntity<>(
+            response,
+            HttpStatus.OK
+        );
+    }
 }
