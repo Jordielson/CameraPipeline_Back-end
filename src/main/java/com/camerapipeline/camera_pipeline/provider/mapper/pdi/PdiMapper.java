@@ -62,7 +62,7 @@ public class PdiMapper extends Mapper<PDI, PdiDTO>{
                         PdiDTO::setValueParameters
                     );
                 mapper.map(
-                    src -> src.getDigitalProcess().getId(), 
+                    src -> src.getPipeline().getId(), 
                     PdiDTO::setPipelineId
                 );
             }

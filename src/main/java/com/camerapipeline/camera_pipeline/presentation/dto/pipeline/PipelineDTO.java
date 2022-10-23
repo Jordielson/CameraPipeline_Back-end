@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.presentation.dto.pipeline;
 
 import java.util.List;
 
+import com.camerapipeline.camera_pipeline.model.enums.Category;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProcessDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
 
@@ -67,6 +68,17 @@ public class PipelineDTO extends DigitalProcessDTO {
 		required = false
     )
     private List<PdiDTO> PDIList;
+
+    @Schema(
+        title = "PDI category (ModelPDI or Pipeline)",
+        name = "category",
+        required = true,
+        example = "PIPELINE"
+    )
+    @Override
+    public Category getCategory() {
+        return Category.PIPELINE;
+    }
 
 
     public PipelineDTO id(int id) {

@@ -43,9 +43,9 @@ public class DigitalProcessDTO {
     private String description;
 
     @Schema(
-        title = "PDI category (ModelPDI or Pipeline)",
-        name = "category",
-		required = true
+      title = "PDI category (ModelPDI or Pipeline)",
+      name = "category",
+		  required = true
     )
     private Category category;
 }
