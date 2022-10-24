@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -38,6 +39,9 @@ public class PipelineDataHistoryDTO {
     required = false
   )
   private UUID revision;
+
+  @Column(length = 60)
+  private String versionName;
 
   @Schema(
     name = "name",

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
@@ -166,5 +167,59 @@ public class PipelineHistoryController {
         );
         
         return new ResponseEntity<PipelineDTO>(dto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Restore from a specific version of the pipeline")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully restored"),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "404", description = "Historic not found", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @PostMapping(value = "/rename-version/{version}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PipelineDataHistoryDTO> renameVersion(
+        @Parameter(
+            name = "version",
+            description = "Pipeline version to renamed",
+            example = "cc9d2d56-084f-4a7c-927e-1b2c02dad3a9",
+            required = true
+        )
+        @PathVariable("version") UUID id, 
+        @Parameter(
+            name = "name",
+            description = "New name to version",
+            example = "Change parameters",
+            required = true
+        )
+        @RequestParam("name") String name, 
+        Principal principal) {
+
+        PipelineDataHistoryDTO dto = pipelineHistoryMapper.toDTO(
+            service.renameVersion(
+                id,
+                name,
+                principal
+            )
+        );
+        
+        return new ResponseEntity<PipelineDataHistoryDTO>(dto, HttpStatus.OK);
     }
 }

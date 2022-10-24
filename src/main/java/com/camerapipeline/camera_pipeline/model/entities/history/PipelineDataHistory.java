@@ -29,6 +29,9 @@ public class PipelineDataHistory extends DataHistory {
     @Column(length = 60)
     private String name;
 
+    @Column(length = 60)
+    private String versionName;
+
     private String description;
 
     @NotNull

@@ -93,4 +93,11 @@ public class PipelineDataHistoryService {
         }
         return pipelineRepository.save(pipeline);
     }
+
+
+    public PipelineDataHistory renameVersion(UUID id, String name, Principal principal) {
+        PipelineDataHistory version = getById(id, principal);
+        version.setVersionName(name);
+        return repository.save(version);
+    }
 }
