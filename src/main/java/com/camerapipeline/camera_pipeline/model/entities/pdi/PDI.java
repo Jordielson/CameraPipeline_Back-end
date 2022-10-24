@@ -30,6 +30,8 @@ public class PDI implements ModelAbstract<Integer>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    protected Integer index;
     
     @NotNull
     @ManyToOne

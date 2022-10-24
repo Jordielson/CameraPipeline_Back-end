@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class PdiDataHistory extends DataHistory {
+
+    private Integer index;
     
     @NotNull
     @ManyToOne
@@ -35,10 +37,11 @@ public class PdiDataHistory extends DataHistory {
     private List<ValueParameterDataHistory> valueParameters;
 
     @Builder
-    public PdiDataHistory(DigitalProcess digitalProcess, PipelineDataHistory pipeline, DataHistoryEnum action, Integer pdiID) {
+    public PdiDataHistory(DigitalProcess digitalProcess, PipelineDataHistory pipeline, DataHistoryEnum action, Integer pdiID, Integer index) {
         this.digitalProcess = digitalProcess;
         this.pipeline = pipeline;
         this.action = action;
         this.id = pdiID;
+        this.index = index;
     }
 }

@@ -23,6 +23,7 @@ public class PdiDataHistoryService {
             .digitalProcess(pdi.getDigitalProcess())
             .pdiID(pdi.getId())
             .pipeline(pipeline)
+            .index(pdi.getIndex())
             .build();
         
         repository.save(data);

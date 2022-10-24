@@ -26,6 +26,14 @@ public class PdiDTO {
     private Integer id;
 
     @Schema(
+      name = "index",
+      example = "1",
+      type = "int",
+      required = true
+    )
+    protected Integer index;
+
+    @Schema(
         title = "Digital process (Pipeline or ModelPDI)",
         name = "digitalProcess",
 		required = true
