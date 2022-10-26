@@ -16,12 +16,16 @@ import com.camerapipeline.camera_pipeline.model.repository.pdi.ModelPDIRepositor
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.services.history.PdiDataHistoryService;
 import com.camerapipeline.camera_pipeline.provider.specification.pdi.ModelPDISpecification;
 
 @Service
 public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
     @Autowired
     private ParameterService paramService;
+
+    @Autowired
+    PdiDataHistoryService pdiHistoryService;
     
     public ModelPDIService(ModelPDIRepository repository) {
         super(repository);
@@ -76,8 +80,8 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
     }
 
     @Override
-    public ModelPDI delete(Integer id, Principal principal) {
-        return super.delete(id, principal);
+    protected void beforeDelete(ModelPDI model) {
+        pdiHistoryService.deleteByDigitalProcess(model);
     }
 
     @Override
