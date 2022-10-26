@@ -6,7 +6,7 @@ Funcionalidade: Deve validar o CRUD de PDIs
 	Como um Usuario
 	Eu quero gerenciar o CRUD de um ou mais PDIs
 	
-Cenário: teste
+Cenário: Validação CRUD PDI
 	* remover usuario userteste1@user.com
 	Dado que existe a conta email userteste1@user.com e senha 123456
 	Dado que informei email userteste1@user.com e senha 123456
