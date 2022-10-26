@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.services.pdi;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -110,5 +111,9 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
             
             model.setDigitalProcess(pipeline);
         }
+    }
+
+    public List<PDI> findByDigitalProcess(Integer digitalProcessID) {
+        return ((PDIRepository) repository).findByDigitalProcess(digitalProcessID);
     }
 }
