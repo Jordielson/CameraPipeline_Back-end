@@ -119,7 +119,7 @@ public class ModelPDIService extends ServiceAbstract<ModelPDI, Integer> {
 
     public boolean checkIfItUsed(Integer id, Principal principal) {
         ModelPDI modelPdi = getById(id, principal);
-        return !modelPdi.getPdiList().isEmpty();
+        return !modelPdi.getPdis().isEmpty();
     }
 
     @Override

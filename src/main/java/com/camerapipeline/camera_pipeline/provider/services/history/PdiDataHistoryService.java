@@ -41,4 +41,9 @@ public class PdiDataHistoryService {
         valueService.deleteByDigitalProcess(process);
         repository.deleteInBatch(process.getId());
     }
+
+    public void cleanUserHistory(Integer userId) {
+        valueService.cleanUserHistory(userId);
+        repository.deleteInBatchByUser(userId);
+    }
 }

@@ -14,4 +14,12 @@ public interface PdiDataHistoryRepository extends JpaRepository<PdiDataHistory, 
     @Query(value = "DELETE FROM PdiDataHistory p "+
         "WHERE p.digitalProcess.id = :#{#processID}")
     void deleteInBatch(@Param("processID") Integer processID);
+
+    @Modifying
+    @Query(value = "DELETE FROM PdiDataHistory pdi "+
+        "WHERE pdi.pipeline.revision in ("+
+            "SELECT pipe.revision FROM PipelineDataHistory pipe "+
+            "WHERE pipe.user.id = :#{#userID})"
+    )
+    void deleteInBatchByUser(@Param("userID") Integer userID);
 }

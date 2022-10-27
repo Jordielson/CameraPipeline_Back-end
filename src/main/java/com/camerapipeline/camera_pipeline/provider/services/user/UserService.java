@@ -29,6 +29,7 @@ import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoun
 import com.camerapipeline.camera_pipeline.provider.exception.user.SamePasswordException;
 import com.camerapipeline.camera_pipeline.provider.exception.user.UserNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.services.history.PipelineDataHistoryService;
 import com.camerapipeline.camera_pipeline.provider.services.mail.EmailService;
 import com.camerapipeline.camera_pipeline.provider.specification.user.UserSpecification;
 
@@ -42,6 +43,8 @@ public class UserService extends ServiceAbstract<User, Integer> {
     private EmailService emailService;
     @Autowired
     private JwtConfig jwtConfig;
+    @Autowired
+    private PipelineDataHistoryService pipelineDataHistoryService;
     
     public UserService(UserRepository repository) {
         super(repository);
@@ -188,5 +191,11 @@ public class UserService extends ServiceAbstract<User, Integer> {
     @Override
     protected EntityNotFoundException throwNotFoundEntity(Integer id) {
         return new UserNotFoundException(id);
+    }
+
+    @Override
+    public User delete(Integer id, Principal principal) {
+        pipelineDataHistoryService.cleanUserHistory(id);
+        return super.delete(id, principal);
     }
 }

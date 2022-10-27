@@ -18,4 +18,14 @@ public interface ValueParameterDataHistoryRepository extends JpaRepository<Value
         ")"
     )
     void deleteInBatch(@Param("processID") Integer processID);
+
+    @Modifying
+    @Query(value = "DELETE FROM ValueParameterDataHistory v "+
+        "WHERE v.pdi.revision in ("+
+            "SELECT pdi.revision FROM PdiDataHistory pdi, PipelineDataHistory pipe "+
+            "WHERE pdi.pipeline.revision = pipe.revision "+
+            "AND pipe.user.id = :#{#userID}"+
+        ")"
+    )
+    void deleteInBatchByUser(@Param("userID") Integer userID);
 }

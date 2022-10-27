@@ -66,9 +66,9 @@ public class User implements UserDetails, ModelAbstract<Integer> {
 	)
 	private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<DigitalProcess> digitalProcess = new HashSet<>();
-    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<PipelineInput> pipelineInputs = new HashSet<>();
 
     public User id(int id) {

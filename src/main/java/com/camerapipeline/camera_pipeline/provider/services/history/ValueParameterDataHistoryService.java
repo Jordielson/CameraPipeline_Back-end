@@ -31,4 +31,8 @@ public class ValueParameterDataHistoryService {
     public void deleteByDigitalProcess(DigitalProcess process) {
         repository.deleteInBatch(process.getId());
     }
+
+    public void cleanUserHistory(Integer userId) {
+        repository.deleteInBatchByUser(userId);
+    }
 }
