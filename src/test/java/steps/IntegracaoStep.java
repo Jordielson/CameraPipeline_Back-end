@@ -34,10 +34,10 @@ import io.cucumber.java.pt.Então;
 
 public class IntegracaoStep extends MainSteps{
 	
-	@Dado("^que tenho uma Pipeline (.*)?$")
+	@Dado("^que tenho uma Pipeline( .*)?$")
 	public void queTenhoUmaPipeline(String nome) {
 		Pipeline pipeline = new Pipeline();
-		pipeline.setName(nome != null ? nome : "Pipeline Test");
+		pipeline.setName(nome != null ? nome.trim() : "Pipeline Test");
 		pipeline.setUser(recuperarUser());
 		pipeline.setPDIList(List.of());
 		pipeline.setPdis(List.of());
@@ -57,20 +57,26 @@ public class IntegracaoStep extends MainSteps{
 		cameraService.create(camera, recuperarPrincipal());
 	}
 	
-	@Dado("que tenho um PDI")
-	public void queTenhoUmPDI() {
+	@Dado("^que tenho um PDI( .*)?$")
+	public void queTenhoUmPDI(String nome) {
 		
-		Parameter parameter = new Parameter();
-		parameter.setName("ParamTeste1");
-		parameter.setIndex(1);
-		parameter.setType(ParameterType.STRING);
-		parameter.setRequired(false);
+		Parameter parameter1 = new Parameter();
+		parameter1.setName("ParamTeste1");
+		parameter1.setIndex(1);
+		parameter1.setType(ParameterType.STRING);
+		parameter1.setRequired(false);
+		
+		Parameter parameter2 = new Parameter();
+		parameter2.setName("ParamTeste2");
+		parameter2.setIndex(2);
+		parameter2.setType(ParameterType.NUMBER);
+		parameter2.setRequired(false);
 		
 		ModelPDI mpdi = new ModelPDI();
-		mpdi.setName("PDITeste");
-		mpdi.setURL("www.testePDI.com");
+		mpdi.setName(nome != null ? nome.trim() :"PDITeste");
+		mpdi.setURL(nome != null ? "www."+nome.trim()+".com" :"www.testePDI.com");
 		mpdi.setDescription("DescricaoTestePDI");
-		mpdi.setParameters(List.of(parameter));
+		mpdi.setParameters(List.of(parameter1, parameter2));
 		
 		modelPDIService.create(mpdi, recuperarPrincipal());
 		

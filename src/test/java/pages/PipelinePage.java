@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import static config.ConfigInit.*;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -28,7 +29,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@id=\"pipelines-select\"]")
 	private WebElement selectPipelines;
 	
-	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/*/*/input")
+	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/div/div/input")
 	private WebElement checkboxPipeline; 
 	
 	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"p-delete\"]")
@@ -46,16 +47,16 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-header pipeline-header2\"]/menu/div/button")
 	private WebElement botaoFluxo;
 
-	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div")
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/h2/button")
 	private WebElement acordPDIs;
 	
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/button")
 	private List<WebElement> listaDePDIs;
 	
-	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div")
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/h2/button")
 	private WebElement acordPipelines;
 	
-	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div/ul/button")
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div/div/ul/button")
 	private List<WebElement> listaDePipelines;
 	
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-body pipeline-card\"]/div/div/div")
@@ -70,6 +71,10 @@ public class PipelinePage {
 	
 	public String getTextoPadrao() {
 		return textoPadrao.getText();
+	}
+	
+	public String getCampoNomePipeline() {
+		return campoNomePipeline.getAttribute("value");
 	}
 	
 	public void clickAcordPDIs() {
@@ -112,9 +117,49 @@ public class PipelinePage {
 	
 	public void ativarDesativarPipelineCheckbox(boolean check) {
 		boolean checkbox = checkboxPipeline.isSelected();
+		System.out.println(checkbox + " 1");
 		if(checkbox !=check) {
 			checkboxPipeline.click();
 		}
+	}
+	
+	public List<String> getPipelinesCriadas(){
+		List<String> pipelines = new ArrayList<String>();
+		Select select = new Select(selectPipelines);
+		for(WebElement e : select.getAllSelectedOptions()) {
+			pipelines.add(e.getText());
+		}
+		return pipelines;
+	}
+	
+	public boolean verificarExistenciaPipeline(String nome) {
+		for(String n : getPipelinesCriadas()) {
+			if(n.toLowerCase().trim().equals(nome.toLowerCase().trim())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void selectPipeline(Object value) {
+		if(value instanceof String) {
+			String nome = (String) value;
+			Select select = new Select(selectPipelines);
+			if(opcaoExistenteNoSelect(select, nome)) {
+				select.selectByVisibleText(nome);
+			}else {
+				System.err.println("Pipeline " + nome + " Não foi encontrado no Select");
+			}
+		}else if(value instanceof Integer) {
+			int index = (int) value;
+			Select select = new Select(selectPipelines);
+			if(select.getOptions().size()>=index) {
+				select.deselectByIndex(index);
+			}else {
+				System.err.println("Pipeline index: " + index + " Não foi encontrado no Select");
+			}
+		}
+		
 	}
 	
 	public void selectPipeline(String nomePipeline) {
@@ -123,6 +168,15 @@ public class PipelinePage {
 			select.selectByVisibleText(nomePipeline);
 		}else {
 			System.err.println("Pipeline " + nomePipeline + " Não foi encontrado no Select");
+		}
+	}
+	
+	public void selectPipeline(int index) {
+		Select select = new Select(selectPipelines);
+		if(select.getOptions().size()>=index) {
+			select.deselectByIndex(index);
+		}else {
+			System.err.println("Pipeline index: " + index + " Não foi encontrado no Select");
 		}
 	}
 	
@@ -139,13 +193,14 @@ public class PipelinePage {
 		boolean valid = false;
 		
 		String className = acordPDIs.getAttribute("class");
-		if(className.equals("accordion-collapse collapse")) {
+		if(className.equals("accordion-button collapsed")) {
 			acordPDIs.click();
 		}
 		
 		if(!listaDePDIs.isEmpty()) {
 			for(WebElement e : listaDePDIs) {
-				if(e.getText().toLowerCase().equals(Nome.toLowerCase())) {
+//				if(e.getText().toLowerCase().equals(Nome.toLowerCase())) {
+				if(e.getAttribute("innerText").toLowerCase().trim().equals(Nome.toLowerCase().trim())) {
 					System.out.println("Entrei pdi");
 					e.click();
 					valid = true;
@@ -164,14 +219,15 @@ public class PipelinePage {
 	public void adicionarPipelineEmPipeline(String Nome) {
 		boolean valid = false;
 		
+		
 		String className = acordPipelines.getAttribute("class");
-		if(className.equals("accordion-collapse collapse")) {
-			acordPDIs.click();
+		if(className.equals("accordion-button collapsed")) {
+			acordPipelines.click();
 		}
 		
 		if(!listaDePipelines.isEmpty()) {
 			for(WebElement e : listaDePipelines) {
-				if(e.getText().toLowerCase().equals(Nome.toLowerCase())) {
+				if(e.getAttribute("innerText").toLowerCase().trim().equals(Nome.toLowerCase().trim())) {
 					e.click();
 					valid = true;
 					break;
@@ -230,11 +286,21 @@ public class PipelinePage {
 		return false;
 	}
 	
+	public boolean isPipelineAtiva() {
+		esperar(1);
+		boolean checkbox = checkboxPipeline.isSelected();
+		System.err.println(checkbox);;
+		if(checkbox) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void removerProcessoDaPipeline(String nome) {
 		Optional processo = getProcessoAplicadoAPipeline(nome);
 		if(processo.isPresent()) {
 			WebElement processoRecuperado = (WebElement) processo.get();
-			WebElement botaoRemover = processoRecuperado.findElement(By.xpath("/div[3]/i"));
+			WebElement botaoRemover = processoRecuperado.findElement(By.xpath("div[3]/i"));
 			botaoRemover.click();
 		}else {
 			System.err.println("O processo " + nome + " Nao esta sendo aplicado à Pipeline" );
@@ -245,7 +311,7 @@ public class PipelinePage {
 		Optional<WebElement> processo = getProcessoAplicadoAPipeline(id);
 		if(processo.isPresent()) {
 			WebElement processoRecuperado = processo.get();
-			WebElement botaoRemover = processoRecuperado.findElement(By.xpath("/div[3]/i"));
+			WebElement botaoRemover = processoRecuperado.findElement(By.xpath("div[3]/i"));
 			botaoRemover.click();
 		}else {
 			System.err.println("O processo ID: " + id + " Nao esta sendo aplicado à Pipeline" );
@@ -253,7 +319,6 @@ public class PipelinePage {
 	}
 	
 	public Optional<WebElement> getParametroPDI(String value){
-		System.out.println(ListaDeParametros.size());
 		for(WebElement e : ListaDeParametros) {
 			if(e.findElement(By.xpath("label")).getText().toLowerCase().equals(value.toLowerCase())) {
 				return Optional.of(e.findElement(By.xpath("input")));
@@ -290,6 +355,22 @@ public class PipelinePage {
 			System.err.println("O parametro: " + nomeParam + " Nao foi encontrado" );
 		}
 		
+	}
+	
+	public boolean verificarParametroTipoString(String nomeParam, String value) {
+		Optional<WebElement> parametroRecuperado = getParametroPDI(nomeParam);
+	
+		if(parametroRecuperado.isPresent()) {
+			WebElement parametro = parametroRecuperado.get();
+			String valor = parametro.getAttribute("value");
+			System.err.println(parametro.getAttribute("value") + " == " + value);
+			if(valor.equals(value)) {
+				return true;
+			}
+		}
+		System.err.println("Parametro não encontrado");
+		return false;
+	
 	}
 	
 	private boolean opcaoExistenteNoSelect(Select select, String value) {

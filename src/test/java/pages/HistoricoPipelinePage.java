@@ -35,7 +35,10 @@ public class HistoricoPipelinePage {
 	}
 	
 	public void restaurarVersao(int index) {
-		versoes.get(index).click();
+		if(index<0) {
+			versoes.get(versoes.size()-1).findElement(By.xpath("div/button")).click();;
+		}
+		versoes.get(index-1).findElement(By.xpath("div/button")).click();
 	}
 	
 	public int getQtddDeVersoes() {

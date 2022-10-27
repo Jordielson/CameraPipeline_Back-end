@@ -168,6 +168,10 @@ public class NotificacaoStep extends MainSteps{
 			mensagemErro = "Salvo com sucesso!";
 			break;
 			
+		case "ErroCriarPipeline_Pipeline":
+			mensagemErro = "Erro ao tentar criar a pipeline";
+			break;
+			
 		case "SucessoSalvarPipeline_Pipeline":
 			mensagemErro = "Salvo com sucesso!";
 			break;
@@ -175,13 +179,29 @@ public class NotificacaoStep extends MainSteps{
 		case "PDIAdicionadoComSucesso_Pipeline":
 			mensagemErro = "PDITeste adicionado com sucesso!";
 			break;
+			
+		case "PDITeste1AdicionadoComSucesso_Pipeline":
+			mensagemErro = "PDITeste1 adicionado com sucesso!";
+			break;
+			
+		case "PDITeste2AdicionadoComSucesso_Pipeline":
+			mensagemErro = "PDITeste2 adicionado com sucesso!";
+			break;
 
 		case "SucessoExcluirPipeline_Pipeline":
 			mensagemErro = "Deletado com sucesso! 👌";
 			break;
 			
 		case "ErroExcluirPipelineEmUso_Pipeline":
-			mensagemErro = "Deletado com sucesso! 👌";
+			mensagemErro = "Pipeline está sendo utilizada";
+			break;
+		
+		case "Pipelinep1AdicionadaComSucesso_Pipeline":
+			mensagemErro = "p1 adicionado com sucesso!";
+			break;
+		
+		case "Pipelinep2AdicionadaComSucesso_Pipeline":
+			mensagemErro = "p2 adicionado com sucesso!";
 			break;
 			
 		/**
@@ -217,7 +237,7 @@ public class NotificacaoStep extends MainSteps{
 				erroRecuperado = esperado.getAttribute("innerText");
 				esperar(1);
 				
-			} while (erroRecuperado.equals("Processando"));
+			} while (erroRecuperado.equals("Processando")||erroRecuperado.equals("Deletando"));
 			
 			try {
 				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\"]"));

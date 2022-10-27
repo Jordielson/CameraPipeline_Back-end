@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
+import pages.SideBar;
 
 public class UtilStep extends MainSteps{
 	
@@ -28,6 +29,11 @@ public class UtilStep extends MainSteps{
 		default:
 			break;
 		}
+	}
+	
+	@Então("fazer logoff")
+	public void fazerLogoff() {
+		Na(SideBar.class).clickBotaoSair();
 	}
 	
 	@Então("^devo estar na pagina( de)? (.*)$")
@@ -75,6 +81,11 @@ public class UtilStep extends MainSteps{
 		case "edicao-Camera":
 
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/editar-camera");
+			break;
+			
+		case "HistoricoPipeline":
+			
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/pipeline-history");
 			break;
 			
 			
