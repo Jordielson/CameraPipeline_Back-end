@@ -17,6 +17,7 @@ import com.camerapipeline.camera_pipeline.model.repository.pipeline.PipelineRepo
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
+import com.camerapipeline.camera_pipeline.provider.services.history.PdiDataHistoryService;
 import com.camerapipeline.camera_pipeline.provider.services.history.PipelineDataHistoryService;
 import com.camerapipeline.camera_pipeline.provider.services.pdi.PDIService;
 import com.camerapipeline.camera_pipeline.provider.specification.pipeline.PipelineSpecification;
@@ -25,6 +26,8 @@ import com.camerapipeline.camera_pipeline.provider.specification.pipeline.Pipeli
 public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
     @Autowired
     PipelineDataHistoryService historyService;
+    @Autowired
+    PdiDataHistoryService pdiHistoryService;
     @Autowired
     PDIService pdiService;
 
@@ -96,6 +99,11 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
         Pipeline pipeline = getById(id);
         pipeline.setActive(active);
         return update(id, pipeline, principal);
+    }
+
+    @Override
+    protected void beforeDelete(Pipeline model) {
+        pdiHistoryService.deleteByDigitalProcess(model);
     }
 
     @Override
