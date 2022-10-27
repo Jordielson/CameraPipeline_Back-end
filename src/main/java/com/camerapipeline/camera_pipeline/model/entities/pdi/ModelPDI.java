@@ -30,9 +30,6 @@ public class ModelPDI extends DigitalProcess {
     @NotBlank
     private String URL;
 
-    @OneToMany(mappedBy = "digitalProcess", cascade = CascadeType.ALL)
-    private List<PDI> pdiList;
-
     @OneToMany(mappedBy = "modelPdi", fetch=FetchType.EAGER , cascade = CascadeType.REMOVE)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Parameter> parameters;

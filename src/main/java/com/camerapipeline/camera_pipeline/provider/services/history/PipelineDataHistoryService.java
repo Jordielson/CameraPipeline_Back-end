@@ -100,4 +100,9 @@ public class PipelineDataHistoryService {
         version.setVersionName(name);
         return repository.save(version);
     }
+
+    public void cleanUserHistory(Integer userId) {
+        pdiHistoryService.cleanUserHistory(userId);
+        repository.deleteInBatchByUser(userId);
+    }
 }

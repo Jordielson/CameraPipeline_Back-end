@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
-
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.enums.ParameterType;

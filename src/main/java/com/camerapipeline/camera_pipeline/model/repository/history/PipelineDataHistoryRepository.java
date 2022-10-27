@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,4 +15,9 @@ public interface PipelineDataHistoryRepository extends JpaRepository<PipelineDat
     
     @Query(value = "SELECT p FROM PipelineDataHistory p WHERE p.id = :pipelineId AND p.user.id = :userId")
     Page<PipelineDataHistory> findAllByPipeline(Pageable pageable, @Param("pipelineId") Integer pipelineId, @Param("userId") Integer userId);
+
+    @Modifying
+    @Query(value = "DELETE FROM PipelineDataHistory p "+
+        "WHERE p.user.id = :#{#userID}")
+    void deleteInBatchByUser(@Param("userID") Integer userID);
 }

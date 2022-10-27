@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.model.entities.history;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -33,7 +34,7 @@ public class PdiDataHistory extends DataHistory {
     @ManyToOne
     private PipelineDataHistory pipeline;
 
-    @OneToMany(mappedBy = "pdi")
+    @OneToMany(mappedBy = "pdi", cascade = CascadeType.REMOVE)
     private List<ValueParameterDataHistory> valueParameters;
 
     @Builder

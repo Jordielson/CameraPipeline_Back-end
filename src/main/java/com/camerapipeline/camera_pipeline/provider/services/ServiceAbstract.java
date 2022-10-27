@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
@@ -77,10 +78,12 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
         }).orElseThrow(() -> throwNotFoundEntity(id));
     }
 
+    @Transactional
     public M delete(ID id, Principal principal) {
         User user = getUserByPrincipal(principal);
         return repository.findById(id).map(existing -> {
             if(existing.getUser().equals(user)) {
+                beforeDelete(existing);
                 repository.delete(existing);
                 return existing;
             } else {
@@ -101,4 +104,6 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
 
     abstract protected Specification<M> getSpecification(M search);
     abstract protected EntityNotFoundException throwNotFoundEntity(ID id);
+    
+    protected void beforeDelete(M model) {};
 }

@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.services.pipeline;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -13,6 +14,7 @@ import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 import com.camerapipeline.camera_pipeline.model.repository.pipeline.PipelineRepository;
+import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.ServiceAbstract;
 import com.camerapipeline.camera_pipeline.provider.services.history.PipelineDataHistoryService;
@@ -77,6 +79,14 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
     @Transactional
     @Override
     public Pipeline delete(Integer id, Principal principal) {
+        List<PDI> pdiList = pdiService.findByDigitalProcess(id);
+        if (!pdiList.isEmpty()) {
+            throw new BusinessException(
+                "Pipeline is being used", 
+                "PIPELINE_USED", 
+                "Pipeline is being used by another pipeline"
+            );
+        }
         Pipeline pipe = super.delete(id, principal);
         historyService.register(DataHistoryEnum.DELETE, pipe);
         return pipe;

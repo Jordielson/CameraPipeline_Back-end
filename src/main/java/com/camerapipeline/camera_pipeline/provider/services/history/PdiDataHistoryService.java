@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.camerapipeline.camera_pipeline.model.entities.history.PdiDataHistory;
 import com.camerapipeline.camera_pipeline.model.entities.history.PipelineDataHistory;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
@@ -34,5 +35,15 @@ public class PdiDataHistoryService {
         }
 
         return data;
+    }
+    
+    public void deleteByDigitalProcess(DigitalProcess process) {
+        valueService.deleteByDigitalProcess(process);
+        repository.deleteInBatch(process.getId());
+    }
+
+    public void cleanUserHistory(Integer userId) {
+        valueService.cleanUserHistory(userId);
+        repository.deleteInBatchByUser(userId);
     }
 }
