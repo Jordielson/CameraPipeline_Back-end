@@ -175,6 +175,14 @@ public class NotificacaoStep extends MainSteps{
 		case "PDIAdicionadoComSucesso_Pipeline":
 			mensagemErro = "PDITeste adicionado com sucesso!";
 			break;
+
+		case "SucessoExcluirPipeline_Pipeline":
+			mensagemErro = "Deletado com sucesso! 👌";
+			break;
+			
+		case "ErroExcluirPipelineEmUso_Pipeline":
+			mensagemErro = "Deletado com sucesso! 👌";
+			break;
 			
 		/**
 		 * TODO Notificações Gerais

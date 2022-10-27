@@ -34,12 +34,13 @@ import io.cucumber.java.pt.Então;
 
 public class IntegracaoStep extends MainSteps{
 	
-	@Dado("que tenho uma Pipeline")
-	public void queTenhoUmaPipeline() {
+	@Dado("^que tenho uma Pipeline (.*)?$")
+	public void queTenhoUmaPipeline(String nome) {
 		Pipeline pipeline = new Pipeline();
-		pipeline.setName("Pipeline Test");
+		pipeline.setName(nome != null ? nome : "Pipeline Test");
 		pipeline.setUser(recuperarUser());
 		pipeline.setPDIList(List.of());
+		pipeline.setPdis(List.of());
 		
 		pipelineService.create(pipeline, recuperarPrincipal());
 	}
