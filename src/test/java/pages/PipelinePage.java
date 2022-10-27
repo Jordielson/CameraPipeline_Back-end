@@ -61,7 +61,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-body pipeline-card\"]/div/div/div")
 	private List<WebElement> ListaDeProcessos;
 	
-	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[3]/div/div[@class=\"card-body pipeline-card\"]/div/div//div[@class=\"mb-3\" or @class=\"form-check\"]")
+	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[3]/div/div[@class=\"card-body pipeline-card\"]/div[@class=\"mb-3\" or @class=\"form-check\"]")
 	private List<WebElement> ListaDeParametros;
 	
 	public boolean isTextoPadraoPresente() {
@@ -137,7 +137,6 @@ public class PipelinePage {
 	
 	public void adicionarPDIEmPipeline(String Nome) {
 		boolean valid = false;
-//		Set<String> nomesPdi = new HashSet<String>();
 		
 		String className = acordPDIs.getAttribute("class");
 		if(className.equals("accordion-collapse collapse")) {
@@ -254,9 +253,10 @@ public class PipelinePage {
 	}
 	
 	public Optional<WebElement> getParametroPDI(String value){
+		System.out.println(ListaDeParametros.size());
 		for(WebElement e : ListaDeParametros) {
-			if(e.findElement(By.xpath("/label")).getText().toLowerCase().equals(value.toLowerCase())) {
-				return Optional.of(e.findElement(By.xpath("/input")));
+			if(e.findElement(By.xpath("label")).getText().toLowerCase().equals(value.toLowerCase())) {
+				return Optional.of(e.findElement(By.xpath("input")));
 			}
 		}
 		System.err.println("O Parametro: " + value + " Nao foi encontrado" );

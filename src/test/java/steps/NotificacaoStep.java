@@ -161,7 +161,7 @@ public class NotificacaoStep extends MainSteps{
 			break;
 			
 		/**
-		 * TODO Notificações Page Edição
+		 * TODO Notificações Page Pipeline
 		 */
 			
 		case "SucessoCriarPipeline_Pipeline":
@@ -170,6 +170,10 @@ public class NotificacaoStep extends MainSteps{
 			
 		case "SucessoSalvarPipeline_Pipeline":
 			mensagemErro = "Salvo com sucesso!";
+			break;
+
+		case "PDIAdicionadoComSucesso_Pipeline":
+			mensagemErro = "PDITeste adicionado com sucesso!";
 			break;
 			
 		/**
@@ -201,14 +205,18 @@ public class NotificacaoStep extends MainSteps{
 
 			do {
 				esperar(1);
-//				/html/body/div/div/div[2]/div/div/div[1]/div[2]
 				esperado = driver.findElement(By.id("toastMsg"));
 				erroRecuperado = esperado.getAttribute("innerText");
 				esperar(1);
+				
 			} while (erroRecuperado.equals("Processando"));
-
-			WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\"]"));
-			botaoFechar.click();
+			
+			try {
+				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\"]"));
+				botaoFechar.click();
+			} catch (Exception e) {
+			}
+			
 			assertEquals(erroRecuperado, mensagemErro);
 			
 		}

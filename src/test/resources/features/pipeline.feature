@@ -28,8 +28,10 @@ Cenario: teste geral
 #	Então PP Clicar botao historico Pipelines 
 	Então adicionar processo PDI PDITeste
 	Então selecionar processo 1
-	Então informar parametro string PDITeste parametroTeste
+	Então informar parametro string ParamTeste1 parametroTeste
+	Então sistema notifica PDIAdicionadoComSucesso_Pipeline
 	Então PP Clicar botao SalvarPipeline
+	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao ExcluirPipeline
 	
 	

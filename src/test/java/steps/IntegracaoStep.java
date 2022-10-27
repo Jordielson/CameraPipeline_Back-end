@@ -70,7 +70,6 @@ public class IntegracaoStep extends MainSteps{
 		mpdi.setURL("www.testePDI.com");
 		mpdi.setDescription("DescricaoTestePDI");
 		mpdi.setParameters(List.of(parameter));
-		mpdi.setPdiList(List.of());
 		
 		modelPDIService.create(mpdi, recuperarPrincipal());
 		
@@ -105,97 +104,98 @@ public class IntegracaoStep extends MainSteps{
 		Optional<User> userRecuperado = userRepository.findByEmail(emailpassado);
 
 		if (userRecuperado.isPresent()) {
-			limparUser();
-			System.out.println(userRecuperado.get().toString());
-			userRepository.deleteById(userRecuperado.get().getId());
+			userService.delete(userRecuperado.get().getId(), recuperarPrincipal());
+////			limparUser();
+//			System.out.println(userRecuperado.get().toString());
+//			userRepository.deleteById(userRecuperado.get().getId());
 		}
 	}
 	
-	private void limparUser() {
-		
-		if(getAllCameraSize() != 0) {
-			List<Camera> cameras = getAllCamera();
-			ArrayList<Camera> ordCamera = new ArrayList<Camera>();
-			
-			for(Camera c : cameras) {
-				if(c.getBaseCamera() != null) {
-					ordCamera.add(0, c);
-				}else {
-					ordCamera.add(ordCamera.size(), c);
-				}
-			}
-			for(Camera c : ordCamera) {
-				cameraService.delete(c.getId(), recuperarPrincipal());
-			}
-
-		}
-		
-		if(getAllPipelineInputSize() != 0) {
-			List<PipelineInput> inputs = getAllPipelineInput();
-			for(PipelineInput pi : inputs) {
-				pi.setPipeline(null);
-			}
-			User userUpdate = recuperarUser();
-			userUpdate.setPipelineInputs(Set.copyOf(inputs));
-			userService.update(recuperarUser().getId(), userUpdate, recuperarPrincipal());
-		}
-		
-		 if(recuperarUser().getDigitalProcess() != null) {
-		   	Set<DigitalProcess> DProcess = recuperarUser().getDigitalProcess();
-		   	
-		 	for(DigitalProcess p: DProcess) {
-		 		if(p instanceof ModelPDI) {
-		 			ModelPDI m = (ModelPDI) p;
-		 			List<Parameter> parametros = m.getParameters();
-		 			List<PDI> pdis = m.getPdiList();
-		 			
-		 			for(PDI pdi : pdis) {
-		 				List<ValueParameter> valueParameters = pdi.getValueParameters();
-		 				for( ValueParameter vp : valueParameters ) {
-		 					valueParameterService.delete(vp.getId(), recuperarPrincipal());
-		 				}
-		 				pdiService.delete(pdi.getId(), recuperarPrincipal());
-		 			}
-		 			for(Parameter param : parametros ) {
-		 				parameterService.delete(param.getId(), recuperarPrincipal());
-		 			}
-		 			modelPDIService.delete(p.getId(), recuperarPrincipal());
-		 			
-		 		}else if(p instanceof Pipeline) {
-		 			int id = p.getId();
-		 			int life = 1;
-		 			List<PipelineDataHistory> pipelinedataHistorys = pipelineDataHistoryService.getHistoryByPipeline(pageable, id, recuperarPrincipal()).toList();
-		 			System.err.println(pipelinedataHistorys.size());
-		 			while(pipelinedataHistorys.size() > 0) {
-		 				for(PipelineDataHistory pdh : pipelinedataHistorys) {
-		 					pipelineDataHistoryRespository.deleteById(pdh.getRevision());
-		 					esperar(1);
-		 				}
-		 				if(life == 1) {
-		 					pipelineService.delete(id, recuperarPrincipal());
-		 					life--;
-		 					esperar(1);
-		 				}
-		 				pipelinedataHistorys = pipelineDataHistoryService.getHistoryByPipeline(pageable, id, recuperarPrincipal()).toList();
-		 			}
-		 		}
-		 	}
-		 }
-		 
-		if(recuperarUser().getPipelineInputs() != null) {
-			List<ImageData> imagens = getAllImageData();
-			for(ImageData i : imagens) {
-				imageDataService.deleteImage(i.getId(), recuperarPrincipal());
-			}
-		}
-		
-		if(recuperarUser().getPipelineInputs() != null) {
-			List<VideoData> videos = getAllVideoData();
-			for(VideoData v : videos) {
-				videoDataService.deleteVideo(v.getId(), recuperarPrincipal());
-			}
-		}
-		
-		
-	}
+//	private void limparUser() {
+//		
+//		if(getAllCameraSize() != 0) {
+//			List<Camera> cameras = getAllCamera();
+//			ArrayList<Camera> ordCamera = new ArrayList<Camera>();
+//			
+//			for(Camera c : cameras) {
+//				if(c.getBaseCamera() != null) {
+//					ordCamera.add(0, c);
+//				}else {
+//					ordCamera.add(ordCamera.size(), c);
+//				}
+//			}
+//			for(Camera c : ordCamera) {
+//				cameraService.delete(c.getId(), recuperarPrincipal());
+//			}
+//
+//		}
+//		
+//		if(getAllPipelineInputSize() != 0) {
+//			List<PipelineInput> inputs = getAllPipelineInput();
+//			for(PipelineInput pi : inputs) {
+//				pi.setPipeline(null);
+//			}
+//			User userUpdate = recuperarUser();
+//			userUpdate.setPipelineInputs(Set.copyOf(inputs));
+//			userService.update(recuperarUser().getId(), userUpdate, recuperarPrincipal());
+//		}
+//		
+//		 if(recuperarUser().getDigitalProcess() != null) {
+//		   	Set<DigitalProcess> DProcess = recuperarUser().getDigitalProcess();
+//		   	
+//		 	for(DigitalProcess p: DProcess) {
+//		 		if(p instanceof ModelPDI) {
+//		 			ModelPDI m = (ModelPDI) p;
+//		 			List<Parameter> parametros = m.getParameters();
+////		 			List<PDI> pdis = m.getPdiList();
+//		 			
+//		 			for(PDI pdi : pdis) {
+//		 				List<ValueParameter> valueParameters = pdi.getValueParameters();
+//		 				for( ValueParameter vp : valueParameters ) {
+//		 					valueParameterService.delete(vp.getId(), recuperarPrincipal());
+//		 				}
+//		 				pdiService.delete(pdi.getId(), recuperarPrincipal());
+//		 			}
+//		 			for(Parameter param : parametros ) {
+//		 				parameterService.delete(param.getId(), recuperarPrincipal());
+//		 			}
+//		 			modelPDIService.delete(p.getId(), recuperarPrincipal());
+//		 			
+//		 		}else if(p instanceof Pipeline) {
+//		 			int id = p.getId();
+//		 			int life = 1;
+//		 			List<PipelineDataHistory> pipelinedataHistorys = pipelineDataHistoryService.getHistoryByPipeline(pageable, id, recuperarPrincipal()).toList();
+//		 			System.err.println(pipelinedataHistorys.size());
+//		 			while(pipelinedataHistorys.size() > 0) {
+//		 				for(PipelineDataHistory pdh : pipelinedataHistorys) {
+//		 					pipelineDataHistoryRespository.deleteById(pdh.getRevision());
+//		 					esperar(1);
+//		 				}
+//		 				if(life == 1) {
+//		 					pipelineService.delete(id, recuperarPrincipal());
+//		 					life--;
+//		 					esperar(1);
+//		 				}
+//		 				pipelinedataHistorys = pipelineDataHistoryService.getHistoryByPipeline(pageable, id, recuperarPrincipal()).toList();
+//		 			}
+//		 		}
+//		 	}
+//		 }
+//		 
+//		if(recuperarUser().getPipelineInputs() != null) {
+//			List<ImageData> imagens = getAllImageData();
+//			for(ImageData i : imagens) {
+//				imageDataService.deleteImage(i.getId(), recuperarPrincipal());
+//			}
+//		}
+//		
+//		if(recuperarUser().getPipelineInputs() != null) {
+//			List<VideoData> videos = getAllVideoData();
+//			for(VideoData v : videos) {
+//				videoDataService.deleteVideo(v.getId(), recuperarPrincipal());
+//			}
+//		}
+//		
+//		
+//	}
 }

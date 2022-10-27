@@ -70,7 +70,6 @@ public class PipelineStep extends MainSteps{
 		default:
 			break;
 		}
-	    Na(PipelinePage.class).adicionarPDIEmPipeline(nome);
 	}
 
 	@Então("^selecionar processo (.*)$")
