@@ -160,6 +160,17 @@ public class NotificacaoStep extends MainSteps{
 			mensagemErro = "Já existe uma câmera com esse pipeline";
 			break;
 			
+		/**
+		 * TODO Notificações Page Edição
+		 */
+			
+		case "SucessoCriarPipeline_Pipeline":
+			mensagemErro = "Salvo com sucesso!";
+			break;
+			
+		case "SucessoSalvarPipeline_Pipeline":
+			mensagemErro = "Salvo com sucesso!";
+			break;
 			
 		/**
 		 * TODO Notificações Gerais
@@ -190,15 +201,16 @@ public class NotificacaoStep extends MainSteps{
 
 			do {
 				esperar(1);
-				esperado = driver.findElement(By.xpath("//*[@class=\"Toastify\"]/div/div/div[1]/div[2]/text"));
+//				/html/body/div/div/div[2]/div/div/div[1]/div[2]
+				esperado = driver.findElement(By.id("toastMsg"));
 				erroRecuperado = esperado.getAttribute("innerText");
 				esperar(1);
 			} while (erroRecuperado.equals("Processando"));
 
-			WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify\"]/div/div/button"));
+			WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\"]"));
 			botaoFechar.click();
 			assertEquals(erroRecuperado, mensagemErro);
+			
 		}
-
 	}
 }

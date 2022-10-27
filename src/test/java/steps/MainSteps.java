@@ -10,17 +10,28 @@ import java.security.Principal;
 import java.util.List;
 
 import com.camerapipeline.camera_pipeline.CameraPipelineApplication;
+import com.camerapipeline.camera_pipeline.model.entities.history.PipelineDataHistory;
 import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.input.image.ImageData;
 import com.camerapipeline.camera_pipeline.model.entities.input.video.VideoData;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
+import com.camerapipeline.camera_pipeline.model.repository.history.PdiDataHistoryRepository;
+import com.camerapipeline.camera_pipeline.model.repository.history.PipelineDataHistoryRepository;
+import com.camerapipeline.camera_pipeline.model.repository.history.ValueParameterDataHistoryRepository;
 import com.camerapipeline.camera_pipeline.model.repository.user.UserRepository;
 import com.camerapipeline.camera_pipeline.presentation.dto.input.camera.CameraDTO;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
+import com.camerapipeline.camera_pipeline.provider.services.history.PdiDataHistoryService;
+import com.camerapipeline.camera_pipeline.provider.services.history.PipelineDataHistoryService;
+import com.camerapipeline.camera_pipeline.provider.services.history.ValueParameterDataHistoryService;
 import com.camerapipeline.camera_pipeline.provider.services.input.camera.CameraService;
 import com.camerapipeline.camera_pipeline.provider.services.input.image.ImageDataService;
 import com.camerapipeline.camera_pipeline.provider.services.input.video.VideoDataService;
+import com.camerapipeline.camera_pipeline.provider.services.pdi.ModelPDIService;
+import com.camerapipeline.camera_pipeline.provider.services.pdi.PDIService;
+import com.camerapipeline.camera_pipeline.provider.services.pdi.ParameterService;
+import com.camerapipeline.camera_pipeline.provider.services.pdi.ValueParameterService;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 import com.camerapipeline.camera_pipeline.provider.services.user.UserService;
 
@@ -50,6 +61,37 @@ public class MainSteps {
 
 	@Autowired
 	protected VideoDataService videoDataService;
+	
+	@Autowired
+	protected ParameterService parameterService;
+	
+	@Autowired
+	protected ModelPDIService modelPDIService;
+	
+	@Autowired
+	protected PipelineDataHistoryService pipelineDataHistoryService;
+	
+	@Autowired
+	protected PdiDataHistoryService pdiDataHistoryService;
+	
+	@Autowired
+	protected ValueParameterDataHistoryService valueParameterDataService;
+	
+	@Autowired
+	protected ValueParameterService valueParameterService;
+	
+	@Autowired
+	protected PDIService pdiService;
+
+	@Autowired
+	protected PdiDataHistoryRepository pdiDataHistoryRepository;
+	
+	@Autowired
+	protected PipelineDataHistoryRepository pipelineDataHistoryRespository;
+	
+	@Autowired
+	protected ValueParameterDataHistoryRepository valueParameterDataHistoryRepository;
+	
 	
 	protected Pageable pageable = Pageable.unpaged();
 	

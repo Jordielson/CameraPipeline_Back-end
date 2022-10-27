@@ -1,8 +1,10 @@
 package pages;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,13 +16,13 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"empty-pipeline\"]/h2")
 	private WebElement textoPadrao;
 	
-	@FindBy(xpath = "//*nav[@class=\"navbar sticky-top navbar-light d-flex flex-row justify-content-center px-3\"]/input")
+	@FindBy(xpath = "//nav/input")
 	private WebElement campoNomePipeline;
 	
-	@FindBy(xpath = "//*nav[@class=\"navbar sticky-top navbar-light d-flex flex-row justify-content-center px-3\"]/*/*/input")
+	@FindBy(xpath = "//nav/*/*/input")
 	private WebElement campoNomeCriarPipeline;
 	
-	@FindBy(xpath = "//*nav[@class=\"navbar sticky-top navbar-light d-flex flex-row justify-content-center px-3\"]/*/*/button")
+	@FindBy(xpath = "//nav/*/*/button")
 	private WebElement botaoCriarPipeline;
 	
 	@FindBy(xpath = "//*[@id=\"pipelines-select\"]")
@@ -47,7 +49,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div")
 	private WebElement acordPDIs;
 	
-	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/ul/button")
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/button")
 	private List<WebElement> listaDePDIs;
 	
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div")
@@ -61,6 +63,10 @@ public class PipelinePage {
 	
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[3]/div/div[@class=\"card-body pipeline-card\"]/div/div//div[@class=\"mb-3\" or @class=\"form-check\"]")
 	private List<WebElement> ListaDeParametros;
+	
+	public boolean isTextoPadraoPresente() {
+		return textoPadrao.isDisplayed();
+	}
 	
 	public String getTextoPadrao() {
 		return textoPadrao.getText();
@@ -131,6 +137,7 @@ public class PipelinePage {
 	
 	public void adicionarPDIEmPipeline(String Nome) {
 		boolean valid = false;
+//		Set<String> nomesPdi = new HashSet<String>();
 		
 		String className = acordPDIs.getAttribute("class");
 		if(className.equals("accordion-collapse collapse")) {
@@ -140,6 +147,7 @@ public class PipelinePage {
 		if(!listaDePDIs.isEmpty()) {
 			for(WebElement e : listaDePDIs) {
 				if(e.getText().toLowerCase().equals(Nome.toLowerCase())) {
+					System.out.println("Entrei pdi");
 					e.click();
 					valid = true;
 					break;
