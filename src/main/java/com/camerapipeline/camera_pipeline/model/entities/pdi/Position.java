@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 @Data
 public class Position {
-    private Integer x;
-    private Integer y;
+    private Double x;
+    private Double y;
 
 }
