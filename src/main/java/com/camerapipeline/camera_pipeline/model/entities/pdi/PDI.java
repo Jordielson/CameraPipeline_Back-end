@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +40,14 @@ public class PDI implements ModelAbstract<Integer>{
     @NotNull
     @ManyToOne
     private DigitalProcess digitalProcess;
+
+    @Embedded
+    private Position position;
+
+    @ElementCollection
+    @CollectionTable(name="children")
+    @Column(name="child")
+    private List<Integer> children;
     
     @NotNull
     @ManyToOne

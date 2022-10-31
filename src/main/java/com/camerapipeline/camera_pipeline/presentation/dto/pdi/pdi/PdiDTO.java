@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.camerapipeline.camera_pipeline.model.entities.pdi.Position;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.ValueParameterDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +33,20 @@ public class PdiDTO {
       required = true
     )
     protected Integer index;
+
+    @Schema(
+      title = "PDI Position",
+      name = "position",
+		  required = false
+    )
+    private Position position;
+
+    @Schema(
+      title = "PDI Children",
+      name = "children",
+		  required = false
+    )
+    private List<Integer> children = new ArrayList<>();
 
     @Schema(
         title = "Digital process (Pipeline or ModelPDI)",

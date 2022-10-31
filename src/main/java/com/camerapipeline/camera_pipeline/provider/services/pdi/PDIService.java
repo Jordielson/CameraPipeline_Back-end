@@ -33,6 +33,16 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
         super(repository);
     }
 
+    public PDI getByIndexAndPipeline(Integer index, Integer pipelineID) {
+        return ((PDIRepository) repository).findByIndexAndPipeline(index, pipelineID)
+        .orElseThrow(() -> new CustomEntityNotFoundException(
+            String.format("%s with id %s was not found", "PDI", index), 
+            index.toString(),
+            new EntityNotFoundException()
+            )
+        );
+    }
+
     @Override
     public PDI create(PDI model, Principal principal) {
         updateDigitalProcess(model, principal);

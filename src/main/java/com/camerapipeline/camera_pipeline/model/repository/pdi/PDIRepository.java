@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.model.repository.pdi;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,10 @@ public interface PDIRepository extends RepositoryAbstract<PDI, Integer> {
     @Query(value = "SELECT p FROM PDI p "+
         "WHERE p.digitalProcess.id = :#{#digitalID}")
     List<PDI> findByDigitalProcess(@Param("digitalID") Integer digitalID);
+
+    @Query(value = "SELECT p FROM PDI p "+
+        "WHERE p.pipeline.id = :#{#pipelineID} AND p.index = :#{#index}")
+    Optional<PDI> findByIndexAndPipeline(@Param("index") Integer index, @Param("pipelineID") Integer pipelineID);
 
     @Modifying
     @Query(value = "DELETE FROM PDI p "+

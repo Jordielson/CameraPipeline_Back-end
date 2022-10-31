@@ -1,4 +1,4 @@
-package com.camerapipeline.camera_pipeline.model.entities.pipeline;
+package com.camerapipeline.camera_pipeline.model.entities.pdi;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
