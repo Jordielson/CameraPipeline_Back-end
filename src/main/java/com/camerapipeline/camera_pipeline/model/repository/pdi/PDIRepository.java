@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,9 +25,4 @@ public interface PDIRepository extends RepositoryAbstract<PDI, Integer> {
     @Query(value = "SELECT p FROM PDI p "+
         "WHERE p.pipeline.id = :#{#pipelineID} AND p.index = :#{#index}")
     Optional<PDI> findByIndexAndPipeline(@Param("index") Integer index, @Param("pipelineID") Integer pipelineID);
-
-    @Modifying
-    @Query(value = "DELETE FROM PDI p "+
-        "WHERE p.pipeline.id = :#{#pipelineID}")
-    void deleteInBatch(@Param("pipelineID") Integer pipelineID);
 }

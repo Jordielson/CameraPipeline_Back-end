@@ -1,5 +1,8 @@
 package com.camerapipeline.camera_pipeline.provider.services.history;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,8 @@ public class PdiDataHistoryService {
             .pdiID(pdi.getId())
             .pipeline(pipeline)
             .index(pdi.getIndex())
+            .position(pdi.getPosition())
+            .children(new ArrayList<>(pdi.getChildren()))
             .build();
         
         repository.save(data);
@@ -38,12 +43,10 @@ public class PdiDataHistoryService {
     }
     
     public void deleteByDigitalProcess(DigitalProcess process) {
-        valueService.deleteByDigitalProcess(process);
-        repository.deleteInBatch(process.getId());
-    }
+        List<PdiDataHistory> list = repository.findByDigitalProcess(process.getId());
 
-    public void cleanUserHistory(Integer userId) {
-        valueService.cleanUserHistory(userId);
-        repository.deleteInBatchByUser(userId);
+        for (PdiDataHistory pdiDataHistory : list) {
+            repository.delete(pdiDataHistory);
+        }
     }
 }

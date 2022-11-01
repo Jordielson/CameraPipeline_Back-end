@@ -1,6 +1,7 @@
 package com.camerapipeline.camera_pipeline.provider.services.history;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +77,13 @@ public class PipelineDataHistoryService {
 
     @Transactional
     public Pipeline restore(Pipeline pipeline) {
-        valueRepository.deleteInBatch(pipeline.getId());
+        pipelineRepository.findById(pipeline.getId()).map(existing -> {
+            for (PDI pdi : existing.getPDIList()) {
+                pdiRepository.delete(pdi);
+            }
+            return existing;
+        });
         valueRepository.flush();
-
-        pdiRepository.deleteInBatch(pipeline.getId());
         pdiRepository.flush();
         
         for (PDI pdi : pipeline.getPDIList()) {
@@ -102,7 +106,10 @@ public class PipelineDataHistoryService {
     }
 
     public void cleanUserHistory(Integer userId) {
-        pdiHistoryService.cleanUserHistory(userId);
-        repository.deleteInBatchByUser(userId);
+        List<PipelineDataHistory> list = repository.findByUser(userId);
+
+        for (PipelineDataHistory pipelineDataHistory : list) {
+            repository.delete(pipelineDataHistory);
+        }
     }
 }

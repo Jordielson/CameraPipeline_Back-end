@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.camerapipeline.camera_pipeline.model.entities.history.PdiDataHistory;
 import com.camerapipeline.camera_pipeline.model.entities.history.ValueParameterDataHistory;
-import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.model.enums.DataHistoryEnum;
 import com.camerapipeline.camera_pipeline.model.repository.history.ValueParameterDataHistoryRepository;
@@ -26,13 +25,5 @@ public class ValueParameterDataHistoryService {
         
         repository.save(data);
         return data;
-    }
-
-    public void deleteByDigitalProcess(DigitalProcess process) {
-        repository.deleteInBatch(process.getId());
-    }
-
-    public void cleanUserHistory(Integer userId) {
-        repository.deleteInBatchByUser(userId);
     }
 }
