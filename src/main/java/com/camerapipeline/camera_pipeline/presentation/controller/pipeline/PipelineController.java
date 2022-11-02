@@ -4,6 +4,7 @@ import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessa
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.presentation.controller.ControllerAbstract;
 import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.shared.ValidDTO;
 import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMapper;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -174,4 +177,58 @@ public class PipelineController extends ControllerAbstract<Pipeline, PipelineDTO
             HttpStatus.OK
         );
     }
+
+    @Operation(summary = "Checks if the pipeline can be added to a pipeline")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully verified", 
+            content = { 
+                @Content(mediaType = "application/json", 
+                    schema = @Schema( implementation = ValidDTO.class)
+                ) 
+            }
+        ),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "403", description = "Access denied", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ), 
+        @ApiResponse(responseCode = "500", 
+            description = "Server has encountered a situation with which it does not know", 
+            content = @Content(mediaType = "application/json", 
+            schema = @Schema( implementation = ExceptionMessage.class))
+        ),
+    })
+    @GetMapping(value = "/verify-addition", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> verifyUsed(
+        Principal principal,
+        @Parameter(
+            name = "parentPipelineID",
+            description = "Parent pipeline identifier",
+            example = "4",
+            required = true
+        )
+        @RequestParam Integer parentPipelineID,
+        @Parameter(
+            name = "childPipelineID",
+            description = "Children pipeline identifier",
+            example = "2",
+            required = true
+        )
+        @RequestParam Integer childPipelineID
+        ) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put(
+            "valid", 
+            ((PipelineService) service).checkAdditionValidity(parentPipelineID, childPipelineID)
+        );
+		
+		return new ResponseEntity<Map<String, Boolean>>(response, HttpStatus.OK);
+	}
 }

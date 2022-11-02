@@ -101,6 +101,30 @@ public class PipelineService extends ServiceAbstract<Pipeline, Integer>{
         return update(id, pipeline, principal);
     }
 
+    public boolean checkAdditionValidity(Integer parentPipelineID, Integer childPipelineID) {
+        Pipeline addedPipeline = getById(childPipelineID);
+        return checkAdditionValidity(parentPipelineID, addedPipeline.getPDIList());
+    }
+
+    public boolean checkAdditionValidity(Integer parentPipelineID, List<PDI> pdiList) {
+        if(pdiList.size() == 0) {
+            return true;
+        }
+
+        PDI pdi = pdiList.remove(0);
+        if (pdi.getDigitalProcess().getId().equals(parentPipelineID)) {
+            return false;
+        }        
+
+        if(pdi.getDigitalProcess() instanceof Pipeline) {
+            boolean valid = checkAdditionValidity(parentPipelineID, ((Pipeline) pdi.getDigitalProcess()).getPDIList());
+            if(valid == false) {
+                return false;
+            }
+        }
+        return checkAdditionValidity(parentPipelineID, pdiList);
+    }
+
     @Override
     protected void beforeDelete(Pipeline model) {
         pdiHistoryService.deleteByDigitalProcess(model);
