@@ -70,6 +70,7 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
         model.setUser(user);
         return repository.findById(id).map(existing -> {
             if(existing.getUser().equals(user)) {
+                beforeUpdate(model, existing);
                 model.setId(id);
                 return repository.save(model);
             } else {
@@ -106,4 +107,5 @@ public abstract class ServiceAbstract<M extends ModelAbstract<ID>, ID> {
     abstract protected EntityNotFoundException throwNotFoundEntity(ID id);
     
     protected void beforeDelete(M model) {};
+    protected void beforeUpdate(M model, M existing) {};
 }

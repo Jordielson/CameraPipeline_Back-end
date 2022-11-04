@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.provider.services.pdi;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.camerapipeline.camera_pipeline.model.entities.files.FileData;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
+import com.camerapipeline.camera_pipeline.model.enums.ParameterType;
 import com.camerapipeline.camera_pipeline.model.repository.file.FileDataRepository;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.ValueParameterRepository;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.valueparameter.FileDataDTO;
@@ -44,7 +46,7 @@ public class ValueParameterService extends ServiceAbstract<ValueParameter, Integ
         fileData.setName(file.getOriginalFilename());
         fileData.setFormat(file.getContentType()); 
         fileData.setUser(getUserByPrincipal(principal));
-        
+
         fileRepository.save(fileData);
 
         String filePath = String.format(
@@ -78,10 +80,47 @@ public class ValueParameterService extends ServiceAbstract<ValueParameter, Integ
         return null;
     }
 
+    @Transactional
+    public FileData deleteFile(UUID id) {
+        FileData file = fileRepository.findById(id).map(existing -> {
+            fileRepository.delete(existing);
+            return existing;
+        }).orElseThrow(() -> new CustomEntityNotFoundException("File Data", id.toString()));
+
+        String filePath = file.getFilePath();
+
+        try {
+            Files.delete(new File(filePath).toPath());
+        } catch (IOException e) {
+            throw new CustomIOException(
+                "Could not delete file because it was not found", 
+                "ERR_REMOVE_FILE",
+                id.toString(),
+                e
+            );
+        }
+
+        return file;
+    }
+
     @Override
     public ValueParameter create(ValueParameter model) {
         model.setParameter(paramService.getById(model.getParameter().getId()));
         return super.create(model);
+    }
+
+    @Override
+    protected void beforeUpdate(ValueParameter model, ValueParameter existing) {
+        if(model.getParameter().getType().equals(ParameterType.FILE)){
+            if(model.getValue() != null 
+                && !model.getValue().trim().isEmpty()
+                && model.getValue() != existing.getValue()
+            ) {
+                deleteFile(UUID.fromString(existing.getValue()));
+            } else {
+                model.setValue(existing.getValue());
+            }
+        }
     }
 
     @Override

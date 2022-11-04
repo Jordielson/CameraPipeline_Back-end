@@ -2,6 +2,7 @@ package com.camerapipeline.camera_pipeline.provider.services.pdi;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -14,6 +15,7 @@ import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.ValueParameter;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
+import com.camerapipeline.camera_pipeline.model.enums.ParameterType;
 import com.camerapipeline.camera_pipeline.model.repository.pdi.PDIRepository;
 import com.camerapipeline.camera_pipeline.model.repository.pipeline.PipelineRepository;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
@@ -92,6 +94,20 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
     @Override
     public PDI delete(Integer id, Principal principal) {
         return super.delete(id, principal);
+    }
+
+    @Override
+    protected void beforeDelete(PDI model) {
+        for (ValueParameter value : model.getValueParameters()) {
+            if (value.getParameter().getType().equals(ParameterType.FILE)) {
+                if(value.getValue() != null 
+                    && !value.getValue().trim().isEmpty()
+                ) {
+                    valueService.deleteFile(UUID.fromString(value.getValue()));
+                }
+            }
+            
+        }
     }
 
     @Override
