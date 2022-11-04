@@ -106,7 +106,6 @@ public class PDIService extends ServiceAbstract<PDI, Integer> {
                     valueService.deleteFile(UUID.fromString(value.getValue()));
                 }
             }
-            
         }
     }
 

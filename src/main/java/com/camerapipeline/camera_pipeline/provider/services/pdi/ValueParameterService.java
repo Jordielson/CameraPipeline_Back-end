@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.Principal;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -82,25 +83,28 @@ public class ValueParameterService extends ServiceAbstract<ValueParameter, Integ
 
     @Transactional
     public FileData deleteFile(UUID id) {
-        FileData file = fileRepository.findById(id).map(existing -> {
+        Optional<FileData> fileOptional = fileRepository.findById(id).map(existing -> {
             fileRepository.delete(existing);
             return existing;
-        }).orElseThrow(() -> new CustomEntityNotFoundException("File Data", id.toString()));
-
-        String filePath = file.getFilePath();
-
-        try {
-            Files.delete(new File(filePath).toPath());
-        } catch (IOException e) {
-            throw new CustomIOException(
-                "Could not delete file because it was not found", 
-                "ERR_REMOVE_FILE",
-                id.toString(),
-                e
-            );
+        });
+        if(fileOptional.isPresent()){
+            FileData file = fileOptional.get();
+            String filePath = file.getFilePath();
+    
+            try {
+                Files.delete(new File(filePath).toPath());
+            } catch (IOException e) {
+                throw new CustomIOException(
+                    "Could not delete file because it was not found", 
+                    "ERR_REMOVE_FILE",
+                    id.toString(),
+                    e
+                );
+            }
+            return file;
+        } else {
+            return null;
         }
-
-        return file;
     }
 
     @Override
