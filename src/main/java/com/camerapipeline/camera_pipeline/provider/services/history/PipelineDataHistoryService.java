@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,12 @@ public class PipelineDataHistoryService {
     PDIRepository pdiRepository;
     @Autowired
     ValueParameterRepository valueRepository;
+
+    private final EntityManager em;
+
+    public PipelineDataHistoryService(EntityManager em) {
+        this.em = em;
+    }
 
     public PipelineDataHistory register(DataHistoryEnum actions, Pipeline pipeline) {
         PipelineDataHistory pipelineData = PipelineDataHistory.builder()
@@ -88,12 +96,13 @@ public class PipelineDataHistoryService {
         
         for (PDI pdi : pipeline.getPDIList()) {
             pdi.setId(null);
-            pdiRepository.save(pdi);
+            PDI pdiRestored = pdiRepository.saveAndFlush(pdi);
 
             for (ValueParameter value : pdi.getValueParameters()) {
                 value.setPdi(pdi);
-                valueRepository.save(value);
+                valueRepository.saveAndFlush(value);
             }
+            em.refresh(pdiRestored);
         }
         return pipelineRepository.save(pipeline);
     }

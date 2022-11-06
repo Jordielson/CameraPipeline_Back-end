@@ -1,7 +1,9 @@
 package com.camerapipeline.camera_pipeline.model.entities.pdi;
 
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
@@ -40,6 +43,9 @@ public class Parameter implements ModelAbstract<Integer>{
 
     @Column(name="\"index\"")
     private Integer index;
+
+    @OneToMany(mappedBy = "parameter", cascade = CascadeType.REMOVE)
+    private List<ValueParameter> valueParameters;
 
     @ManyToOne
     private ModelPDI modelPdi;
