@@ -8,7 +8,6 @@ Funcionalidade: Deve validar o CRUD de Pipeline
 	insersao e remocao de processos(PDI & Pipeline),
 	definicao de parametros de PDI's Aplicados a Pipeline.
 	
-	
 #Cenario: teste geral primario
 #	* remover usuario userteste1@user.com
 #	Dado que existe a conta email userteste1@user.com e senha 123456
@@ -39,12 +38,13 @@ Cenario: Atividar e Desativar Pipeline
 	Dado que existe a conta email userteste1@user.com e senha 123456
 	Dado que informei email userteste1@user.com e senha 123456
 	Dado que tenho um PDI
-	Dado que tenho uma Pipeline
+	Dado que tenho uma Pipeline pipelineTeste
 	Quando tentar logar
 	Então acessar aba pipelines
-	Então PP Ativar Pipeline 
+	Então selecionar Pipeline pipelineTeste Editar
+	Então PPI Ativar Pipeline
 	Então verificar se Pipeline esta Ativa
-	Então PP Desativar Pipeline
+	Então PPI Desativar Pipeline
 	Então verificar se Pipeline esta Desativada
 	
 	
@@ -54,6 +54,7 @@ Cenario: Criar Pipeline
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então PP Clicar botao NovaPipeline
 	Então informar nome da nova Pipeline como PipelineTeste
 	Então PP Clicar botao CriarPipeline
 	Então sistema notifica SucessoCriarPipeline_Pipeline
@@ -70,9 +71,11 @@ Cenario: Editar nome Pipeline
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então PP Clicar botao NovaPipeline
 	Então informar nome da nova Pipeline como PipelineTeste
 	Então PP Clicar botao CriarPipeline
 	Então sistema notifica SucessoCriarPipeline_Pipeline
+	Então selecionar Pipeline PipelineTeste Editar
 	Então editar nome Pipeline como PipelineEditTeste
 	Então PP Clicar botao SalvarPipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipelin
@@ -84,10 +87,12 @@ Cenario: Recuperar versao pipeline
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então PP Clicar botao NovaPipeline
 	Então informar nome da nova Pipeline como PipelineTeste
 	Então PP Clicar botao CriarPipeline
 	Então sistema notifica SucessoCriarPipeline_Pipeline
-	Então PP Clicar botao historico Pipelines
+	Então selecionar Pipeline PipelineTeste Editar
+	Então PPI Clicar botao historico Pipelines
 	Então devo estar na pagina de HistoricoPipeline
 	Então restaurar para a versao primeira
 	Então Verificar nome Pipeline PipelineTeste
@@ -98,9 +103,10 @@ Cenario: Savando Processos com parametros na Pipeline e validando restauração 
 	Dado que informei email userteste1@user.com e senha 123456
 	Dado que tenho um PDI PDITeste1
 	Dado que tenho um PDI PDITeste2
-	Dado que tenho uma Pipeline
+	Dado que tenho uma Pipeline PipelineTeste
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
 	Então adicionar processo PDI PDITeste1
 	Então sistema notifica PDITeste1AdicionadoComSucesso_Pipeline
 	Então adicionar processo PDI PDITeste2
@@ -117,6 +123,7 @@ Cenario: Savando Processos com parametros na Pipeline e validando restauração 
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
 	Então selecionar processo 1
 	Então Verificar parametro ParamTeste1 parametroTeste1
 	Então Verificar parametro ParamTeste2 123
@@ -130,6 +137,7 @@ Cenario: validacao de campo CriarNovaPipeline
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então PP Clicar botao NovaPipeline
 	Então informar nome da nova Pipeline como <nome>
 	Então PP Clicar botao CriarPipeline
 	Então sistema notifica <notificacao>
@@ -147,27 +155,28 @@ Cenario: Excluir Pipeline vazia
 	* remover usuario userteste1@user.com
 	Dado que existe a conta email userteste1@user.com e senha 123456
 	Dado que informei email userteste1@user.com e senha 123456
-	Dado que tenho uma Pipeline
+	Dado que tenho uma Pipeline PipelineTeste
 	Quando tentar logar
 	Então acessar aba pipelines
-	Então PP Clicar botao ExcluirPipeline
+	Então selecionar Pipeline PipelineTeste Deletar
 	Então sistema notifica SucessoExcluirPipeline_Pipeline
 	
 Cenario: Excluir Pipeline com processos
 	* remover usuario userteste1@user.com
 	Dado que existe a conta email userteste1@user.com e senha 123456
 	Dado que informei email userteste1@user.com e senha 123456
-	Dado que tenho uma Pipeline
+	Dado que tenho uma Pipeline PipelineTeste
 	Dado que tenho um PDI
 	Quando tentar logar
 	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
 	Então adicionar processo PDI PDITeste
 	Então sistema notifica PDIAdicionadoComSucesso_Pipeline
 	Então selecionar processo 1
 	Então informar parametro string ParamTeste1 parametroTeste
 	Então PP Clicar botao SalvarPipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
-	Então PP Clicar botao ExcluirPipeline
+	Então PPI Clicar botao ExcluirPipeline
 	Então sistema notifica SucessoExcluirPipeline_Pipeline
 	
 Cenario: Excluir Pipeline usada em outra Pipeline
@@ -178,20 +187,23 @@ Cenario: Excluir Pipeline usada em outra Pipeline
 	Dado que tenho uma Pipeline p2
 	Quando tentar logar
 	Então acessar aba pipelines
-	Então selecionar Pipeline p1
+	Então selecionar Pipeline p1 Editar
 	Então adicionar processo Pipeline p2
 	Então sistema notifica Pipelinep2AdicionadaComSucesso_Pipeline
 	Então PP Clicar botao SalvarPipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
-	Então selecionar Pipeline p2
-	Então PP Clicar botao ExcluirPipeline
+	Então PPI Clicar botao VoltarPipelines
+	Então selecionar Pipeline p2 Editar
+	Então PPI Clicar botao ExcluirPipeline
 	Então sistema notifica ErroExcluirPipelineEmUso_Pipeline
-	Então selecionar Pipeline p1
+	Então PPI Clicar botao VoltarPipelines
+	Então selecionar Pipeline p1 Editar
 	Então remover processo 1
 	Então PP Clicar botao SalvarPipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
-	Então selecionar Pipeline p2
-	Então PP Clicar botao ExcluirPipeline
+	Então PPI Clicar botao VoltarPipelines
+	Então selecionar Pipeline p2 Editar
+	Então PPI Clicar botao ExcluirPipeline
 	Então sistema notifica SucessoExcluirPipeline_Pipeline
 	
 

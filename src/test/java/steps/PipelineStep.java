@@ -22,7 +22,7 @@ public class PipelineStep extends MainSteps {
 
 	@Então("Verificar se não existe Pipeline")
 	public void verificarSeNãoExistePipeline() {
-		boolean resp = Na(PipelinePage.class).isTextoPadraoPresente();
+		boolean resp = Na(PipelinePage.class).isPipelinesEmpty();
 		assertTrue(resp);
 	}
 
@@ -32,11 +32,21 @@ public class PipelineStep extends MainSteps {
 		Na(PipelinePage.class).inserirCampoNomeCriarPipeline(value);
 	}
 
+	@Então("PP Clicar botao NovaPipeline")
+	public void ppClicarBotaoNovaPipeline() {
+		Na(PipelinePage.class).clickBotaoNovaPipeline();;
+	}
+	
 	@Então("PP Clicar botao CriarPipeline")
 	public void ppClicarBotaoCriarPipeline() {
 		Na(PipelinePage.class).clickCriarPipeline();
 	}
-
+	
+	@Então("PPI Clicar botao VoltarPipelines")
+	public void ppClicarBotaoVoltarPipelines() {
+		Na(PipelinePage.class).clickBotaoVoltarPipelines();
+	}
+	
 	@Então("^editar nome Pipeline como (.*)$")
 	public void editarNomePipelineComo(String value) {
 		Na(PipelinePage.class).inserirCampoNomePipeline(value);
@@ -47,14 +57,14 @@ public class PipelineStep extends MainSteps {
 		Na(PipelinePage.class).clickBotaoSalvarPipeline();
 	}
 
-	@Então("PP Desativar Pipeline")
+	@Então("PPI Desativar Pipeline")
 	public void ppDesativarPipeline() {
-		Na(PipelinePage.class).ativarDesativarPipelineCheckbox(false);
+		Na(PipelinePage.class).ativarDesativarPipelineCheckboxInterno(false);
 	}
 
-	@Então("PP Ativar Pipeline")
+	@Então("PPI Ativar Pipeline")
 	public void ppAtivarPipeline() {
-		Na(PipelinePage.class).ativarDesativarPipelineCheckbox(true);
+		Na(PipelinePage.class).ativarDesativarPipelineCheckboxInterno(true);
 	}
 
 	@Então("^verificar se Pipeline esta (Ativa|Desativada)$")
@@ -76,9 +86,9 @@ public class PipelineStep extends MainSteps {
 		}
 	}
 
-	@Então("PP Clicar botao historico Pipelines")
+	@Então("PPI Clicar botao historico Pipelines")
 	public void ppClicarBotaoHistoricoPipelines() {
-		Na(PipelinePage.class).clickBotaoHistorioPiprline();
+		Na(PipelinePage.class).clickBotaoHistorioPipeline();
 	}
 
 	@Então("^adicionar processo (PDI|Pipeline) (.*)$")
@@ -122,15 +132,19 @@ public class PipelineStep extends MainSteps {
 		}
 	}
 
-	@Então("PP Clicar botao ExcluirPipeline")
+	@Então("PPI Clicar botao ExcluirPipeline")
 	public void ppClicarBotaoExcluirPipeline() {
 		Na(PipelinePage.class).clickBotaoExcluirPipeline();
 	}
+	
+	@Então("PP Clicar botao FluxoPipeline")
+	public void ppClicarBotaoFluxoPipeline() {
+		Na(PipelinePage.class).clickBotaoFluxoPipeline();
+	}
 
-	@Então("^selecionar Pipeline (.*)$")
-	public void selecionarPipelineP1(String nome) {
-		boolean numerico = nome.matches("[0-9]+");
-		Na(PipelinePage.class).selectPipeline(numerico ? ((int) Integer.parseInt(nome)) : nome);
+	@Então("^selecionar Pipeline (.*) (Ativar|Desativar|Editar|Deletar)$")
+	public void selecionarPipeline(String nome, String acao) {
+		Na(PipelinePage.class).selectPipeline(nome, acao);
 	}
 
 	@Então("^remover processo (.*)$")

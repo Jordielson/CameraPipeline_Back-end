@@ -235,14 +235,15 @@ public class NotificacaoStep extends MainSteps{
 				esperar(1);
 				esperado = driver.findElement(By.id("toastMsg"));
 				erroRecuperado = esperado.getAttribute("innerText");
-				esperar(1);
 				
-			} while (erroRecuperado.equals("Processando")||erroRecuperado.equals("Deletando"));
+			} while (erroRecuperado.equals("Processando")||erroRecuperado.equals("Deletando")||erroRecuperado.equals("Salvando"));
 			
 			try {
-				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\"]"));
+				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\" or @class=\"Toastify__close-button Toastify__close-button--colored\"]"));
 				botaoFechar.click();
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				System.err.println("Probelamas na NotificaçãoStep");
 			}
 			
 			assertEquals(erroRecuperado, mensagemErro);

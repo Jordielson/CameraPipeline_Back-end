@@ -9,10 +9,10 @@ import org.openqa.selenium.support.FindBy;
 
 public class HistoricoPipelinePage {
 
-	@FindBy(xpath = "//nav/div/a")
+	@FindBy(xpath = "//nav/div/div/a")
 	private WebElement titulo; 
 	
-	@FindBy(xpath = "//nav/div/div/a")
+	@FindBy(xpath = "//nav/div/div/h6")
 	private WebElement botaoVoltar;
 	
 	@FindBy(xpath = "//*[@class=\"list-group-item list-group-item-light\"]")

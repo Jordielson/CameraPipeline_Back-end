@@ -14,28 +14,37 @@ import org.openqa.selenium.support.ui.Select;
 
 public class PipelinePage {
 
-	@FindBy(xpath = "//*[@class=\"empty-pipeline\"]/h2")
+	@FindBy(xpath = "//*[@class=\"styles_labelMain__z9DFn\"]/label")
 	private WebElement textoPadrao;
 	
-	@FindBy(xpath = "//nav/input")
+	@FindBy(xpath = "//nav/div[1]/input")
 	private WebElement campoNomePipeline;
 	
-	@FindBy(xpath = "//nav/*/*/input")
+	@FindBy(xpath = "//*[@class=\"modal-body\"]/form/input")
 	private WebElement campoNomeCriarPipeline;
-	
-	@FindBy(xpath = "//nav/*/*/button")
+
+	@FindBy(xpath = "//*[@class=\"modal-body\"]/form/div[2]/button")
 	private WebElement botaoCriarPipeline;
 	
-	@FindBy(xpath = "//*[@id=\"pipelines-select\"]")
-	private WebElement selectPipelines;
+	@FindBy(xpath = "//*[@class=\"modal-header\"]/div/button")
+	private WebElement botaoFecharCardCriarPipeline;
+	
+	@FindBy(xpath = "//nav/*/*/*/span")
+	private WebElement botaoNovaPipeline;
+
+	@FindBy(xpath = "//nav/div[1]/h6")
+	private WebElement botaoVoltarPipeline;
+	
+	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 styles_listPipeline__4lUxZ list-group\"]/div[@class=\"styles_list__wTMpi list-group-item list-group-item-light\"]")
+	private List<WebElement> pipelines;
 	
 	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/div/div/input")
-	private WebElement checkboxPipeline; 
+	private WebElement AtivarDesativarPipelineInterno; 
 	
-	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"p-delete\"]")
+	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"btn btn-light btn-sm btn-excluir\"]")
 	private WebElement linkExcluirPipeline;
 	
-	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[2]")
+	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"align-self-center px-2 history\"]")
 	private WebElement linkHistorico; 
 	
 	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/button")
@@ -44,7 +53,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[1]/div[@class=\"input-group a\"]/select")
 	private WebElement selectCameras;
 	
-	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-header pipeline-header2\"]/menu/div/button")
+	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-header pipeline-header2 \"]/menu/div/button")
 	private WebElement botaoFluxo;
 
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/h2/button")
@@ -62,19 +71,27 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-body pipeline-card\"]/div/div/div")
 	private List<WebElement> ListaDeProcessos;
 	
-	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[3]/div/div[@class=\"card-body pipeline-card\"]/div[@class=\"mb-3\" or @class=\"form-check\"]")
+	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[3]/div/div[@class=\"card-body pipeline-card-parameter\"]/div[@class=\"mb-3\" or @class=\"form-check\"]")
 	private List<WebElement> ListaDeParametros;
 	
-	public boolean isTextoPadraoPresente() {
-		return textoPadrao.isDisplayed();
+	public boolean isPipelinesEmpty() {
+		return pipelines.size() > 0? false: true;
 	}
 	
-	public String getTextoPadrao() {
-		return textoPadrao.getText();
+	public boolean isPageSelectPipeline() {
+		return textoPadrao.isDisplayed();
 	}
 	
 	public String getCampoNomePipeline() {
 		return campoNomePipeline.getAttribute("value");
+	}
+	
+	public void clickBotaoNovaPipeline() {
+		botaoNovaPipeline.click();
+	}
+	
+	public void clickBotaoVoltarPipelines() {
+		botaoVoltarPipeline.click();;
 	}
 	
 	public void clickAcordPDIs() {
@@ -93,7 +110,7 @@ public class PipelinePage {
 		linkExcluirPipeline.click();
 	}
 	
-	public void clickBotaoHistorioPiprline() {
+	public void clickBotaoHistorioPipeline() {
 		linkHistorico.click();
 	}
 	
@@ -115,21 +132,20 @@ public class PipelinePage {
 		campoNomeCriarPipeline.sendKeys(nomePipeline);;
 	}
 	
-	public void ativarDesativarPipelineCheckbox(boolean check) {
-		boolean checkbox = checkboxPipeline.isSelected();
-		System.out.println(checkbox + " 1");
+	public void ativarDesativarPipelineCheckboxInterno(boolean check) {
+		boolean checkbox = AtivarDesativarPipelineInterno.isSelected();
 		if(checkbox !=check) {
-			checkboxPipeline.click();
+			AtivarDesativarPipelineInterno.click();
 		}
 	}
 	
 	public List<String> getPipelinesCriadas(){
-		List<String> pipelines = new ArrayList<String>();
-		Select select = new Select(selectPipelines);
-		for(WebElement e : select.getAllSelectedOptions()) {
-			pipelines.add(e.getText());
+		List<String> nomePipelines = new ArrayList<String>();
+		for(WebElement e : pipelines) {
+			WebElement em = e.findElement(By.xpath("div[1]"));
+			nomePipelines.add(em.getText());
 		}
-		return pipelines;
+		return nomePipelines;
 	}
 	
 	public boolean verificarExistenciaPipeline(String nome) {
@@ -141,43 +157,54 @@ public class PipelinePage {
 		return false;
 	}
 	
-	public void selectPipeline(Object value) {
-		if(value instanceof String) {
-			String nome = (String) value;
-			Select select = new Select(selectPipelines);
-			if(opcaoExistenteNoSelect(select, nome)) {
-				select.selectByVisibleText(nome);
-			}else {
-				System.err.println("Pipeline " + nome + " Não foi encontrado no Select");
+	public void selectPipeline(String nome, String acao) {
+		esperar(1);
+		WebElement pipelineReturn = null;
+		for(WebElement e : pipelines) {
+			WebElement em = e.findElement(By.xpath("div[1]"));
+			if(em.getText().toLowerCase().trim().equals(nome.toLowerCase().trim())) {
+				pipelineReturn = e;
 			}
-		}else if(value instanceof Integer) {
-			int index = (int) value;
-			Select select = new Select(selectPipelines);
-			if(select.getOptions().size()>=index) {
-				select.deselectByIndex(index);
-			}else {
-				System.err.println("Pipeline index: " + index + " Não foi encontrado no Select");
+		}
+		if(pipelineReturn != null) {
+			WebElement checkBox = pipelineReturn.findElement(By.xpath("div[2]/form/div/input"));
+			WebElement botaoEditarPipeline = pipelineReturn.findElement(By.xpath("div[2]/button[1]"));
+			WebElement botaoDeletarPipeline = pipelineReturn.findElement(By.xpath("div[2]/button[2]"));
+			boolean ischeck = checkBox.isSelected();
+			
+			
+			switch (acao) {
+			case "Ativar":
+				
+				if(ischeck != true) {
+					checkBox.click();
+				}
+				break;
+			case "Desativar":
+				
+				if(ischeck != false) {
+					checkBox.click();
+				}
+				break;
+				
+			case "Editar":
+				
+				pipelineReturn.click();
+				break;
+				
+			case "Deletar":
+				
+				botaoDeletarPipeline.click();
+				break;
+
+			default:
+				break;
 			}
+			
+		}else {
+			System.err.println("Pipeline " + nome + " Não foi encontrada");
 		}
 		
-	}
-	
-	public void selectPipeline(String nomePipeline) {
-		Select select = new Select(selectPipelines);
-		if(opcaoExistenteNoSelect(select, nomePipeline)) {
-			select.selectByVisibleText(nomePipeline);
-		}else {
-			System.err.println("Pipeline " + nomePipeline + " Não foi encontrado no Select");
-		}
-	}
-	
-	public void selectPipeline(int index) {
-		Select select = new Select(selectPipelines);
-		if(select.getOptions().size()>=index) {
-			select.deselectByIndex(index);
-		}else {
-			System.err.println("Pipeline index: " + index + " Não foi encontrado no Select");
-		}
 	}
 	
 	public void selecionarCamera(String nomeCamera) {
@@ -199,9 +226,7 @@ public class PipelinePage {
 		
 		if(!listaDePDIs.isEmpty()) {
 			for(WebElement e : listaDePDIs) {
-//				if(e.getText().toLowerCase().equals(Nome.toLowerCase())) {
 				if(e.getAttribute("innerText").toLowerCase().trim().equals(Nome.toLowerCase().trim())) {
-					System.out.println("Entrei pdi");
 					e.click();
 					valid = true;
 					break;
@@ -288,7 +313,7 @@ public class PipelinePage {
 	
 	public boolean isPipelineAtiva() {
 		esperar(1);
-		boolean checkbox = checkboxPipeline.isSelected();
+		boolean checkbox = AtivarDesativarPipelineInterno.isSelected();
 		System.err.println(checkbox);;
 		if(checkbox) {
 			return true;
