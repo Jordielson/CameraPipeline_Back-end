@@ -63,6 +63,12 @@ public class UtilStep extends MainSteps{
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/pipeline");
 			break;
 			
+			
+		case "HomePipeline":
+			
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/pipeline-home");
+			break;
+			
 		case "Recuperacaodesenha":
 
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/forgotten-password");
@@ -88,6 +94,10 @@ public class UtilStep extends MainSteps{
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/pipeline-history");
 			break;
 			
+		case "FluxoPipeline":
+			
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/flow");
+			break;
 			
 		default:
 			assertEquals("Tem que colocar a URL aqui jovem", ":)");

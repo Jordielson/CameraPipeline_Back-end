@@ -4,26 +4,33 @@ import io.cucumber.java.pt.Então;
 import pages.FluxoPage;
 
 import static config.ConfigInit.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 public class FluxoPipelineStep  extends MainSteps{
 
-	@Então("FP reposicionar processos")
-	public void teste() {
-		int[] x = {0, -350 , 0};
-		int[] y = {-250, 0, 250};
-		for(int i = 3 ; i>0 ; i--) {
-			WebElement draggable = Na(FluxoPage.class).getProcessoPorID(i);
+	@Então("^FP reposicionar processo (.*) x(.*) y(.*)$")
+	public void teste(String sid, String sx, String sy) {
+		int id = Integer.parseInt(sid);
+		int x = Integer.parseInt(sx);
+		int y = Integer.parseInt(sy);
+		
+		try {
+			WebElement draggable = Na(FluxoPage.class).getProcessoPorID(id);
 			new Actions(driver)
-			.dragAndDropBy(draggable, x[i-1], y[i-1])
+			.dragAndDropBy(draggable, x, y)
 			.perform();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			System.err.println("Nao foi possivel posicionar Elemento");
 		}
 	}
 	
-	@Então("^conectar processo (.*) (.*) ao (.*) (.*)$")
+	@Então("^FP conectar processo (.*) (.*) ao (.*) (.*)$")
 	public void conectarProcessos(String idProcesso1, String ancora1, String idProcesso2, String ancora2 ) {
 		
 		WebElement draggable = Na(FluxoPage.class).getAncoraProcesso(Integer.parseInt(idProcesso1), ancora1);
@@ -37,5 +44,33 @@ public class FluxoPipelineStep  extends MainSteps{
 	public void salvarFluxo() {
 		Na(FluxoPage.class).clickBotaoSalvarEVoltar();
 	}
+	
+	@Então("^FP desconectar processo (.*) to (.*)$")
+	public void desconectarProcessos(String id1, String id2) {
+		Na(FluxoPage.class).clickDeletarConexao(Integer.parseInt(id1),Integer.parseInt(id2));;
+	}
+	
+	@Então("^FP verificar quantidade de processos (.*)$")
+	public void verificarQuantidadeDeProcessos(String value) {
+		int qtdd = Integer.parseInt(value);
+		assertEquals(qtdd, Na(FluxoPage.class).getProcessosSize());
+	}
+	
+	@Então("^FP verificar quantidade de conexoes (.*)$")
+	public void verificarQuantidadeDeConexoes(String value) {
+		int qtdd = Integer.parseInt(value);
+		assertEquals(qtdd, Na(FluxoPage.class).getConectoresSize());
+	}
+	
+	@Então("^FP verificar conexao (.*) to (.*) is (.*)$")
+	public void verificarConexao(String id1, String id2, String condicao) {
+		
+		if(condicao.trim().toLowerCase().equals("true")) {
+			assertTrue(Na(FluxoPage.class).verificarConexao(Integer.parseInt(id1), Integer.parseInt(id2)));
+		}else {
+			assertFalse(Na(FluxoPage.class).verificarConexao(Integer.parseInt(id1), Integer.parseInt(id2)));
+		}
+	}
+	
 	
 }
