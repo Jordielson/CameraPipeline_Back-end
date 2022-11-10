@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.model.entities.pdi;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
@@ -41,6 +45,11 @@ public abstract class DigitalProcess implements ModelAbstract<Integer>{
     private String name;
     
     private String description;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    protected ZonedDateTime creationTime;
 
     @NotNull
     @ManyToOne

@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.camerapipeline.camera_pipeline.core.validation.ExtendedEmailValidator;
 import com.camerapipeline.camera_pipeline.model.entities.ModelAbstract;
+import com.camerapipeline.camera_pipeline.model.entities.files.FileData;
 import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.pdi.DigitalProcess;
 
@@ -70,6 +71,8 @@ public class User implements UserDetails, ModelAbstract<Integer> {
     private Set<DigitalProcess> digitalProcess = new HashSet<>();
     @OneToMany(mappedBy = "user", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<PipelineInput> pipelineInputs = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<FileData> files = new HashSet<>();
 
     public User id(int id) {
         setId(id);
