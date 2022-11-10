@@ -67,18 +67,29 @@ public class PipelineStep extends MainSteps {
 		Na(PipelinePage.class).ativarDesativarPipelineCheckboxInterno(true);
 	}
 
-	@Então("^verificar se Pipeline esta (Ativa|Desativada)$")
-	public void verificarPipelineAtiva(String value) {
+	@Então("^(.*) verificar se Pipeline( .*)? esta (Ativa|Desativada)$")
+	public void verificarPipelineAtiva(String local, String nome, String value) {
 		switch (value) {
 		
 		case "Ativa":
 
-			assertTrue(Na(PipelinePage.class).isPipelineAtiva());
+			if(local.toLowerCase().trim().contentEquals("PPE")){
+				assertTrue(Na(PipelinePage.class).verificarIsPipelineAtivaExterno(nome));
+				
+			}else if(local.toLowerCase().trim().contentEquals("PPI")){
+				assertTrue(Na(PipelinePage.class).isPipelineAtiva());
+			}
+			
 			break;
 
 		case "Desativada":
-
-			assertFalse(Na(PipelinePage.class).isPipelineAtiva());
+			
+			if(local.toLowerCase().trim().contentEquals("PPE")){
+				assertFalse(Na(PipelinePage.class).verificarIsPipelineAtivaExterno(nome));
+				
+			}else if(local.toLowerCase().trim().contentEquals("PPI")){
+				assertFalse(Na(PipelinePage.class).isPipelineAtiva());
+			}
 			break;
 
 		default:

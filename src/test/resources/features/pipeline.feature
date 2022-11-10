@@ -41,11 +41,10 @@ Cenario: Atividar e Desativar Pipeline
 	Dado que tenho uma Pipeline pipelineTeste
 	Quando tentar logar
 	Então acessar aba pipelines
-	Então selecionar Pipeline pipelineTeste Editar
-	Então PPI Ativar Pipeline
-	Então verificar se Pipeline esta Ativa
-	Então PPI Desativar Pipeline
-	Então verificar se Pipeline esta Desativada
+	Então selecionar Pipeline pipelineTeste Ativar
+	Então PPE verificar se Pipeline pipelineTeste esta Ativa
+	Então selecionar Pipeline pipelineTeste Desativar
+	Então PPE verificar se Pipeline pipelineTeste esta Desativada
 	
 	
 Cenario: Criar Pipeline

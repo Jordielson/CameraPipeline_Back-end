@@ -29,7 +29,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"modal-header\"]/div/button")
 	private WebElement botaoFecharCardCriarPipeline;
 	
-	@FindBy(xpath = "//nav/*/*/*/span")
+	@FindBy(xpath = "//nav/*/*/*/span[@role=\"button\"]")
 	private WebElement botaoNovaPipeline;
 
 	@FindBy(xpath = "//nav/div[1]/h6")
@@ -153,6 +153,24 @@ public class PipelinePage {
 			if(n.toLowerCase().trim().equals(nome.toLowerCase().trim())) {
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public boolean verificarIsPipelineAtivaExterno(String nome) { 
+		esperar(1);
+		WebElement pipelineReturn = null;
+		for(WebElement e : pipelines) {
+			WebElement em = e.findElement(By.xpath("div[1]"));
+			if(em.getText().toLowerCase().trim().equals(nome.toLowerCase().trim())) {
+				pipelineReturn = e;
+			}
+		}
+		if(pipelineReturn != null) {
+			WebElement checkBox = pipelineReturn.findElement(By.xpath("div[2]/form/div/input"));
+			return checkBox.isSelected();
+		}else {
+			System.err.println("Pipeline " + nome + " Não foi encontrada");
 		}
 		return false;
 	}
