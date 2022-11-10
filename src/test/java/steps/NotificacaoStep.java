@@ -205,6 +205,14 @@ public class NotificacaoStep extends MainSteps{
 			break;
 			
 		/**
+		 * TODO Notificações Fluxo
+		 */
+			
+		case "FluxoSalvoSucesso_FluxoPipeline":
+			mensagemErro = "Salvo com sucesso!";
+			break;
+			
+		/**
 		 * TODO Notificações Gerais
 		 */
 			

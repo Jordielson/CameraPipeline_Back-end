@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,11 +28,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.camerapipeline.camera_pipeline.CameraPipelineApplication;
 import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.input.camera.Coordinate;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.PDI;
 import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.provider.exception.CustomEntityNotFoundException;
 import com.camerapipeline.camera_pipeline.provider.services.auth.AuthService;
 import com.camerapipeline.camera_pipeline.provider.services.input.camera.CameraService;
+import com.camerapipeline.camera_pipeline.provider.services.pdi.PDIService;
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 
 @RunWith(SpringRunner.class)
@@ -47,7 +50,7 @@ public class TestePipeline {
 	private PipelineService pipelineService;
 	
 	@Autowired
-	private CameraService cameraService;
+	private PDIService pdiService;
 	
 	Pageable pageable = Pageable.unpaged();
 	
@@ -85,13 +88,11 @@ public class TestePipeline {
 		//Dado
 		Pipeline pipeline = montarPipeline("PipelineTest");
 		Pipeline pipelineReturn = pipelineService.create(pipeline, principal);
-		Camera camera = cameraService.create(montarCamera("Camera1"), principal);
 		
 		//Quando
 		pipelineReturn.setName("PipelineUpdateTest");
 		pipelineReturn.setDescription("DescricaoDeUpdateTest");
 		pipelineReturn.setActive(false);
-		// pipelineReturn.setCameraList(List.of(camera));
 		
 		pipelineService.update(pipelineReturn.getId(), pipelineReturn, principal);
 		
@@ -99,8 +100,8 @@ public class TestePipeline {
 		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).getName(), pipelineReturn.getName());
 		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).getDescription(), pipelineReturn.getDescription());
 		assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).isActive(), pipelineReturn.isActive());
-		// assertEquals(pipelineService.getById(pipelineReturn.getId(), principal).getCameraList().size(), 1);
-		// assertTrue((pipelineService.getById(pipelineReturn.getId(), principal).getCameraList().get(0).getName().equals(camera.getName())));
+		
+
 		
 	}
 	
@@ -165,20 +166,19 @@ private void apagarBanco() {
 		Pageable pageable = Pageable.unpaged();
 
 		List<Pipeline> pipelinesTemp = pipelineService.getAll(pageable, principal).toList();
+		List<Pipeline> pipelinesERR = new ArrayList<Pipeline>();
 		
-		for(Pipeline p : pipelinesTemp) {
-			// p.setCameraList(List.of());
-			pipelineService.update(p.getId(), p, principal);
-			pipelineService.delete(p.getId(), principal);
-		}
-		
-		List<Camera> camerasTemp = cameraService.getAll(pageable, principal).toList();
-		
-		for(Camera c : camerasTemp) {
-			// c.setPipelineList(List.of());
-			cameraService.update(c.getId(), c, principal);
-			cameraService.delete(c.getId(), principal);
-		}
+		do {
+			for(Pipeline p : pipelinesTemp) {
+				try {
+					pipelineService.delete(p.getId(), principal);
+				} catch (Exception e) {
+					pipelinesERR.add(p);
+				}
+			}
+			pipelinesTemp = pipelinesERR;
+			pipelinesERR = new ArrayList<Pipeline>();
+		} while (pipelinesTemp.size() > 0);
 		
 	}
 	
@@ -206,19 +206,16 @@ private void apagarBanco() {
 		return pipeline;
 	}
 	
-	private Camera montarCamera(String nome) {
-		
-		Camera camera = new Camera();
-		camera.setName(nome);
-		camera.setUrl("www.testes.com.br");
-		camera.setCoordinate(coordinate);
-		camera.setFpsLimiter(90);
-		camera.setIsActive(true);
-		camera.setIsPrivate(false);
-		camera.setUser(recuperarUserPrincipal());
-		
-		return camera;
-	}
+	//TODO Revisar a Criação em Hierarquia de PDI
+	
+//	private PDI montarPDI(String nome) {
+//		
+//		PDI pdi = new PDI();
+//		pdi.setIndex(1);
+//		pdi.setUser(recuperarUserPrincipal());
+//		
+//		return pdi;
+//	}
 	
 	
 	@AfterEach

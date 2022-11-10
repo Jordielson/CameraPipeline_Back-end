@@ -45,6 +45,11 @@ public class FluxoPipelineStep  extends MainSteps{
 		Na(FluxoPage.class).clickBotaoSalvarEVoltar();
 	}
 	
+	@Então("^FP Voltar$")
+	public void sairFluxo() {
+		Na(FluxoPage.class).clickBotaoVoltar();
+	}
+	
 	@Então("^FP desconectar processo (.*) to (.*)$")
 	public void desconectarProcessos(String id1, String id2) {
 		Na(FluxoPage.class).clickDeletarConexao(Integer.parseInt(id1),Integer.parseInt(id2));;
