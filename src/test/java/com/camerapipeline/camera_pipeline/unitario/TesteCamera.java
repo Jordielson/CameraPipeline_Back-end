@@ -105,7 +105,6 @@ public class TesteCamera {
 		cameraReturn.setName("CameraUpdate");
 		cameraService.update(cameraReturn.getId(), cameraReturn, principal);
 
-		// pipelines.get(0).setCameraList(List.of(camera));
 		pipelineService.update(pipelines.get(0).getId(), pipelines.get(0), principal);
 		
 		//Entao
@@ -114,7 +113,6 @@ public class TesteCamera {
 		assertEquals(cameraService.getById(camera.getId()).getIsPrivate(), cameraReturn.getIsPrivate());
 		assertEquals(cameraService.getById(camera.getId()).getName(), cameraReturn.getName());
 		assertEquals(cameraService.getById(camera.getId()).getUrl(), cameraReturn.getUrl());
-		// assertEquals(cameraService.getById(camera.getId(), principal).getPipelineList().size(),1);
 		
 	}
 	
@@ -183,19 +181,10 @@ public class TesteCamera {
 		
 		Pageable pageable = Pageable.unpaged();
 
-		List<Pipeline> pipelinesTemp = pipelineService.getAll(pageable, principal).toList();
-		
-		for(Pipeline p : pipelinesTemp) {
-			// p.setCameraList(List.of());
-			pipelineService.update(p.getId(), p, principal);
-			pipelineService.delete(p.getId(), principal);
-		}
-		
 		List<Camera> camerasTemp = cameraService.getAll(pageable, principal).toList();
 		
 		for(Camera c : camerasTemp) {
-			// c.setPipelineList(List.of());
-			cameraService.update(c.getId(), c, principal);
+
 			cameraService.delete(c.getId(), principal);
 		}
 		

@@ -267,7 +267,7 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 #	Então PP Clicar botao FluxoPipeline
 #	Então devo estar na pagina de FluxoPipeline
 #	Então FP verificar quantidade de processos 2
-#	Então FP verificar quantidade de conexoes 1
+
 	
 #	Cenário: Usabilidade
 #	* remover usuario userteste1@user.com
@@ -300,14 +300,7 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 #	Então FP conectar processo 1 bottom ao 3 top
 #	Então FP conectar processo 2 bottom ao 3 top
 #	Então FP verificar quantidade de conexoes 3
-#	Então FP salvar Fluxo
-#	Então devo estar na pagina de Pipeline
-#	Então remover processo 3
-#	Então PP Clicar botao SalvarPipeline
-#	Então PP Clicar botao FluxoPipeline
-#	Então devo estar na pagina de FluxoPipeline
-#	Então FP verificar quantidade de processos 2
-#	Então FP verificar quantidade de conexoes 1
+	
 	
 	
 	
