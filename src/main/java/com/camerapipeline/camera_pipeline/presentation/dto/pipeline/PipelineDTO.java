@@ -5,6 +5,7 @@ import java.util.List;
 import com.camerapipeline.camera_pipeline.model.enums.Category;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProcessDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.PdiDTO;
+import com.camerapipeline.camera_pipeline.provider.utils.app.AppUtils;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,17 @@ public class PipelineDTO extends DigitalProcessDTO {
     @Override
     public String getDescription() {
         return super.getDescription();
+    }
+
+    @Schema(
+      name = "URL",
+      example = "https://camerapipeline/api/process-pipeline",
+      type = "string",
+      required = false
+    )
+    @Override
+    public String getUrl() {
+        return AppUtils.getProperties().getProperty("CameraPipeline.service-api");
     }
     
     @Schema(

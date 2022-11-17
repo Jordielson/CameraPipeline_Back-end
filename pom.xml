@@ -19,6 +19,7 @@
 		<swagger-annotations-v3.version>2.2.2</swagger-annotations-v3.version>
 		<swagger-annotations.version>1.6.7</swagger-annotations.version>
 		<springdoc-openapi-webflux-ui.version>1.6.11</springdoc-openapi-webflux-ui.version>
+		<apache-httpclient>4.5.13</apache-httpclient>
 	</properties>
 	<dependencies>
 		<!-- Spring Framework -->
@@ -129,6 +130,14 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+
+		<!-- Apache HttpClient  -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${apache-httpclient}</version>
+		</dependency>
+
 		
 		<!-- testes Unit/Func -->
 		<dependency>
