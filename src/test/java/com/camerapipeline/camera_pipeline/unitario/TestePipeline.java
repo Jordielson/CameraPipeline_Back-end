@@ -193,7 +193,6 @@ private void apagarBanco() {
 		pipeline.setActive(true);
 		pipeline.setUser(recuperarUserPrincipal());
 		pipeline.setPDIList(List.of());
-		
 		return pipeline;
 	}
 	
