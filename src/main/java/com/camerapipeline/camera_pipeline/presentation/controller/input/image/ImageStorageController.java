@@ -1,5 +1,6 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.input.image;
 
+import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import java.util.Base64;
@@ -101,17 +102,12 @@ public class ImageStorageController {
                     Integer.parseInt(pipelineId)
                 )
             );
-
-            ImageDTO image = mapper.toDTO(
-                service.uploadImage(file, principal)
-            );
-
-            ProcessPipelineDTO process = ProcessPipelineDTO.builder()
-                .input(image.getUrl())
-                .pipeline(pipe)
-                .build();
-
+            
             try {
+                ProcessPipelineDTO process = ProcessPipelineDTO.builder()
+                    .input(Base64.getEncoder().encodeToString(file.getBytes()))
+                    .pipeline(pipe)
+                    .build();
                 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
                 String json = ow.writeValueAsString(process);
                 
@@ -122,10 +118,12 @@ public class ImageStorageController {
                 ImageDTO processedImage = mapper.toDTO(
                     service.uploadImage(imageFile, principal)
                 );
-                service.deleteImage(image.getId(), principal);
+
                 return ResponseEntity.status(HttpStatus.OK)
                     .body(processedImage);
             } catch (JsonProcessingException e) {
+                throw new BusinessException("Problems encountered when processing JSON content");
+            } catch (IOException e) {
                 throw new BusinessException("Problems encountered when processing JSON content");
             }
             
