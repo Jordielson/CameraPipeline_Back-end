@@ -1,5 +1,7 @@
 package com.camerapipeline.camera_pipeline.presentation.dto.pdi.parameter;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -64,4 +66,11 @@ public class ParameterDTO {
 	)
     @NotNull
     private Integer index;
+
+	@Schema(
+		name = "selectOptions",
+        description = "Parameter options for type select", 
+		required = false
+	)
+	private Set<String> selectOptions;
 }

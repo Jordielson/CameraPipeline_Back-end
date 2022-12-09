@@ -4,7 +4,9 @@ public enum ParameterType {
     STRING(0),
     NUMBER(1),
     BOOLEAN(2),
-    FILE(3);
+    FILE(3),
+    SELECT(4),
+    COLOR(5);
 
     private int value;
 
