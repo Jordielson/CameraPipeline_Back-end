@@ -13,15 +13,15 @@ Cenário: Usuario alterna entre as abas sem estar logado
 	Então <condicao>vejo o conteudo <conteudo>
 	
 	Exemplos:
-	|condicao|			aba			 |			conteudo			|
-	|				 |visão_geral		 |visão_geral					|
-	|				 |pipelines			 |pipelines						|
-	|				 |cameras				 |cameras							|
-	|				 |mosaico		 		 |mosaico							|
-	|	"não " |visão_geral		 |mosaico							|
-	|	"não " |pipelines			 |cameras							|
-	|	"não " |cameras				 |pipelines						|
-	|	"não " |mosaico		 		 |visão_geral					|
+	|condicao|			aba			 	|			conteudo				|
+	|				 |visão_geral		 	|visão_geral					|
+	|				 |pipelines			 	|pipelines						|
+	|				 |fluxoDaPipeline	|fluxoDaPipeline			|
+	|				 |aplicarProcessos|aplicarProcessos			|
+	|	"não " |visão_geral		 	|aplicarProcessos			|
+	|	"não " |pipelines			 	|fluxoDaPipeline			|
+	|	"não " |fluxoDaPipeline	|pipelines						|
+	|	"não " |aplicarProcessos|visão_geral					|
 	
 Cenário: Usuario alterna entre as abas Logado
 	* remover usuario userteste1@user.com
@@ -32,13 +32,13 @@ Cenário: Usuario alterna entre as abas Logado
 	Dado que cliquei na aba <aba>
 	Então <condicao>vejo o conteudo <conteudo>
 	
-	Exemplos:
-	|condicao|			aba			 |			conteudo			|
-	|				 |visão_geral		 |visão_geral					|
-	|				 |pipelines			 |pipelines						|
-	|				 |cameras				 |cameras							|
-	|				 |mosaico		 		 |mosaico							|
-	|	"não " |visão_geral		 |mosaico							|
-	|	"não " |pipelines			 |cameras							|
-	|	"não " |cameras				 |pipelines						|
-	|	"não " |mosaico		 		 |visão_geral					|
+		Exemplos:
+	|condicao|			aba			 	|			conteudo				|
+	|				 |visão_geral		 	|visão_geral					|
+	|				 |pipelines			 	|pipelines						|
+	|				 |fluxoDaPipeline	|fluxoDaPipeline			|
+	|				 |aplicarProcessos|aplicarProcessos			|
+	|	"não " |visão_geral		 	|aplicarProcessos			|
+	|	"não " |pipelines			 	|fluxoDaPipeline			|
+	|	"não " |fluxoDaPipeline	|pipelines						|
+	|	"não " |aplicarProcessos|visão_geral					|

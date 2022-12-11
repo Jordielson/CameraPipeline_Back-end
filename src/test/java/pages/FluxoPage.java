@@ -1,6 +1,7 @@
 package pages;
 
 import java.util.List;
+import static config.ConfigInit.*;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -70,11 +71,11 @@ public class FluxoPage {
 		return processos.size();
 	}
 	
-	public WebElement getProcessoPorID(int id) {
+	public WebElement getProcessoPorID(String id) {
 		WebElement retorno = null;
 		
 		for(WebElement e : processos) {
-			if((Integer.parseInt(e.getAttribute("data-id"))) == id) {
+			if(e.getAttribute("data-id").toLowerCase().trim().equals(id.toLowerCase().trim())) {
 				retorno = e;
 			}
 		}
@@ -86,7 +87,7 @@ public class FluxoPage {
 		
 	}
 	
-	public WebElement getAncoraProcesso(int id, String ancora) {
+	public WebElement getAncoraProcesso(String id, String ancora) {
 		WebElement retorno = getProcessoPorID(id);
 		WebElement ancoraReturn = null;
 		
@@ -100,7 +101,7 @@ public class FluxoPage {
 		
 	}
 	
-	public void clickDeletarConexao(int id1, int id2) {
+	public void clickDeletarConexao(String id1, String id2) {
 		
 		String ariaLabelValidation = "Edge from "+ id1 +" to "+ id2;
 		
@@ -116,6 +117,21 @@ public class FluxoPage {
 		
 		System.err.println("Conexão Inexistente");
 		
+	}
+	public void clickDeletarConexoes() {
+		int qtddConexoes = getConectoresSize();
+		for(int i = 0; i<qtddConexoes; i++) {
+				WebElement e = conectores.get(0);
+			    int attempts = 0;
+			    while(attempts < 2) {
+			        try {
+			        	e.findElement(By.xpath("*/*/button")).click();
+			            break;
+			        } catch(org.openqa.selenium.StaleElementReferenceException err) {
+			        }
+			        attempts++;
+			    }
+		}
 	}
 	
 	public boolean verificarConexao(int id1, int id2) {

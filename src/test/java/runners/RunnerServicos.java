@@ -10,12 +10,12 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 @CucumberOptions(
 		features = "src/test/resources/features",
 		glue = {"steps", "config"},
-		tags = "@PDI",
-		plugin = {"pretty", "html:target/retalhos/PDI.html", "json:target/retalhos/report-PDI.json"},
+		tags = "@Servicos",
+		plugin = {"pretty", "html:target/retalhos/Servicos.html", "json:target/retalhos/report-Servicos.json"},
 		monochrome = true, 
 		snippets = SnippetType.CAMELCASE, 
 		dryRun = false
 		)
-public class RunnerPDI {
+public class RunnerServicos {
 
 }

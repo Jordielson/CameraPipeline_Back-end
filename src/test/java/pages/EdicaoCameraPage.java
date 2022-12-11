@@ -22,7 +22,7 @@ public class EdicaoCameraPage {
 
 	@FindBy(xpath = "//*[@class=\"image_stepdownload__QWaVR\"]/div/div/button[contains(text(), \"Salvar\")]")
 	private WebElement botaoSalvar;
-
+	
 	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/div/button")
 	private List<WebElement> pipelines;
 	
@@ -32,14 +32,11 @@ public class EdicaoCameraPage {
 	public String selecionarCamera(String nome) {
 		for(WebElement e : cameras) {
 			
-			System.out.println(cameras.size());
-			System.out.println(e.getText());
-			System.out.println(nome);
+			
 			if(e.getText().equals(nome)) {
 				WebElement radio = e.findElement(By.xpath("div/input"));
 				System.out.println(radio.isSelected());
 				if(!radio.isSelected()) {
-					System.out.println("Entrei");
 					radio.click();
 					return e.getText();
 				}
@@ -73,8 +70,9 @@ public class EdicaoCameraPage {
 	public String selecionarPipeline(String nome) {
 		for(WebElement e : pipelines) {
 			if(e.getText().toLowerCase().equals(nome.toLowerCase())) {
+				String retorno = e.getText();
 				e.click();
-				return e.getText();
+				return retorno;
 			}
 		}
 		System.out.println("Saiu errado");

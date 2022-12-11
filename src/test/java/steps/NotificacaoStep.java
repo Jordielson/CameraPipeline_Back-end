@@ -113,14 +113,14 @@ public class NotificacaoStep extends MainSteps{
 			break;
 			
 		/**
-		 * TODO Notificações Page PDIs
+		 * TODO Notificações Page Servicos
 		 */
 			
-		case "parametroRemovido_PDIPage":
+		case "parametroRemovido_ServicoPage":
 			mensagemErro = "Removido!";
 			break;
 
-		case "parametrosalvo_PDIPage":
+		case "parametrosalvo_ServicoPage":
 			mensagemErro = "Salvo com sucesso!";
 			break;
 			

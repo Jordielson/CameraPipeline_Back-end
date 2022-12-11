@@ -14,8 +14,7 @@ import org.openqa.selenium.interactions.Actions;
 public class FluxoPipelineStep  extends MainSteps{
 
 	@Então("^FP reposicionar processo (.*) x(.*) y(.*)$")
-	public void teste(String sid, String sx, String sy) {
-		int id = Integer.parseInt(sid);
+	public void teste(String id, String sx, String sy) {
 		int x = Integer.parseInt(sx);
 		int y = Integer.parseInt(sy);
 		
@@ -33,8 +32,8 @@ public class FluxoPipelineStep  extends MainSteps{
 	@Então("^FP conectar processo (.*) (.*) ao (.*) (.*)$")
 	public void conectarProcessos(String idProcesso1, String ancora1, String idProcesso2, String ancora2 ) {
 		
-		WebElement draggable = Na(FluxoPage.class).getAncoraProcesso(Integer.parseInt(idProcesso1), ancora1);
-        WebElement droppable = Na(FluxoPage.class).getAncoraProcesso(Integer.parseInt(idProcesso2), ancora2);
+		WebElement draggable = Na(FluxoPage.class).getAncoraProcesso(idProcesso1, ancora1);
+        WebElement droppable = Na(FluxoPage.class).getAncoraProcesso(idProcesso2, ancora2);
         new Actions(driver)
                 .dragAndDrop(draggable, droppable)
                 .perform();
@@ -52,7 +51,12 @@ public class FluxoPipelineStep  extends MainSteps{
 	
 	@Então("^FP desconectar processo (.*) to (.*)$")
 	public void desconectarProcessos(String id1, String id2) {
-		Na(FluxoPage.class).clickDeletarConexao(Integer.parseInt(id1),Integer.parseInt(id2));;
+		Na(FluxoPage.class).clickDeletarConexao(id1,id2);
+	}
+	
+	@Então("^FP desconectar todos os processos")
+	public void desconectarTodosOsProcessos() {
+		Na(FluxoPage.class).clickDeletarConexoes();;
 	}
 	
 	@Então("^FP verificar quantidade de processos (.*)$")

@@ -12,12 +12,12 @@ public class GuiaPage {
 	private WebElement abaPipelines;
 	
 	@FindBy(xpath = "//*[@id=\"opt3\"]")
-	private WebElement abaCameras;
+	private WebElement abaFluxoDaPipeline;
 
 	@FindBy(xpath = "//*[@id=\"opt4\"]")
-	private WebElement abaMosaicodasCameras;
+	private WebElement abaAplicarProcessos;
 	
-	@FindBy(xpath = "//*[@id=\"topheader\"]/div/h4")
+	@FindBy(xpath = "//*[@id=\"topheader\"]/div/h4 | //*[@id=\"topheader\"]/div/h5")
 	private WebElement tituloVisiom;
 	
 	
@@ -29,12 +29,12 @@ public class GuiaPage {
 		abaPipelines.click();
 	}
 	
-	public void clickAbaCameras() {
-		abaCameras.click();
+	public void clickabAbaFluxoDaPipeline() {
+		abaFluxoDaPipeline.click();
 	}
 	
-	public void clickAbaMosaicodasCameras() {
-		abaMosaicodasCameras.click();
+	public void clickAbaAplicarProcessos() {
+		abaAplicarProcessos.click();
 	}
 	
 	public String getTituloVision() {

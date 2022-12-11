@@ -11,10 +11,10 @@ public class LoginPage {
 	@FindBy(xpath = "//*[@id=\"formBasicPassword\"]")
 	private WebElement campoSenhaLogin;
 	
-	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/form/div[3]/div/button[2]")
+	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/form/div[3]/div/div/button[2]")
 	private WebElement botaoCadastrar;
 	
-	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/form/div[3]/div/button[1]")
+	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/form/div[3]/div/div/button[1]")
 	private WebElement botaoEntrar;
 	
 	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/form/div[4]/div/a")

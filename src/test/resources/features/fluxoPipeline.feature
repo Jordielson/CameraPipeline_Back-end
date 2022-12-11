@@ -49,7 +49,7 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 #	Então devo estar na pagina de FluxoPipeline
 #	Então FP verificar quantidade de processos 3
 #	Então FP verificar quantidade de conexoes 2
-#	
+	
 	Cenário: Adicionar processos em Pipeline e ordenar Fluxo
 	* remover usuario userteste1@user.com
 	Dado que existe a conta email userteste1@user.com e senha 123456
@@ -73,10 +73,11 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP reposicionar processo 3 x0 y250
-	Então FP reposicionar processo 2 x-350 y0
-	Então FP reposicionar processo 1 x0 y-250
+	Então FP desconectar todos os processos
+	Então FP verificar quantidade de processos 5
+	Então FP reposicionar processo 1 x250 y-200
+	Então FP reposicionar processo 2 x-200 y0
+	Então FP reposicionar processo 3 x-200 y200
 	Então FP conectar processo 1 bottom ao 2 top
 	Então FP conectar processo 1 bottom ao 3 top
 	Então FP conectar processo 2 bottom ao 3 top
@@ -87,8 +88,8 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP verificar quantidade de conexoes 3
+	Então FP verificar quantidade de processos 5
+	Então FP verificar quantidade de conexoes 5
 	
 	Cenário: Editar o fluxo dos processos de uma Pipeline
 	* remover usuario userteste1@user.com
@@ -113,10 +114,11 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP reposicionar processo 3 x0 y250
-	Então FP reposicionar processo 2 x-350 y0
-	Então FP reposicionar processo 1 x0 y-250
+	Então FP desconectar todos os processos
+	Então FP verificar quantidade de processos 5
+	Então FP reposicionar processo 1 x250 y-200
+	Então FP reposicionar processo 2 x-200 y0
+	Então FP reposicionar processo 3 x-200 y200
 	Então FP conectar processo 1 bottom ao 2 top
 	Então FP conectar processo 1 bottom ao 3 top
 	Então FP verificar quantidade de conexoes 2
@@ -129,14 +131,15 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então FP reposicionar processo 3 x-350 y0
 	Então FP reposicionar processo 2 x700 y0
 	Então FP reposicionar processo 1 x0 y0
+	Então FP desconectar processo 2 to output
 	Então FP conectar processo 2 bottom ao 3 top
 	Então FP salvar Fluxo
 	Então sistema notifica FluxoSalvoSucesso_FluxoPipeline
 	Então FP Voltar
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP verificar quantidade de conexoes 3
+	Então FP verificar quantidade de processos 5
+	Então FP verificar quantidade de conexoes 5
 	
 	
 	Cenário: Excluir uma conexao do fluxo de uma pipeline
@@ -162,10 +165,11 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP reposicionar processo 3 x0 y250
-	Então FP reposicionar processo 2 x-350 y0
+	Então FP verificar quantidade de processos 5
+	Então FP desconectar todos os processos
 	Então FP reposicionar processo 1 x0 y-250
+	Então FP reposicionar processo 2 x-350 y0
+	Então FP reposicionar processo 3 x0 y250
 	Então FP conectar processo 1 bottom ao 2 top
 	Então FP conectar processo 1 bottom ao 3 top
 	Então FP conectar processo 2 bottom ao 3 top
@@ -176,7 +180,7 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
+	Então FP verificar quantidade de processos 5
 	Então FP desconectar processo 1 to 3
 	Então FP salvar Fluxo
 	Então sistema notifica FluxoSalvoSucesso_FluxoPipeline
@@ -184,8 +188,8 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP verificar quantidade de conexoes 2
+	Então FP verificar quantidade de processos 5
+	Então FP verificar quantidade de conexoes 4
 	
 	
 	Cenário: Recuperar Fluxo ao Recuperar Historico
@@ -211,10 +215,11 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP reposicionar processo 3 x0 y250
-	Então FP reposicionar processo 2 x-350 y0
+	Então FP verificar quantidade de processos 5
+	Então FP desconectar todos os processos
 	Então FP reposicionar processo 1 x0 y-250
+	Então FP reposicionar processo 2 x-350 y0
+	Então FP reposicionar processo 3 x0 y250
 	Então FP conectar processo 1 bottom ao 2 top
 	Então FP conectar processo 2 bottom ao 3 top
 	Então FP verificar quantidade de conexoes 2
@@ -224,7 +229,8 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
+	Então FP verificar quantidade de processos 5
+	Então FP desconectar processo input to 3
 	Então FP conectar processo 1 bottom ao 3 top
 	Então FP desconectar processo 2 to 3
 	Então FP verificar conexao 2 to 3 is false
@@ -240,8 +246,8 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então devo estar na pagina de FluxoPipeline
 	Então FP verificar conexao 2 to 3 is true
 	Então FP verificar conexao 1 to 3 is false
-	Então FP verificar quantidade de processos 3
-	Então FP verificar quantidade de conexoes 2
+	Então FP verificar quantidade de processos 5
+	Então FP verificar quantidade de conexoes 4
 	
 	Cenário: Atualizar Fluxo ao Remover um Processo
 	* remover usuario userteste1@user.com
@@ -266,10 +272,11 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP reposicionar processo 3 x0 y250
-	Então FP reposicionar processo 2 x-350 y0
+	Então FP verificar quantidade de processos 5
+	Então FP desconectar todos os processos
 	Então FP reposicionar processo 1 x0 y-250
+	Então FP reposicionar processo 2 x-350 y0
+	Então FP reposicionar processo 3 x0 y250
 	Então FP conectar processo 1 bottom ao 2 top
 	Então FP conectar processo 1 bottom ao 3 top
 	Então FP conectar processo 2 bottom ao 3 top
@@ -282,7 +289,7 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então PP Clicar botao SalvarPipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 2
+	Então FP verificar quantidade de processos 4
 
 	Cenário: Sair Sem Salvar Fluxo
 	* remover usuario userteste1@user.com
@@ -307,10 +314,11 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então sistema notifica SucessoSalvarPipeline_Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP reposicionar processo 3 x0 y250
-	Então FP reposicionar processo 2 x-350 y0
+	Então FP verificar quantidade de processos 5
+	Então FP desconectar todos os processos
 	Então FP reposicionar processo 1 x0 y-250
+	Então FP reposicionar processo 2 x-350 y0
+	Então FP reposicionar processo 3 x0 y250
 	Então FP conectar processo 1 bottom ao 2 top
 	Então FP conectar processo 1 bottom ao 3 top
 	Então FP conectar processo 2 bottom ao 3 top
@@ -321,15 +329,17 @@ Funcionalidade: fluxo de processos aplicados a uma Pipeline
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
+	Então FP verificar quantidade de processos 5
 	Então FP desconectar processo 1 to 3
 	Então FP desconectar processo 2 to 3
 	Então FP Voltar
 	Então devo estar na pagina de Pipeline
 	Então PP Clicar botao FluxoPipeline
 	Então devo estar na pagina de FluxoPipeline
-	Então FP verificar quantidade de processos 3
-	Então FP verificar quantidade de conexoes 3
+	Então FP verificar conexao 1 to 3 is true
+	Então FP verificar conexao 2 to 3 is true
+	Então FP verificar quantidade de processos 5
+	Então FP verificar quantidade de conexoes 5
 	
 	
 	

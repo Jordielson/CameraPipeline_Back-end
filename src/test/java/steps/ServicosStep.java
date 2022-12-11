@@ -10,36 +10,36 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
-import pages.PDIsPage;
+import pages.ServicosPage;
 import pages.SideBar;
 
-public class PDIsStep extends MainSteps {
+public class ServicosStep extends MainSteps {
 	
 	private int ParametrosAdicionados;
 
-	@Quando("^CRUD-PDI clicar no botão (.*)$")
-	public void crudPDIClicarNoBotão(String value) {
+	@Quando("^CRUD-Servicos clicar no botão (.*)$")
+	public void crudServicoClicarNoBotão(String value) {
 
 		switch (value) {
-		case "adicionarPDI":
+		case "adicionarServico":
 
-			Na(PDIsPage.class).clicarBotaoAdicionarNovoPDI();
+			Na(ServicosPage.class).clicarBotaoAdicionarNovoServico();
 			break;
 
 		case "novoparametro":
 
-			Na(PDIsPage.class).clicarBotaoNovoParametro();
+			Na(ServicosPage.class).clicarBotaoNovoParametro();
 			ParametrosAdicionados += 1;
 			break;
 
-		case "salvarPDI":
+		case "salvarServico":
 
-			Na(PDIsPage.class).clicarBotaoSalvar();
+			Na(ServicosPage.class).clicarBotaoSalvar();
 			break;
 			
-		case "fecharCardPDI":
+		case "fecharCardServico":
 
-			Na(PDIsPage.class).clicarBotaoFecharCardPDI();
+			Na(ServicosPage.class).clicarBotaoFecharCardServico();
 			break;
 
 		default:
@@ -47,42 +47,47 @@ public class PDIsStep extends MainSteps {
 		}
 	}
 	
-	@Então("acessar aba PDIs")
-	public void acessarAbaPDIs() {
+	@Então("acessar aba Servicos")
+	public void acessarAbaServicos() {
 	    Na(SideBar.class).clickAbaPDIs();
+	}
+	
+	@Então("^clicar editar servico (.*)$")
+	public void clickBotaoEditarServico(String value) {
+		Na(ServicosPage.class).clickBotaoEditarServico(value);
 	}
 
 
-	@Então("^editar nome PDI (.*)$")
-	public void editarNomePDI(String nome) {
-		Na(PDIsPage.class).inserirCampoNomePDI(nome);
+	@Então("^editar nome Servico (.*)$")
+	public void editarNomeServico(String nome) {
+		Na(ServicosPage.class).inserirCampoNomeServico(nome);
 	}
 
 	@Então("^editar URL (.*)$")
 	public void editarURLTeste(String url) {
-		Na(PDIsPage.class).inserirCampoURL(url);
+		Na(ServicosPage.class).inserirCampoURL(url);
 	}
 	
 	@Então("^editar descricao (.*)$")
 	public void editarDescricaoTeste(String descricao) {
-		Na(PDIsPage.class).inserirCampoDescricaoPDI(descricao);
+		Na(ServicosPage.class).inserirCampoDescricaoServico(descricao);
 	}
 	
 	
 	
 	@Então("^deletar parametro (.*)$")
 	public void deletarParametro(String posicao) {
-		Na(PDIsPage.class).ClicarDeletarParametro(Integer.parseInt(posicao));
+		Na(ServicosPage.class).ClicarDeletarParametro(Integer.parseInt(posicao));
 		ParametrosAdicionados -= 1;
 	}
 	
-	@Então("^deletar PDI (.*)$")
-	public void deletarPDI(String posicao) {
+	@Então("^deletar Servico (.*)$")
+	public void deletarServico(String posicao) {
 		
 		switch (posicao) {
 		case "todos":
 			
-			Na(PDIsPage.class).deletarTodosPDIs();
+			Na(ServicosPage.class).deletarTodosServicos();
 			
 			break;
 
@@ -93,7 +98,7 @@ public class PDIsStep extends MainSteps {
 	
 	@Então("^confirmar que um parametro foi (.*)?$")
 	public void confirmarQueUmParametroFoiAdicionado(String status) {
-		int qtdparametrosNaTela =  Na(PDIsPage.class).getTotalElements();
+		int qtdparametrosNaTela =  Na(ServicosPage.class).getTotalElements();
 		assertTrue(ParametrosAdicionados == qtdparametrosNaTela);
 	}
 
@@ -102,28 +107,39 @@ public class PDIsStep extends MainSteps {
 		Map<String, String> map = dataTable.asMap(String.class, String.class);
 		int posicao = Integer.parseInt(map.get("posicao"));
 		
-		if(posicao > 0 && posicao <= Na(PDIsPage.class).getTotalElements()){
+		if(posicao > 0 && posicao <= Na(ServicosPage.class).getTotalElements()){
 			
 			if(!map.get("nome").isEmpty()) {
 				
-				Na(PDIsPage.class).inserirCampoNomeParametro(
+				Na(ServicosPage.class).inserirCampoNomeParametro(
 						posicao,
 						map.get("nome"));
 				
 			}if(!map.get("tipo").isEmpty()) {
 				
-				Na(PDIsPage.class).selecionarTipoParametro(
+				Na(ServicosPage.class).selecionarTipoParametro(
 						posicao, 
 						map.get("tipo").equals("string") ? 0:
-							map.get("tipo").equals("number") ? 1 : null );
+							map.get("tipo").equals("number") ? 1 :
+								map.get("tipo").equals("boolean") ? 2 :
+									map.get("tipo").equals("file") ? 3 :
+										map.get("tipo").equals("select") ? 4 :
+											map.get("tipo").equals("color") ? 5 : null);
 			}
 			
 			if(!map.get("obrigatorio").isEmpty()) { 
 				
-				Na(PDIsPage.class).setObrigatoriedadeDoParametro(
+				Na(ServicosPage.class).setObrigatoriedadeDoParametro(
 						posicao,
 						map.get("obrigatorio").equals("sim")? true: false);
 				
+			}
+			
+			if(!map.get("descricao").isEmpty()) { 
+				
+				Na(ServicosPage.class).InserirDescricaoParametro(
+						posicao,
+						map.get("descricao"));
 			}
 			
 		}
@@ -139,30 +155,38 @@ public class PDIsStep extends MainSteps {
 		String nomeRecuperado = "";
 		String tipoRecuperado = "";
 		String obrigatoriedadeRecuperada = "";
+		String descricaoRecuperada = "";
 		
-		if(posicao > 0 && posicao <= Na(PDIsPage.class).getTotalElements()){
+		if(posicao > 0 && posicao <= Na(ServicosPage.class).getTotalElements()){
 			
 			if(!map.get("nome").isEmpty()) {
 				
-				nomeRecuperado = Na(PDIsPage.class).getNomeParametro(posicao);
+				nomeRecuperado = Na(ServicosPage.class).getNomeParametro(posicao);
 						
 				
 			}if(!map.get("tipo").isEmpty()) {
 				
-				int temp = Na(PDIsPage.class).getTipoParametro(posicao);
+				int temp = Na(ServicosPage.class).getTipoParametro(posicao);
 				tipoRecuperado = temp==0? "string" : "number";
 			}
 			
 			if(!map.get("obrigatorio").isEmpty()) { 
 				
-				boolean temp = Na(PDIsPage.class).getObrigatoriedadeDoParametro(posicao);
+				boolean temp = Na(ServicosPage.class).getObrigatoriedadeDoParametro(posicao);
 				obrigatoriedadeRecuperada = temp? "sim": "nao";
+				
+			}
+			
+			if(!map.get("descricao").isEmpty()) { 
+				
+				descricaoRecuperada = Na(ServicosPage.class).getDescricaoParametro(posicao);
 				
 			}
 			
 		assertEquals(nomeRecuperado, map.get("nome"));
 		assertEquals(tipoRecuperado, map.get("tipo"));
 		assertEquals(obrigatoriedadeRecuperada, map.get("obrigatorio"));
+		assertEquals(descricaoRecuperada, map.get("descricao"));
 			
 		}
 

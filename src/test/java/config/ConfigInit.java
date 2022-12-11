@@ -25,7 +25,7 @@ public class ConfigInit {
 	}
 	
 	public static void acessarSistema(String URL) {
-		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver107.exe");
+		System.setProperty("webdriver.chrome.driver","src/test/resources/drivers/chromedriverV107.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -56,8 +56,12 @@ public class ConfigInit {
 	}
 	
 	public static void aceitarAlerta() {
-		driver.switchTo().alert().accept();
-		driver.switchTo().defaultContent();
+		try {
+			driver.switchTo().alert().accept();
+			driver.switchTo().defaultContent();
+		} catch (Exception e) {
+			System.out.println("POPUP AXIOS");
+		}
 		
 	}
 	

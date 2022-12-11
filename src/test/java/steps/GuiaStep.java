@@ -26,14 +26,14 @@ public class GuiaStep {
 			Na(GuiaPage.class).clickAbaPipelines();
 			break;
 
-		case "cameras":
+		case "fluxoDaPipeline":
 
-			Na(GuiaPage.class).clickAbaCameras();
+			Na(GuiaPage.class).clickabAbaFluxoDaPipeline();
 			break;
 
-		case "mosaico":
+		case "aplicarProcessos":
 
-			Na(GuiaPage.class).clickAbaMosaicodasCameras();
+			Na(GuiaPage.class).clickAbaAplicarProcessos();
 			break;
 
 		default:
@@ -63,17 +63,17 @@ public class GuiaStep {
 
 		case "pipelines":
 
-			textTitulo = "Pipelines";
+			textTitulo = "Criação de PDI";
 			break;
 
-		case "cameras":
+		case "fluxoDaPipeline":
 
-			textTitulo = "Câmeras";
+			textTitulo = "Ediçao do Fluxo";
 			break;
 
-		case "mosaico":
+		case "aplicarProcessos":
 
-			textTitulo = "Mosaicos das câmeras";
+			textTitulo = "Aplicando pipelines";
 			break;
 
 		default:

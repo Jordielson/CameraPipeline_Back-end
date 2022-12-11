@@ -51,7 +51,7 @@ Cenário: Alterar a senha com sucesso
 	Então sistema notifica form_login
 	Dado que informei email userteste1@user.com e senha 654321
 	Quando tentar logar
-	Então devo estar na pagina Pipeline
+	Então devo estar na pagina Dashboard
 	Então remover usuario userteste1@user.com
 	
 	

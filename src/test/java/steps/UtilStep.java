@@ -58,6 +58,11 @@ public class UtilStep extends MainSteps{
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/guia");
 			break;
 			
+		case "Dashboard":
+
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/dashboard");
+			break;
+			
 		case "Pipeline":
 
 			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/pipeline");
@@ -76,17 +81,17 @@ public class UtilStep extends MainSteps{
 			
 		case "edicao-Imagem":
 
-			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/editar-imagem");
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/processar-imagem");
 			break;
 			
 		case "edicao-Video":
 
-			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/editar-video");
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/processar-video");
 			break;
 			
 		case "edicao-Camera":
 
-			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/editar-camera");
+			assertEquals(driver.getCurrentUrl(), "http://localhost:3000/processar-camera");
 			break;
 			
 		case "HistoricoPipeline":
