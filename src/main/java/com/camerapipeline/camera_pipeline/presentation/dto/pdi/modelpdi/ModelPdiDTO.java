@@ -2,8 +2,6 @@ package com.camerapipeline.camera_pipeline.presentation.dto.pdi.modelpdi;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-
 import com.camerapipeline.camera_pipeline.model.enums.Category;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.parameter.ParameterDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pdi.pdi.DigitalProcessDTO;
@@ -17,15 +15,6 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class ModelPdiDTO extends DigitalProcessDTO {
-    @Schema(
-		name = "URL",
-		example = "https://camerapipeline/api/image-crop",
-		type = "string",
-		required = true
-	)
-    @NotBlank
-    private String url;
-
     @Schema(
         title = "PDI Parameters",
         name = "parameters",

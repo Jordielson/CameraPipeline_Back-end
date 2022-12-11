@@ -43,6 +43,14 @@ public class DigitalProcessDTO {
     private String description;
 
     @Schema(
+      name = "URL",
+      example = "https://camerapipeline/api/image-crop",
+      type = "string",
+      required = false
+    )
+    private String url;
+
+    @Schema(
       title = "PDI category (ModelPDI or Pipeline)",
       name = "category",
 		  required = true
