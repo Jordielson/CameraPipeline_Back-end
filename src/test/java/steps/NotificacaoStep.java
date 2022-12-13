@@ -184,6 +184,10 @@ public class NotificacaoStep extends MainSteps{
 			mensagemErro = "PDITeste1 adicionado com sucesso!";
 			break;
 			
+		case "ServicoEffectAdicionadoComSucesso_Pipeline":
+			mensagemErro = "Effect adicionado com sucesso!";
+			break;
+			
 		case "PDITeste2AdicionadoComSucesso_Pipeline":
 			mensagemErro = "PDITeste2 adicionado com sucesso!";
 			break;
@@ -247,15 +251,9 @@ public class NotificacaoStep extends MainSteps{
 					try {
 						esperado = driver.findElement(By.id("toastMsg"));
 						erroRecuperado = esperado.getAttribute("innerText");
-//						if(erroRecuperado.equals("Acorreu um erro ao gerar um resultado")) {
-//							WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\" or @class=\"Toastify__close-button Toastify__close-button--colored\" and @innerText=\"Acorreu um erro ao gerar um resultado\"]"));
-//							botaoFechar.click();
-//							throw new Exception("Notificacao qualquer");
-//						}
 						break;
 					} catch ( org.openqa.selenium.StaleElementReferenceException e) {
 						tentativa++;
-//					} catch ( Exception e) {
 					}
 				}
 				
@@ -269,12 +267,6 @@ public class NotificacaoStep extends MainSteps{
 				System.err.println("Probelamas na NotificaçãoStep");
 			}
 			esperar(1);
-			
-//			if(!driver.findElements(By.id("toastMsg")).isEmpty()) {
-//				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\" or @class=\"Toastify__close-button Toastify__close-button--colored\"]"));
-//				botaoFechar.click();
-//				esperar(1);
-//			}
 			
 			assertEquals(erroRecuperado, mensagemErro);
 			

@@ -38,7 +38,7 @@ Cenário: Usuario recupera senha com sucesso atravez do link
 	Então devo estar na pagina de Login 
 	Dado que informei email userteste1@user.com e senha 654321
 	Quando tentar logar
-	Então devo estar na pagina de Pipeline
+	Então devo estar na pagina de Dashboard
 	
 	
 	

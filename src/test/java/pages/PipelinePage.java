@@ -395,7 +395,7 @@ public class PipelinePage {
 		}
 	}
 	
-	public Optional<WebElement> getParametroServico(String value){
+	public Optional<WebElement> getParametroInputServico(String value){
 		for(WebElement e : ListaDeParametros) {
 			if(e.findElement(By.xpath("label")).getText().toLowerCase().equals(value.toLowerCase())) {
 				return Optional.of(e.findElement(By.xpath("input")));
@@ -405,8 +405,17 @@ public class PipelinePage {
 		return Optional.empty();
 	}
 	
+	public Optional<WebElement> getParametroSelectServico(String value){
+		for(WebElement e : ListaDeParametros) {
+			if(e.findElement(By.xpath("label")).getText().toLowerCase().replace("*", "").equals(value.toLowerCase())) {
+				return Optional.of(e.findElement(By.xpath("select")));
+			}
+		}
+		return Optional.empty();
+	}
+	
 	public void inserirParametroTipoString(String nomeParam, String value) {
-		Optional<WebElement> parametroRecuperado = getParametroServico(nomeParam);
+		Optional<WebElement> parametroRecuperado = getParametroInputServico(nomeParam);
 		
 		if(parametroRecuperado.isPresent()) {
 			WebElement parametro = parametroRecuperado.get();
@@ -419,7 +428,7 @@ public class PipelinePage {
 	}
 	
 	public void inserirParametroTipoBoolean(String nomeParam, boolean value) {
-		Optional<WebElement> parametroRecuperado = getParametroServico(nomeParam);
+		Optional<WebElement> parametroRecuperado = getParametroInputServico(nomeParam);
 		
 		if(parametroRecuperado.isPresent()) {
 			WebElement parametro = parametroRecuperado.get();
@@ -434,8 +443,20 @@ public class PipelinePage {
 		
 	}
 	
+	public void inserirParametroTipoSelect(String nomeParam, String value) {
+		Optional<WebElement> parametroRecuperado = getParametroSelectServico(nomeParam);
+		
+		if(parametroRecuperado.isPresent()) {
+			Select parametro = new Select(parametroRecuperado.get());
+			parametro.selectByValue(value);
+		}else {
+			System.err.println("O parametro: " + nomeParam + " Nao foi encontrado" );
+		}
+		
+	}
+	
 	public boolean verificarParametroTipoString(String nomeParam, String value) {
-		Optional<WebElement> parametroRecuperado = getParametroServico(nomeParam);
+		Optional<WebElement> parametroRecuperado = getParametroInputServico(nomeParam);
 	
 		if(parametroRecuperado.isPresent()) {
 			WebElement parametro = parametroRecuperado.get();

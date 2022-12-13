@@ -2,12 +2,15 @@ package steps;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import static config.ConfigInit.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.camerapipeline.camera_pipeline.CameraPipelineApplication;
 import com.camerapipeline.camera_pipeline.model.entities.history.PipelineDataHistory;
@@ -15,6 +18,9 @@ import com.camerapipeline.camera_pipeline.model.entities.input.PipelineInput;
 import com.camerapipeline.camera_pipeline.model.entities.input.camera.Camera;
 import com.camerapipeline.camera_pipeline.model.entities.input.image.ImageData;
 import com.camerapipeline.camera_pipeline.model.entities.input.video.VideoData;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.ModelPDI;
+import com.camerapipeline.camera_pipeline.model.entities.pdi.Parameter;
+import com.camerapipeline.camera_pipeline.model.entities.pipeline.Pipeline;
 import com.camerapipeline.camera_pipeline.model.entities.user.User;
 import com.camerapipeline.camera_pipeline.model.repository.history.PdiDataHistoryRepository;
 import com.camerapipeline.camera_pipeline.model.repository.history.PipelineDataHistoryRepository;
@@ -126,8 +132,66 @@ public class MainSteps {
 		return cameraService.getAll(pageable, recuperarPrincipal()).toList();
 	}
 	
+	protected List<Pipeline> getAllPipeline() {
+		return pipelineService.getAll(pageable, recuperarPrincipal()).toList();
+	}
+	
+	protected List<ModelPDI> getAllModelPDI() {
+		return modelPDIService.getAll(pageable, recuperarPrincipal()).toList();
+	}
+	
+	protected List<Parameter> getAllParameter() {
+		List<ModelPDI> mps = getAllModelPDI();
+		List<Parameter> pp = new ArrayList<Parameter>();
+		for(ModelPDI mp: mps) {
+			pp.addAll(mp.getParameters());
+		}
+		return pp;
+	}
+	
 	protected List<PipelineInput> getAllPipelineInput() {
 		return List.copyOf(recuperarUser().getPipelineInputs());
+	}
+	
+	protected Optional<Parameter> findParameterByName(String name) {
+		List<Parameter> parameters = getAllParameter();
+		for(Parameter p : parameters) {
+			if(p.getName().equals(name)) {
+				return Optional.of(p);
+			}
+		}
+		System.err.println("Parameter " + name + " não encontrado");
+		return Optional.empty();
+	}
+	
+	protected Optional<Pipeline> findPipelineByName(String name) {
+		List<Pipeline> pipelines = getAllPipeline();
+		for(Pipeline p : pipelines) {
+			if(p.getName().equals(name)) {
+				return Optional.of(p);
+			}
+		}
+		System.err.println("Pipeline " + name + " não encontrada");
+		return Optional.empty();
+	}
+	
+	protected Optional<ModelPDI> findModelPDIByName(String name) {
+		List<ModelPDI> MPDIs = getAllModelPDI();
+		for(ModelPDI mp : MPDIs) {
+			if(mp.getName().equals(name)) {
+				return Optional.of(mp);
+			}
+		}
+		System.err.println("ModelPDI " + name + " não encontrado");
+		return Optional.empty();
+	}
+	
+	protected int getAllModelPDISize() {
+		return getAllModelPDI().size();
+	}
+	
+	protected int getAllParameterSize() {
+		return getAllParameter().size();
 	}
 	
 	protected int getAllImageDataSize() {
@@ -140,6 +204,10 @@ public class MainSteps {
 	
 	protected int getAllCameraSize() {
 		return getAllCamera().size();
+	}
+	
+	protected int getAllPipelineSize() {
+		return getAllPipeline().size();
 	}
 	
 	protected int getAllPipelineInputSize() {

@@ -13,6 +13,8 @@ Funcionalidade: Validar a aplicação de pipeline em imagens
 	Dado que informei email userteste1@user.com e senha 123456
 	Quando tentar logar
 	Dado que tenho uma Pipeline
+	Dado que tenho um Servico effect
+	Dado que tenho o Servico effect em Pipeline
 	Entao acessar aba Edicao-Imagem
 	Então devo estar na pagina de edicao-Imagem
 	Entao EI passar file "src\test\resources\util\TestImage.jpg"

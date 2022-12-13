@@ -124,7 +124,7 @@ public class PipelineStep extends MainSteps {
 		Na(PipelinePage.class).selecionarProcesso(index);
 	}
 
-	@Então("^informar parametro (string|boolean) (.*) (.*)$")
+	@Então("^informar parametro (string|boolean|number|file|select|color) (.*) (.*)$")
 	public void informarParametroParametroTeste(String tipo, String nome, String value) {
 
 		switch (tipo) {
@@ -138,6 +138,14 @@ public class PipelineStep extends MainSteps {
 			Na(PipelinePage.class).inserirParametroTipoBoolean(nome, value == "true");
 			break;
 
+		case "select":
+			Na(PipelinePage.class).inserirParametroTipoSelect(nome, value);
+			break;
+			
+		case "number":
+			Na(PipelinePage.class).inserirParametroTipoString(nome, value);
+			break;
+			
 		default:
 			break;
 		}
