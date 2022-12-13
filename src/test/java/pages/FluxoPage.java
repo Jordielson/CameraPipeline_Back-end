@@ -9,10 +9,10 @@ import org.openqa.selenium.support.FindBy;
 
 public class FluxoPage {
 
-	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div[2]/div[2]/button")
-	private WebElement botaoSalvarEVoltar;
+	@FindBy(xpath = "//*[@class=\"undefined p-3\"]/button[@class=\"btn btn-color Styles_btn__k3TRa\"]")
+	private WebElement botaoSalvar;
 	
-	@FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div[2]/div[2]/a")
+	@FindBy(xpath = "//*[@class=\"undefined p-3\"]/button[@class=\"Styles_back__F0CPa btn btn-color\"]")
 	private WebElement botaoVoltar;
 	
 	@FindBy(xpath = "//*[@aria-describedby=\"react-flow__node-desc-1\"]")
@@ -52,7 +52,7 @@ public class FluxoPage {
 	
 	
 	public void clickBotaoSalvarEVoltar() {
-		botaoSalvarEVoltar.click();
+		botaoSalvar.click();
 	}
 	
 	public void clickBotaoVoltar() {

@@ -42,6 +42,9 @@ public class CameraPage {
 	@FindBy(xpath = "//*[@class=\"modal-content\"]/*/[@class=\"btn-close\"]")
 	private WebElement botaoFechar;
 	
+	@FindBy(xpath = "//*[@class=\"modal-dialog\"]/div")
+	private WebElement modalExcluirCamera;
+	
 	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 listCamera list-group\"]/div[@class=\"list-group-item list-group-item-light\"]")
 	private List<WebElement> cameras;
 	
@@ -81,6 +84,7 @@ public class CameraPage {
 			String nomeDaCamera = e.getText();
 			if(nomeDaCamera.equals(nomeCamera)) {
 				e.findElement(By.xpath("div/button[@title=\"EXCLUIR\"]")).click();;
+				setModalExclirServico("Excluir");
 				break;
 			}
 		}
@@ -89,6 +93,7 @@ public class CameraPage {
 	public void deletarTodasAsCameras() {
 		for(WebElement e : cameras) {
 			e.findElement(By.xpath("div/button[@title=\"EXCLUIR\"]")).click();;
+			setModalExclirServico("Excluir");
 		}
 	}
 	
@@ -187,6 +192,26 @@ public class CameraPage {
 	public void clicarBotaoFechar() {
 		botaoFechar.click();
 		botaoFechar.sendKeys(Keys.F5);
+	}
+	
+	public void setModalExclirServico(String value) {
+		switch (value) {
+		
+		case "Fechar":
+			modalExcluirCamera.findElement(By.xpath("div[1]/button")).click();;
+			break;
+			
+		case "Cancelar":
+			modalExcluirCamera.findElement(By.xpath("div[3]/button[text() = \"Cancelar\"]")).click();;
+			break;
+			
+		case "Excluir":
+			modalExcluirCamera.findElement(By.xpath("div[3]/button[text() = \"Excluir\"]")).click();;
+			break;
+
+		default:
+			break;
+		}
 	}
 	
 	

@@ -54,7 +54,7 @@ public class PipelineStep extends MainSteps {
 
 	@Então("PP Clicar botao SalvarPipeline")
 	public void ppClicarBotaoSalvarPipeline() {
-		Na(PipelinePage.class).clickBotaoSalvarPipeline();
+		Na(PipelinePage.class).clickBotaoPagePipeline("Salvar");
 	}
 
 	@Então("PPI Desativar Pipeline")
@@ -99,7 +99,7 @@ public class PipelineStep extends MainSteps {
 
 	@Então("PPI Clicar botao historico Pipelines")
 	public void ppClicarBotaoHistoricoPipelines() {
-		Na(PipelinePage.class).clickBotaoHistorioPipeline();
+		Na(PipelinePage.class).clickBotaoPagePipeline("Historico");
 	}
 
 	@Então("^adicionar processo (PDI|Pipeline) (.*)$")
@@ -145,7 +145,7 @@ public class PipelineStep extends MainSteps {
 
 	@Então("PPI Clicar botao ExcluirPipeline")
 	public void ppClicarBotaoExcluirPipeline() {
-		Na(PipelinePage.class).clickBotaoExcluirPipeline();
+		Na(PipelinePage.class).clickBotaoPagePipeline("Excluir");
 	}
 	
 	@Então("PP Clicar botao FluxoPipeline")

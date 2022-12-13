@@ -17,7 +17,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"styles_labelMain__z9DFn\"]/label")
 	private WebElement textoPadrao;
 	
-	@FindBy(xpath = "//nav/div[1]/input")
+	@FindBy(xpath = "//input[@id=\"pipeline-name\"]")
 	private WebElement campoNomePipeline;
 	
 	@FindBy(xpath = "//*[@class=\"modal-body\"]/form/input")
@@ -41,7 +41,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/div/div/input")
 	private WebElement AtivarDesativarPipelineInterno; 
 	
-	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"btn btn-light btn-sm btn-excluir\"]")
+	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"btn btn-light btn-sm btn-excluir button-default\"]")
 	private WebElement linkExcluirPipeline;
 	
 	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/a[@class=\"align-self-center px-2 history\"]")
@@ -55,17 +55,20 @@ public class PipelinePage {
 	
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-header pipeline-header2 \"]/menu/div/button")
 	private WebElement botaoFluxo;
+	
+	@FindBy(xpath = "//*[@class=\"modal-dialog\"]/div")
+	private WebElement modalExcluirPipeline;
 
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/h2/button")
-	private WebElement acordPDIs;
+	private WebElement acordServicos;
 	
-	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/button")
-	private List<WebElement> listaDePDIs;
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/li[@role=\"button\"]")
+	private List<WebElement> listaDeServicos;
 	
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/h2/button")
 	private WebElement acordPipelines;
 	
-	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div/div/ul/button")
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div/div/ul/li[@role=\"button\"]")
 	private List<WebElement> listaDePipelines;
 	
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[2]/div/div[@class=\"card-body pipeline-card\"]/div/div/div")
@@ -94,8 +97,8 @@ public class PipelinePage {
 		botaoVoltarPipeline.click();;
 	}
 	
-	public void clickAcordPDIs() {
-		acordPDIs.click();
+	public void clickAcordServicos() {
+		acordServicos.click();
 	}
 	
 	public void clickAcordPipelines() {
@@ -106,15 +109,45 @@ public class PipelinePage {
 		botaoCriarPipeline.click();
 	}
 	
-	public void clickBotaoExcluirPipeline() {
-		linkExcluirPipeline.click();
+	public void clickBotaoPagePipeline(String value) {
+	    int attempts = 0;
+	    while(attempts < 2) {
+	        try {
+	        	switch (value) {
+				case "Salvar":
+					clickBotaoSalvarPipeline();
+					break;
+					
+				case "Excluir":
+					clickBotaoExcluirPipeline();
+					break;
+					
+				case "Historico":
+					clickBotaoHistorioPipeline();
+					break;
+					
+				default:
+					break;
+				}
+	        	
+	        	break;
+	        } catch(org.openqa.selenium.ElementClickInterceptedException err) {
+	        	esperar(1);
+	        }
+	        attempts++;
+	    }
 	}
 	
-	public void clickBotaoHistorioPipeline() {
+	private void clickBotaoExcluirPipeline() {
+		linkExcluirPipeline.click();
+		setModalExclirServico("Excluir");
+	}
+	
+	private void clickBotaoHistorioPipeline() {
 		linkHistorico.click();
 	}
 	
-	public void clickBotaoSalvarPipeline() {
+	private void clickBotaoSalvarPipeline() {
 		botaoSalvarPipeline.click();
 	}
 	
@@ -213,6 +246,7 @@ public class PipelinePage {
 			case "Deletar":
 				
 				botaoDeletarPipeline.click();
+				setModalExclirServico("Excluir");
 				break;
 
 			default:
@@ -237,13 +271,13 @@ public class PipelinePage {
 	public void adicionarPDIEmPipeline(String Nome) {
 		boolean valid = false;
 		
-		String className = acordPDIs.getAttribute("class");
+		String className = acordServicos.getAttribute("class");
 		if(className.equals("accordion-button collapsed")) {
-			acordPDIs.click();
+			acordServicos.click();
 		}
 		
-		if(!listaDePDIs.isEmpty()) {
-			for(WebElement e : listaDePDIs) {
+		if(!listaDeServicos.isEmpty()) {
+			for(WebElement e : listaDeServicos) {
 				if(e.getAttribute("innerText").toLowerCase().trim().equals(Nome.toLowerCase().trim())) {
 					e.click();
 					valid = true;
@@ -251,10 +285,10 @@ public class PipelinePage {
 				}
 			}
 			if(!valid) {
-				System.err.println("PDI "+ Nome + ", nao encontrado");
+				System.err.println("Servico "+ Nome + ", nao encontrado");
 			}
 		}else {
-			System.err.println("Nenhum PDI Cadastrado");
+			System.err.println("Nenhum Servico Cadastrado");
 		}
 		
 	}
@@ -307,7 +341,7 @@ public class PipelinePage {
 				processos.add(nome);
 			}
 		}else {
-			System.err.println("Nenhum PDI ou Pipeline foi adicionado a esta Pipeline");
+			System.err.println("Nenhum Servico ou Pipeline foi adicionado a esta Pipeline");
 		}
 		return processos;
 	}
@@ -361,7 +395,7 @@ public class PipelinePage {
 		}
 	}
 	
-	public Optional<WebElement> getParametroPDI(String value){
+	public Optional<WebElement> getParametroServico(String value){
 		for(WebElement e : ListaDeParametros) {
 			if(e.findElement(By.xpath("label")).getText().toLowerCase().equals(value.toLowerCase())) {
 				return Optional.of(e.findElement(By.xpath("input")));
@@ -372,7 +406,7 @@ public class PipelinePage {
 	}
 	
 	public void inserirParametroTipoString(String nomeParam, String value) {
-		Optional<WebElement> parametroRecuperado = getParametroPDI(nomeParam);
+		Optional<WebElement> parametroRecuperado = getParametroServico(nomeParam);
 		
 		if(parametroRecuperado.isPresent()) {
 			WebElement parametro = parametroRecuperado.get();
@@ -385,7 +419,7 @@ public class PipelinePage {
 	}
 	
 	public void inserirParametroTipoBoolean(String nomeParam, boolean value) {
-		Optional<WebElement> parametroRecuperado = getParametroPDI(nomeParam);
+		Optional<WebElement> parametroRecuperado = getParametroServico(nomeParam);
 		
 		if(parametroRecuperado.isPresent()) {
 			WebElement parametro = parametroRecuperado.get();
@@ -401,7 +435,7 @@ public class PipelinePage {
 	}
 	
 	public boolean verificarParametroTipoString(String nomeParam, String value) {
-		Optional<WebElement> parametroRecuperado = getParametroPDI(nomeParam);
+		Optional<WebElement> parametroRecuperado = getParametroServico(nomeParam);
 	
 		if(parametroRecuperado.isPresent()) {
 			WebElement parametro = parametroRecuperado.get();
@@ -446,5 +480,25 @@ public class PipelinePage {
 		}
 		System.err.println("O processo ID: " + id + " Nao esta sendo aplicado à Pipeline" );
 		return Optional.empty();
+	}
+	
+	public void setModalExclirServico(String value) {
+		switch (value) {
+		
+		case "Fechar":
+			modalExcluirPipeline.findElement(By.xpath("div[1]/button")).click();;
+			break;
+			
+		case "Cancelar":
+			modalExcluirPipeline.findElement(By.xpath("div[3]/button[text() = \"Cancelar\"]")).click();;
+			break;
+			
+		case "Excluir":
+			modalExcluirPipeline.findElement(By.xpath("div[3]/button[text() = \"Excluir\"]")).click();;
+			break;
+
+		default:
+			break;
+		}
 	}
 }

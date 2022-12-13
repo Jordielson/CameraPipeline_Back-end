@@ -33,22 +33,29 @@ public class ServicosPage {
 	@FindBy(xpath = "/html/body/div[3]/div/div/div[3]/div[1]/button")
 	private WebElement botaoNovoParametro;
 	
-	@FindBy(xpath = "//*[@id=\"react-confirm-alert\"]/*/*/div ")
+	@FindBy(xpath = "//*[@id=\"react-confirm-alert\"]/*/*/div")
 	private WebElement modalItemEmUso;
+	
+	@FindBy(xpath = "//*[@class=\"modal-dialog\"]/div")
+	private WebElement modalExcluirServico;
 	
 	@FindBy(xpath = "//*[@class=\"Pdi_modal__2LEg0 modal-body\"]/div[@class=\"card Pdi_margin__GSzNe\"]")
 	private List<WebElement> parametros; 
 	
 	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 listpdi list-group\"]/div[@class=\"list-item list-group-item list-group-item-light\"]")
-	private List<WebElement> Servicos;
+	private List<WebElement> servicos;
 	
-	public int getTotalElements() {
+	public int getTotalParametros() {
 		return parametros.size();
+	}
+	
+	public int getTotalServicos() {
+		return servicos.size();
 	}
 
 	
 	public void deletarTodosServicos() {
-		for(WebElement e : Servicos) {
+		for(WebElement e : servicos) {
 			deletarServicoPorWebElement(e);
 		}
 	}
@@ -69,6 +76,33 @@ public class ServicosPage {
 	private void deletarServicoPorWebElement(WebElement element) {
 		WebElement botao = element.findElement(By.xpath("//*[@class=\"buttons\"]/button[@title=\"EXCLUIR\"]"));
 		botao.click();
+		setModalExclirServico("Excluir");
+	}
+	
+	public void deletarServicoPorNome(String value) {
+		WebElement botao = getServicoPorNome(value).findElement(By.xpath("//*[@class=\"buttons\"]/button[@title=\"EXCLUIR\"]"));
+		botao.click();
+		setModalExclirServico("Excluir");
+	}
+	
+	public void setModalExclirServico(String value) {
+		switch (value) {
+		
+		case "fechar":
+			modalExcluirServico.findElement(By.xpath("div[1]/button")).click();;
+			break;
+			
+		case "Cancelar":
+			modalExcluirServico.findElement(By.xpath("div[3]/button[text() = \"Cancelar\"]")).click();;
+			break;
+			
+		case "Excluir":
+			modalExcluirServico.findElement(By.xpath("div[3]/button[text() = \"Excluir\"]")).click();;
+			break;
+
+		default:
+			break;
+		}
 	}
 	
 	public void clickBotaoEditarServico(String value) {
@@ -152,7 +186,7 @@ public class ServicosPage {
 	}
 	
 	public WebElement getServicoPorNome(String value) {
-		for(WebElement e : Servicos) { 
+		for(WebElement e : servicos) { 
 			if(e.getText().trim().toLowerCase().equals(value.trim().toLowerCase())) {
 				return e;
 			}

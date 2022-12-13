@@ -34,7 +34,8 @@ Funcionalidade: Deve validar o CRUD de Servico
 
 	Quando CRUD-Servicos clicar no botão salvarServico
 	Então sistema notifica parametrosalvo_ServicoPage
-	Então deletar Servico todos 
+	Então deletar Servico todos
+	Então verificar qtdd servicos 0
 
 Cenário: Validação parametro 
 	* remover usuario userteste1@user.com
@@ -69,6 +70,7 @@ Cenário: Validação parametro
 	Então deletar parametro 1
 	Então confirmar que um parametro foi removido
 	Quando CRUD-Servicos clicar no botão fecharCardServico
-	Então deletar Servico todos 
+	Então deletar Servico todos
+	Então verificar qtdd servicos 0
 	
 	

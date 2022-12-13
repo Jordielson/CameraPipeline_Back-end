@@ -17,8 +17,8 @@ public class NotificacaoStep extends MainSteps{
 	public void sistema_notifica(String string) {
 
 		WebElement esperado = null;
-		String mensagemErro;
-		String erroRecuperado;
+		String mensagemErro = null;
+		String erroRecuperado = null;
 
 		switch (string) {
 		
@@ -239,12 +239,27 @@ public class NotificacaoStep extends MainSteps{
 
 		if (!mensagemErro.isEmpty()) {
 
+			
 			do {
 				esperar(1);
-				esperado = driver.findElement(By.id("toastMsg"));
-				erroRecuperado = esperado.getAttribute("innerText");
+				int tentativa = 0;
+				while(tentativa <2) {
+					try {
+						esperado = driver.findElement(By.id("toastMsg"));
+						erroRecuperado = esperado.getAttribute("innerText");
+//						if(erroRecuperado.equals("Acorreu um erro ao gerar um resultado")) {
+//							WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\" or @class=\"Toastify__close-button Toastify__close-button--colored\" and @innerText=\"Acorreu um erro ao gerar um resultado\"]"));
+//							botaoFechar.click();
+//							throw new Exception("Notificacao qualquer");
+//						}
+						break;
+					} catch ( org.openqa.selenium.StaleElementReferenceException e) {
+						tentativa++;
+//					} catch ( Exception e) {
+					}
+				}
 				
-			} while (erroRecuperado.equals("Processando")||erroRecuperado.equals("Deletando")||erroRecuperado.equals("Salvando"));
+			} while (erroRecuperado.equals("Processando")||erroRecuperado.equals("Deletando")||erroRecuperado.equals("Salvando")||erroRecuperado.equals("Salvando!")||erroRecuperado.equals("Acorreu um erro ao gerar um resultado"));
 			
 			try {
 				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\" or @class=\"Toastify__close-button Toastify__close-button--colored\"]"));
@@ -253,6 +268,13 @@ public class NotificacaoStep extends MainSteps{
 				System.out.println(e.getMessage());
 				System.err.println("Probelamas na NotificaçãoStep");
 			}
+			esperar(1);
+			
+//			if(!driver.findElements(By.id("toastMsg")).isEmpty()) {
+//				WebElement botaoFechar = driver.findElement(By.xpath("//*[@class=\"Toastify__close-button Toastify__close-button--light\" or @class=\"Toastify__close-button Toastify__close-button--colored\"]"));
+//				botaoFechar.click();
+//				esperar(1);
+//			}
 			
 			assertEquals(erroRecuperado, mensagemErro);
 			

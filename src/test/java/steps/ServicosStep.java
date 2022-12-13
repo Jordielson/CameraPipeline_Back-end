@@ -15,7 +15,8 @@ import pages.SideBar;
 
 public class ServicosStep extends MainSteps {
 	
-	private int ParametrosAdicionados;
+	private int qtddparametros;
+
 
 	@Quando("^CRUD-Servicos clicar no botão (.*)$")
 	public void crudServicoClicarNoBotão(String value) {
@@ -29,7 +30,7 @@ public class ServicosStep extends MainSteps {
 		case "novoparametro":
 
 			Na(ServicosPage.class).clicarBotaoNovoParametro();
-			ParametrosAdicionados += 1;
+			qtddparametros += 1;
 			break;
 
 		case "salvarServico":
@@ -78,28 +79,35 @@ public class ServicosStep extends MainSteps {
 	@Então("^deletar parametro (.*)$")
 	public void deletarParametro(String posicao) {
 		Na(ServicosPage.class).ClicarDeletarParametro(Integer.parseInt(posicao));
-		ParametrosAdicionados -= 1;
+		qtddparametros -= 1;
+	}
+	
+	@Então("^verificar qtdd servicos (.*)$")
+	public void verificarQTDDServicos(String qtdd) {
+		esperar(1);
+		assertEquals(Integer.parseInt(qtdd), Na(ServicosPage.class).getTotalServicos());
 	}
 	
 	@Então("^deletar Servico (.*)$")
-	public void deletarServico(String posicao) {
+	public void deletarServico(String value) {
 		
-		switch (posicao) {
+		switch (value) {
 		case "todos":
 			
 			Na(ServicosPage.class).deletarTodosServicos();
-			
 			break;
 
 		default:
+			
+			Na(ServicosPage.class).deletarServicoPorNome(value);
 			break;
 		}
 	}
 	
 	@Então("^confirmar que um parametro foi (.*)?$")
 	public void confirmarQueUmParametroFoiAdicionado(String status) {
-		int qtdparametrosNaTela =  Na(ServicosPage.class).getTotalElements();
-		assertTrue(ParametrosAdicionados == qtdparametrosNaTela);
+		int qtdparametrosNaTela =  Na(ServicosPage.class).getTotalParametros();
+		assertTrue(qtddparametros == qtdparametrosNaTela);
 	}
 
 	@Então("^editar parametro$")
@@ -107,7 +115,7 @@ public class ServicosStep extends MainSteps {
 		Map<String, String> map = dataTable.asMap(String.class, String.class);
 		int posicao = Integer.parseInt(map.get("posicao"));
 		
-		if(posicao > 0 && posicao <= Na(ServicosPage.class).getTotalElements()){
+		if(posicao > 0 && posicao <= Na(ServicosPage.class).getTotalParametros()){
 			
 			if(!map.get("nome").isEmpty()) {
 				
@@ -157,7 +165,7 @@ public class ServicosStep extends MainSteps {
 		String obrigatoriedadeRecuperada = "";
 		String descricaoRecuperada = "";
 		
-		if(posicao > 0 && posicao <= Na(ServicosPage.class).getTotalElements()){
+		if(posicao > 0 && posicao <= Na(ServicosPage.class).getTotalParametros()){
 			
 			if(!map.get("nome").isEmpty()) {
 				
