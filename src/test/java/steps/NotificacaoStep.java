@@ -16,7 +16,7 @@ public class NotificacaoStep extends MainSteps{
 	@Então("^sistema notifica (.*)$")
 	public void sistema_notifica(String string) {
 
-		WebElement esperado = null;
+		List<WebElement> esperado = null;
 		String mensagemErro = null;
 		String erroRecuperado = null;
 
@@ -257,8 +257,15 @@ public class NotificacaoStep extends MainSteps{
 				int tentativa = 0;
 				while(tentativa <2) {
 					try {
-						esperado = driver.findElement(By.id("toastMsg"));
-						erroRecuperado = esperado.getAttribute("innerText");
+						esperado = driver.findElements(By.id("toastMsg"));
+						for(WebElement e : esperado) {
+							 if(!e.getAttribute("innerText").equals("Não foi possivel renderizar a pré-visualização")) {
+								 erroRecuperado = e.getAttribute("innerText");
+							 }else {
+								 WebElement botaoFechar = e.findElement(By.xpath("../../../button"));
+								 botaoFechar.click();
+							 }
+						}
 						break;
 					} catch ( org.openqa.selenium.StaleElementReferenceException e) {
 						tentativa++;

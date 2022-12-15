@@ -158,7 +158,7 @@ public class IntegracaoStep extends MainSteps {
 			height.setRequired(true);
 
 			ModelPDI mscrop = new ModelPDI();
-			mscrop.setName("Effect");
+			mscrop.setName("Color");
 			mscrop.setURL("http://127.0.0.1:5000/api/apply-effect");
 			mscrop.setDescription("Estilo de efeito");
 			mscrop.setParameters(List.of(position_x, position_y, width, height));
