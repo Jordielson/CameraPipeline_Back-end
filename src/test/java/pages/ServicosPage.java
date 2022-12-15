@@ -1,5 +1,6 @@
 package pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -39,6 +40,15 @@ public class ServicosPage {
 	@FindBy(xpath = "//*[@class=\"modal-dialog\"]/div")
 	private WebElement modalExcluirServico;
 	
+	@FindBy(xpath = "//*[@class=\"Tags_inputC__3DGdC\"]/input")
+	private WebElement campoOpcaoSelectType;
+
+	@FindBy(xpath = "//*[@class=\"Tags_inputC__3DGdC\"]/button")
+	private WebElement botaoAdicionarOpcaoSelectType;
+	
+	@FindBy(xpath = "//*[@class=\"Tags_tagItem__O0NAb\"]")
+	private List<WebElement> opcoesSelectType;
+	
 	@FindBy(xpath = "//*[@class=\"Pdi_modal__2LEg0 modal-body\"]/div[@class=\"card Pdi_margin__GSzNe\"]")
 	private List<WebElement> parametros; 
 	
@@ -51,6 +61,10 @@ public class ServicosPage {
 	
 	public int getTotalServicos() {
 		return servicos.size();
+	}
+	
+	public int getTotalOpcoesSelectType() {
+		return opcoesSelectType.size();
 	}
 
 	
@@ -162,7 +176,7 @@ public class ServicosPage {
 	
 	public void InserirDescricaoParametro(int posicao, String value) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div[2]/textarea"));
+		WebElement input = temp.findElement(By.xpath("div[@class=\"Pdi_formTxt__Uz6Zb\"]/textarea"));
 		input.clear();
 		input.sendKeys(value);
 	}
@@ -170,6 +184,50 @@ public class ServicosPage {
 		WebElement temp = parametros.get(posicao-1);
 		WebElement input = temp.findElement(By.xpath("div[2]/textarea"));
 		return input.getText();
+	}
+	
+	public void inserirOpcaoSelectType(String value) {
+		campoOpcaoSelectType.clear();
+		campoOpcaoSelectType.sendKeys(value);
+		botaoAdicionarOpcaoSelectType.click();
+	}
+	
+	public void removerOpcaoSelectType(String value) {
+		WebElement opcao = recuperarOpcaoSelectTypeAdicionadaPorNome(value);
+		opcao.findElement(By.xpath("span[2]")).click();
+	}
+	
+	public WebElement recuperarOpcaoSelectTypeAdicionadaPorNome(String value) {
+		for(WebElement e : opcoesSelectType) {
+			String nome = e.findElement(By.xpath("span[1]")).getText();
+			if(nome.trim().equals(value.toUpperCase().trim())) {
+				return e;
+			}
+		}
+		System.err.println("Opcao " + value + " Não encontrado");
+		return null;
+	}
+	
+	public List<String> getListOpcoesSelectType(){
+		List<String> opcoes = new ArrayList<String>();
+		for(WebElement e : opcoesSelectType) {
+			String nome = e.findElement(By.xpath("span[1]")).getText();
+			opcoes.add(nome);
+		}
+		return opcoes;
+	}
+	
+	public void limparOpcoesSelectType() {
+		for(WebElement e : opcoesSelectType) {
+			e.findElement(By.xpath("span[2]")).click();
+		}
+	}
+	
+	public void setListOpcoesSelectType(List<String> newOpcoes) {
+		limparOpcoesSelectType();
+		for(String s : newOpcoes) {
+			inserirOpcaoSelectType(s);
+		}
 	}
 	
 	

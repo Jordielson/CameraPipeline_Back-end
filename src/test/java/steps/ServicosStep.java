@@ -4,6 +4,8 @@ import static config.ConfigInit.*;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import io.cucumber.datatable.DataTable;
@@ -25,6 +27,7 @@ public class ServicosStep extends MainSteps {
 		case "adicionarServico":
 
 			Na(ServicosPage.class).clicarBotaoAdicionarNovoServico();
+			qtddparametros = 0;
 			break;
 
 		case "novoparametro":
@@ -133,6 +136,21 @@ public class ServicosStep extends MainSteps {
 									map.get("tipo").equals("file") ? 3 :
 										map.get("tipo").equals("select") ? 4 :
 											map.get("tipo").equals("color") ? 5 : null);
+			
+				if(map.get("opcoes") != null) {
+					if(!map.get("opcoes").isEmpty()) {
+						String[] opcoesL = map.get("opcoes").split(";");
+						List<String> opcoesA = new ArrayList<String>();
+						for(String s : opcoesL) {
+							opcoesA.add(s.trim().toUpperCase());
+						}
+						
+						Na(ServicosPage.class).setListOpcoesSelectType(opcoesA);
+						
+					}
+					
+				}
+			
 			}
 			
 			if(!map.get("obrigatorio").isEmpty()) { 

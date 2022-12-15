@@ -106,9 +106,9 @@ Cenario: Savando Processos com parametros na Pipeline e validando restauração 
 	Quando tentar logar
 	Então acessar aba pipelines
 	Então selecionar Pipeline PipelineTeste Editar
-	Então adicionar processo PDI PDITeste1
+	Então adicionar processo Servico PDITeste1
 	Então sistema notifica PDITeste1AdicionadoComSucesso_Pipeline
-	Então adicionar processo PDI PDITeste2
+	Então adicionar processo Servico PDITeste2
 	Então sistema notifica PDITeste2AdicionadoComSucesso_Pipeline
 	Então selecionar processo 1
 	Então informar parametro string ParamTeste1 parametroTeste1
@@ -169,7 +169,7 @@ Cenario: Excluir Pipeline com processos
 	Quando tentar logar
 	Então acessar aba pipelines
 	Então selecionar Pipeline PipelineTeste Editar
-	Então adicionar processo PDI effect
+	Então adicionar processo Servico effect
 	Então sistema notifica ServicoEffectAdicionadoComSucesso_Pipeline
 	Então selecionar processo 1
 	Então informar parametro select effect GRAY
@@ -205,13 +205,123 @@ Cenario: Excluir Pipeline usada em outra Pipeline
 	Então PPI Clicar botao ExcluirPipeline
 	Então sistema notifica SucessoExcluirPipeline_Pipeline
 	
+Cenario: Validar parametros SELECT e COLOR Aplicados a Pipeline
+	* remover usuario userteste1@user.com
+	Dado que existe a conta email userteste1@user.com e senha 123456
+	Dado que informei email userteste1@user.com e senha 123456
+	Dado que tenho um Servico effect
+	Dado que tenho um Servico color
+	Dado que tenho uma Pipeline PipelineTeste
+	Quando tentar logar
+	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
+	Então adicionar processo Servico Effect
+	Então sistema notifica ServicoEffectAdicionadoComSucesso_Pipeline
+	Então adicionar processo Servico Color
+	Então sistema notifica ServicoColorAdicionadoComSucesso_Pipeline
+	Então selecionar processo 1
+	Então informar parametro select effect GRAY
+	Então selecionar processo 2
+	Então informar parametro string color #f00000
+	Então PP Clicar botao SalvarPipeline
+	Então sistema notifica SucessoSalvarPipeline_Pipeline
+	Então fazer logoff
+	Dado que informei email userteste1@user.com e senha 123456
+	Quando tentar logar
+	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
+	Então selecionar processo 1
+	Então Verificar select parametro Effect GRAY
+	Então selecionar processo 2
+	Então Verificar parametro Color #000000
+
+Cenario: validar Imagem de pré-Visualização
+	* remover usuario userteste1@user.com
+	Dado que existe a conta email userteste1@user.com e senha 123456
+	Dado que informei email userteste1@user.com e senha 123456
+	Dado que tenho uma Pipeline PipelineTeste
+	Dado que tenho um Servico effect
+	Quando tentar logar
+	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
+	Então adicionar processo Servico Effect
+	Então sistema notifica ServicoEffectAdicionadoComSucesso_Pipeline
+	Então selecionar processo 1
+	Então informar parametro select effect GRAY
+	Então capturar imagem de pre-visualizacao
+	Então PP Clicar botao SalvarPipeline
+	Então sistema notifica SucessoSalvarPipeline_Pipeline
+	Então confirmar alteracao de imagem de pre-visualizacao
+	
+Cenario: Validar campos de pesquisa Pipelines e Servicos
+	* remover usuario userteste1@user.com
+	Dado que existe a conta email userteste1@user.com e senha 123456
+	Dado que informei email userteste1@user.com e senha 123456
+	Dado que tenho um Servico AbcTeste
+	Dado que tenho um Servico AbcdTeste
+	Dado que tenho um Servico AbdeTeste
+	Dado que tenho um Servico BcdTeste
+	Dado que tenho um Servico BacTeste
+	Dado que tenho um Servico CAbTeste
+	Dado que tenho uma Pipeline AbcTeste
+	Dado que tenho uma Pipeline AbcdTeste
+	Dado que tenho uma Pipeline AbdeTeste
+	Dado que tenho uma Pipeline BcdTeste
+	Dado que tenho uma Pipeline BacTeste
+	Dado que tenho uma Pipeline CAbTeste
+	Dado que tenho uma Pipeline PipelineTeste
+	Quando tentar logar
+	Então acessar aba pipelines
+	Então selecionar Pipeline PipelineTeste Editar
+	
+	Então Pesquisar por servicos ab
+	Então validar pesquisa
+	|		type				 |  	servico					|	
+	| 	resultado    | AbcTeste ; AbcdTeste ; AbdeTeste ; CAbTeste  |	
+	
+	Então Pesquisar por servicos abc
+	Então validar pesquisa
+	|		type				 |  	servico						|	
+	| 	resultado    | AbcTeste ; AbcdTeste |	
+
+	Então Pesquisar por servicos bde
+	Então validar pesquisa
+	|		type				 | servico		|	
+	| 	resultado    | AbdeTeste  |	
+
+	Então Pesquisar por servicos b
+	Então validar pesquisa
+	|		type				 |  	servico					|	
+	| 	resultado    | AbcTeste ; AbcdTeste ; AbdeTeste ; CAbTeste ; BcdTeste ; BacTeste  |	
+
+	Então Pesquisar por servicos AbcdTeste
+	Então validar pesquisa
+	|		type				 | 	servico	 |	
+	| 	resultado    | AbcdTeste |	
 
 
+	Então Pesquisar por pipelines ab
+	Então validar pesquisa
+	|		type				 |  	pipeline					|	
+	| 	resultado    | AbcTeste ; AbcdTeste ; AbdeTeste ; CAbTeste  |	
+	
+	Então Pesquisar por pipelines abc
+	Então validar pesquisa
+	|		type				 |  	pipeline						|	
+	| 	resultado    | AbcTeste ; AbcdTeste |	
 
+	Então Pesquisar por pipelines bde
+	Então validar pesquisa
+	|		type				 | pipeline		|	
+	| 	resultado    | AbdeTeste  |	
 
+	Então Pesquisar por pipelines b
+	Então validar pesquisa
+	|		type				 |  	pipeline					|	
+	| 	resultado    | AbcTeste ; AbcdTeste ; AbdeTeste ; CAbTeste ; BcdTeste ; BacTeste  |	
 
-
-
-
-
+	Então Pesquisar por pipelines AbcdTeste
+	Então validar pesquisa
+	|		type				 | 	pipeline	 |	
+	| 	resultado    | AbcdTeste |	
 

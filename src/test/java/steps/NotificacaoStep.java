@@ -124,6 +124,10 @@ public class NotificacaoStep extends MainSteps{
 			mensagemErro = "Salvo com sucesso!";
 			break;
 			
+		case "servicosalvo_ServicoPage":
+			mensagemErro = "Salvo com sucesso!";
+			break;
+			
 		/**
 		 * TODO Notificações Page Cameras
 		 */
@@ -186,6 +190,10 @@ public class NotificacaoStep extends MainSteps{
 			
 		case "ServicoEffectAdicionadoComSucesso_Pipeline":
 			mensagemErro = "Effect adicionado com sucesso!";
+			break;
+			
+		case "ServicoColorAdicionadoComSucesso_Pipeline":
+			mensagemErro = "Color adicionado com sucesso!";
 			break;
 			
 		case "PDITeste2AdicionadoComSucesso_Pipeline":

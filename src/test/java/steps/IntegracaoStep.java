@@ -58,10 +58,10 @@ public class IntegracaoStep extends MainSteps {
 		cameraService.create(camera, recuperarPrincipal());
 	}
 	
-	@Dado("que tenho o Servico effect em Pipeline")
-	public void quetenhoEffectEmPipeline() {
+	@Dado("^que tenho o Servico effect em (.*)$")
+	public void quetenhoEffectEmPipeline(String value) {
 		
-		Optional<Pipeline> oP = findPipelineByName("Pipeline Test");
+		Optional<Pipeline> oP = findPipelineByName(value);
 		Optional<ModelPDI> oMp = findModelPDIByName("Effect");
 		Optional<Parameter> oParam = findParameterByName("effect");
 
@@ -95,6 +95,24 @@ public class IntegracaoStep extends MainSteps {
 		}
 
 		switch (nome.trim()) {
+		
+		case "color":
+
+			Parameter parameterColor = new Parameter();
+			parameterColor.setName("color");
+			parameterColor.setIndex(1);
+			parameterColor.setType(ParameterType.COLOR);
+			parameterColor.setRequired(true);
+			
+			ModelPDI mscolor = new ModelPDI();
+			mscolor.setName("Color");
+			mscolor.setURL("http://127.0.0.1:5000/api/color");
+			mscolor.setDescription("Descricao de Serviço");
+			mscolor.setParameters(List.of(parameterColor));
+
+			modelPDIService.create(mscolor, recuperarPrincipal());
+			break;
+		
 		case "effect":
 
 			Parameter parameterEffect = new Parameter();

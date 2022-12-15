@@ -31,6 +31,11 @@ public class UtilStep extends MainSteps{
 		}
 	}
 	
+	@Então("Aguardar")
+	public void aguardar() {
+		esperar(20);
+	}
+	
 	@Então("fazer logoff")
 	public void fazerLogoff() {
 		Na(SideBar.class).clickBotaoSair();

@@ -8,9 +8,11 @@ import java.util.Set;
 import static config.ConfigInit.*;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+
 
 public class PipelinePage {
 
@@ -61,6 +63,18 @@ public class PipelinePage {
 
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/h2/button")
 	private WebElement acordServicos;
+
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/li/div[@class=\"container-input-search\"]/input")
+	private WebElement campoPesquisaServicos;
+	
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div/div/ul/li/div[@class=\"container-input-search\"]/input")
+	private WebElement campoPesquisaPipelines;
+	
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/li/div[@class=\"show-results\"]/p")
+	private WebElement linkMostrarResultadosServicos;
+	
+	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[2]/div/div/ul/li/div[@class=\"show-results\"]/p")
+	private WebElement linkMostrarResultadosPipeline;
 	
 	@FindBy(xpath = "//*[@class=\"accordeon-pdi accordion accordion-flush\"]/div[1]/div/div/ul/li[@role=\"button\"]")
 	private List<WebElement> listaDeServicos;
@@ -76,6 +90,13 @@ public class PipelinePage {
 	
 	@FindBy(xpath = "//*[@class=\"row row-body\"]/div[3]/div/div[@class=\"card-body pipeline-card-parameter\"]/div[@class=\"mb-3\" or @class=\"form-check\"]")
 	private List<WebElement> ListaDeParametros;
+	
+	@FindBy(xpath = "//*[@id=\"image-test\" and @class=\"imgpreview\"]")
+	private WebElement imgPV;
+	
+	public String getSRCImgP() {
+		return imgPV.getAttribute("src");
+	}
 	
 	public boolean isPipelinesEmpty() {
 		return pipelines.size() > 0? false: true;
@@ -107,6 +128,31 @@ public class PipelinePage {
 	
 	public void clickCriarPipeline() {
 		botaoCriarPipeline.click();
+	}
+	
+	public void inserirCampoPesquisaServico(String value) {
+		String className = acordServicos.getAttribute("class");
+		if(className.equals("accordion-button collapsed")) {
+			acordServicos.click();
+		}
+		campoPesquisaServicos.clear();
+		campoPesquisaServicos.sendKeys(value, Keys.ENTER);
+	}
+	
+	public void inserirCampoPesquisaPipeline(String value) {
+		String className = acordPipelines.getAttribute("class");
+		if(className.equals("accordion-button collapsed")) {
+			acordPipelines.click();
+		}
+		campoPesquisaPipelines.clear();
+		campoPesquisaPipelines.sendKeys(value, Keys.ENTER);
+	}
+	
+	public void clicklinkMostrarResultadosPipeline() {
+		linkMostrarResultadosPipeline.click();
+	}
+	public void clicklinkMostrarResultadosServico() {
+		linkMostrarResultadosServicos.click();
 	}
 	
 	public void clickBotaoPagePipeline(String value) {
@@ -397,7 +443,7 @@ public class PipelinePage {
 	
 	public Optional<WebElement> getParametroInputServico(String value){
 		for(WebElement e : ListaDeParametros) {
-			if(e.findElement(By.xpath("label")).getText().toLowerCase().equals(value.toLowerCase())) {
+			if(e.findElement(By.xpath("label")).getText().toLowerCase().replace("*", "").equals(value.toLowerCase())) {
 				return Optional.of(e.findElement(By.xpath("input")));
 			}
 		}
@@ -421,6 +467,18 @@ public class PipelinePage {
 			WebElement parametro = parametroRecuperado.get();
 			parametro.clear();
 			parametro.sendKeys(value);
+		}else {
+			System.err.println("O parametro: " + nomeParam + " Nao foi encontrado" );
+		}
+		
+	}
+	
+	public void inserirParametroTipoColor(String nomeParam, String value) {
+		Optional<WebElement> parametroRecuperado = getParametroInputServico(nomeParam);
+		
+		if(parametroRecuperado.isPresent()) {
+			WebElement parametro = parametroRecuperado.get();
+			parametro.sendKeys(value, Keys.ENTER);
 		}else {
 			System.err.println("O parametro: " + nomeParam + " Nao foi encontrado" );
 		}
@@ -469,6 +527,62 @@ public class PipelinePage {
 		System.err.println("Parametro não encontrado");
 		return false;
 	
+	}
+	
+	public boolean verificarParametroTipoSelect(String nomeParam, String value) {
+		Optional<WebElement> parametroRecuperado = getParametroSelectServico(nomeParam);
+	
+		if(parametroRecuperado.isPresent()) {
+			Select parametro = new Select(parametroRecuperado.get());
+			if(parametro.getFirstSelectedOption().getText().toUpperCase().trim().equals(value.toUpperCase().trim())) {
+				return true;
+			}
+		}
+		System.err.println("Parametro não encontrado");
+		return false;
+	
+	}
+	
+	public List<String> getNomeServicosEncontrados(){
+		List<String> servicos = new ArrayList<String>();
+		
+		String className = acordServicos.getAttribute("class");
+		
+		if(className.equals("accordion-button collapsed")) {
+			acordServicos.click();
+		}
+		
+		if(!listaDeServicos.isEmpty()) {
+			for(WebElement e : listaDeServicos) {
+				servicos.add(e.getAttribute("innerText"));
+				}
+			
+		}else {
+			System.err.println("Nenhum Servico Cadastrado");
+		}
+		
+		return servicos;
+	}
+	
+	public List<String> getNomePipelinesEncontradas(){
+		List<String> pipelines = new ArrayList<String>();
+		
+		String className = acordPipelines.getAttribute("class");
+		
+		if(className.equals("accordion-button collapsed")) {
+			acordPipelines.click();
+		}
+		
+		if(!listaDePipelines.isEmpty()) {
+			for(WebElement e : listaDePipelines) {
+				pipelines.add(e.getAttribute("innerText"));
+				}
+			
+		}else {
+			System.err.println("Nenhum pipeline Cadastrada");
+		}
+		
+		return pipelines;
 	}
 	
 	private boolean opcaoExistenteNoSelect(Select select, String value) {
