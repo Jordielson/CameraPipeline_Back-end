@@ -13,7 +13,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.file.CustomIOException;
@@ -34,6 +36,9 @@ public class Client {
 
         try {
             HttpResponse response = httpclient.execute(httppost);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new HttpServerErrorException(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
+            }
             HttpEntity entity = response.getEntity();
             String data;
             if (entity != null) {

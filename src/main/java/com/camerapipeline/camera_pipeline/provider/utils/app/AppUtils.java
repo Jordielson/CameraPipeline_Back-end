@@ -11,8 +11,11 @@ public final class AppUtils {
 
         try {
             ClassLoader classLoader = AppUtils.class.getClassLoader();
-            InputStream applicationPropertiesStream = classLoader.getResourceAsStream("config/application.properties");
-            properties.load(applicationPropertiesStream);
+            String[] resources = {"config/env.properties","config/application.properties"};
+            for (String resource : resources) {
+                InputStream applicationPropertiesStream = classLoader.getResourceAsStream(resource);
+                properties.load(applicationPropertiesStream);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
