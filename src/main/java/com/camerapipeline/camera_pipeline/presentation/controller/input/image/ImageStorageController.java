@@ -40,6 +40,7 @@ import com.camerapipeline.camera_pipeline.provider.services.input.image.ImageDat
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 import com.camerapipeline.camera_pipeline.provider.utils.files.BASE64DecodedMultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -111,8 +112,9 @@ public class ImageStorageController {
                 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
                 String json = ow.writeValueAsString(process);
                 
-                String data = client.post(pipe.getUrl(), json);
-                byte[] decodedString = Base64.getDecoder().decode(data);
+                JsonNode resp = client.post(pipe.getUrl(), json);
+                
+                byte[] decodedString = Base64.getDecoder().decode(resp.get("image").asText());
                 MultipartFile imageFile = new BASE64DecodedMultipartFile(decodedString, file.getOriginalFilename(), file.getContentType());
 
                 ImageDTO processedImage = mapper.toDTO(

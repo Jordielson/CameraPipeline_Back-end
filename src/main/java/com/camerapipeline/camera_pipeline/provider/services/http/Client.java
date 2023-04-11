@@ -19,10 +19,12 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.exception.file.CustomIOException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class Client {
-    public String post(String uri, String requestJson) {
+    public JsonNode post(String uri, String requestJson) {
         HttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost(uri);
 
@@ -40,10 +42,12 @@ public class Client {
                 throw new HttpServerErrorException(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
             }
             HttpEntity entity = response.getEntity();
-            String data;
+            JsonNode data;
             if (entity != null) {
                 try (InputStream instream = entity.getContent()) {
-                    data = IOUtils.toString(instream, "utf-8");
+                    ObjectMapper mapper = new ObjectMapper();
+                    data = mapper.readTree(IOUtils.toString(instream, "utf-8"));
+                    
                 }
                 return data;
             } else {
