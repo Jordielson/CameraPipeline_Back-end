@@ -1,11 +1,16 @@
 package com.camerapipeline.camera_pipeline.presentation.controller.input.video;
 
+import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +33,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
 import com.camerapipeline.camera_pipeline.presentation.dto.input.video.VideoDTO;
+import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
+import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.mapper.input.video.VideoMapper;
+import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMapper;
+import com.camerapipeline.camera_pipeline.provider.services.http.Client;
 import com.camerapipeline.camera_pipeline.provider.services.input.video.VideoDataService;
+import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
+import com.camerapipeline.camera_pipeline.provider.utils.files.BASE64DecodedMultipartFile;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,6 +61,15 @@ import org.springframework.core.io.Resource;
 public class VideoStorageController {
     @Autowired
     VideoDataService service;
+
+    @Autowired
+    private PipelineService pipeService;
+
+    @Autowired
+    private PipelineMapper pipeMapper;
+
+    @Autowired
+    private Client client;
 
     @Autowired
     VideoMapper mapper;
@@ -81,12 +104,35 @@ public class VideoStorageController {
         @RequestParam(value = "video") MultipartFile file,
         @RequestParam(value = "pipeline") String pipelineId,
         Principal principal) {
-            VideoDTO response = mapper.toDTO(
-                service.uploadVideo(file, principal)
+            PipelineDTO pipe = pipeMapper.toDTO(
+                pipeService.getById(
+                    Integer.parseInt(pipelineId)
+                )
             );
+            
+            try {
+                ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                Map<String, Object> params = new HashMap<>();
+                params.put("pipeline", pipe);
+                String json = ow.writeValueAsString(params);
+                
+                HttpEntity responseEntity = client.post(pipe.getUrl(), json, file.getBytes(), file.getOriginalFilename());
+                byte[] responseBytes = EntityUtils.toByteArray(responseEntity);
 
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(response);
+                MultipartFile videoFile = new BASE64DecodedMultipartFile(responseBytes, file.getOriginalFilename(), file.getContentType());
+
+                VideoDTO response = mapper.toDTO(
+                    service.uploadVideo(videoFile, principal)
+                );
+    
+                return ResponseEntity.status(HttpStatus.OK)
+                    .body(response);
+            } catch (JsonProcessingException e) {
+                throw new BusinessException("Problems encountered when processing JSON content");
+            } catch (IOException e) {
+                throw new BusinessException("Problems encountered when processing JSON content");
+            }
+            
     }
 
     @Operation(summary = "Upload video")

@@ -65,6 +65,13 @@ public class ImageDataService extends ServiceAbstract<ImageData, UUID> {
         return contentType.split("/")[1];
     }
 
+    public String getFileName(String name, String contentType) {
+        if(name.contains(".")) {
+            name = name.split("\\.")[0];
+        }
+        return name + "." + getImageFormat(contentType);
+    }
+
     public byte[] downloadImage(UUID id) {
         byte[] images;
 

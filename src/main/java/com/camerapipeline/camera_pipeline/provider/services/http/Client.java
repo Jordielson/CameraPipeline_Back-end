@@ -8,8 +8,12 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
@@ -24,6 +28,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class Client {
+    public HttpEntity post(String uri, String data, byte[] file, String fileName) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost uploadFile = new HttpPost(uri);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        
+        builder.addTextBody("data", data, ContentType.TEXT_PLAIN);
+        
+        builder.addBinaryBody(
+            "file",
+            file,
+            ContentType.DEFAULT_BINARY,
+            fileName
+        );
+        
+        HttpEntity multipart = builder.build();
+        uploadFile.setEntity(multipart);
+        try {
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            HttpEntity responseEntity = response.getEntity();
+            return responseEntity;
+            
+        } catch (ClientProtocolException e) {
+            throw new BusinessException("Error in the HTTP protocol");
+        } catch (IOException e) {
+            throw new CustomIOException(
+                e.getMessage(), 
+                "IO_EXCEPTION",
+                Integer.toString(e.hashCode()), 
+                e.getCause()
+            );
+        }
+    }
     public JsonNode post(String uri, String requestJson) {
         HttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost(uri);

@@ -3,11 +3,14 @@ package com.camerapipeline.camera_pipeline.presentation.controller.input.image;
 import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
-import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +34,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.camerapipeline.camera_pipeline.core.handlers.exception.ExceptionMessage;
 import com.camerapipeline.camera_pipeline.presentation.dto.input.image.ImageDTO;
 import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.PipelineDTO;
-import com.camerapipeline.camera_pipeline.presentation.dto.pipeline.ProcessPipelineDTO;
 import com.camerapipeline.camera_pipeline.provider.exception.BusinessException;
 import com.camerapipeline.camera_pipeline.provider.mapper.input.image.ImageMapper;
 import com.camerapipeline.camera_pipeline.provider.mapper.pipeline.PipelineMapper;
@@ -40,7 +42,6 @@ import com.camerapipeline.camera_pipeline.provider.services.input.image.ImageDat
 import com.camerapipeline.camera_pipeline.provider.services.pipeline.PipelineService;
 import com.camerapipeline.camera_pipeline.provider.utils.files.BASE64DecodedMultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -105,17 +106,16 @@ public class ImageStorageController {
             );
             
             try {
-                ProcessPipelineDTO process = ProcessPipelineDTO.builder()
-                    .input(Base64.getEncoder().encodeToString(file.getBytes()))
-                    .pipeline(pipe)
-                    .build();
                 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-                String json = ow.writeValueAsString(process);
+                Map<String, Object> params = new HashMap<>();
+                params.put("pipeline", pipe);
+                String json = ow.writeValueAsString(params);
+                String fileName = service.getFileName(file.getOriginalFilename(), file.getContentType());
+
+                HttpEntity responseEntity = client.post(pipe.getUrl(), json, file.getBytes(), fileName);
+                byte[] responseString = EntityUtils.toByteArray(responseEntity);
                 
-                JsonNode resp = client.post(pipe.getUrl(), json);
-                
-                byte[] decodedString = Base64.getDecoder().decode(resp.get("image").asText());
-                MultipartFile imageFile = new BASE64DecodedMultipartFile(decodedString, file.getOriginalFilename(), file.getContentType());
+                MultipartFile imageFile = new BASE64DecodedMultipartFile(responseString, file.getOriginalFilename(), file.getContentType());
 
                 ImageDTO processedImage = mapper.toDTO(
                     service.uploadImage(imageFile, principal)
@@ -124,9 +124,9 @@ public class ImageStorageController {
                 return ResponseEntity.status(HttpStatus.OK)
                     .body(processedImage);
             } catch (JsonProcessingException e) {
-                throw new BusinessException("Problems encountered when processing JSON content");
+                throw new BusinessException("Problems encountered when processing request content");
             } catch (IOException e) {
-                throw new BusinessException("Problems encountered when processing JSON content");
+                throw new BusinessException("Error accessing information using streams, files and directories");
             }
             
     }
