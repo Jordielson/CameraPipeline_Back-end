@@ -17,7 +17,7 @@ Funcionalidade: Validar a aplicação de pipeline em imagens
 	Dado que tenho o Servico effect em Pipeline Test
 	Entao acessar aba Edicao-Imagem
 	Então devo estar na pagina de edicao-Imagem
-	Entao EI passar file "src\test\resources\util\TestImage.jpg"
+	Entao EI passar file "src/test/resources/util/TestImage.jpg"
 	Entao EI clicar no botão Proximo
   Entao EI devo estar na segunda etapa
 	Entao EI selecionar Pipeline "Pipeline Test"

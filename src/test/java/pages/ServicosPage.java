@@ -25,7 +25,7 @@ public class ServicosPage {
 	@FindBy(xpath = "//*[@class=\"modal-content\"]/div[1]/button")
 	private WebElement botaoFecharCardParametro;
 
-	@FindBy(xpath = "//*[@class=\"Pdi_modal__2LEg0 modal-body\"]/div/textarea")
+	@FindBy(xpath = "//*[@class=\"Pdi_modal__DqjR9 modal-body\"]/div/textarea")
 	private WebElement campoDescricaoServico;
 
 	@FindBy(xpath = "/html/body/div[3]/div/div/div[3]/div[2]/button")
@@ -40,16 +40,16 @@ public class ServicosPage {
 	@FindBy(xpath = "//*[@class=\"modal-dialog\"]/div")
 	private WebElement modalExcluirServico;
 	
-	@FindBy(xpath = "//*[@class=\"Tags_inputC__3DGdC\"]/input")
+	@FindBy(xpath = "//*[@class=\"Tags_inputC__IWidP\"]/input")
 	private WebElement campoOpcaoSelectType;
 
-	@FindBy(xpath = "//*[@class=\"Tags_inputC__3DGdC\"]/button")
+	@FindBy(xpath = "//*[@class=\"Tags_inputC__IWidP\"]/button")
 	private WebElement botaoAdicionarOpcaoSelectType;
 	
-	@FindBy(xpath = "//*[@class=\"Tags_tagItem__O0NAb\"]")
+	@FindBy(xpath = "//*[@class=\"Tags_tagItem__WQEh+\"]")
 	private List<WebElement> opcoesSelectType;
 	
-	@FindBy(xpath = "//*[@class=\"Pdi_modal__2LEg0 modal-body\"]/div[@class=\"card Pdi_margin__GSzNe\"]")
+	@FindBy(xpath = "//*[@class=\"Pdi_modal__DqjR9 modal-body\"]/div[@class=\"card Pdi_margin__ZvDCR\"]")
 	private List<WebElement> parametros; 
 	
 	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 listpdi list-group\"]/div[@class=\"list-item list-group-item list-group-item-light\"]")
@@ -176,7 +176,7 @@ public class ServicosPage {
 	
 	public void InserirDescricaoParametro(int posicao, String value) {
 		WebElement temp = parametros.get(posicao-1);
-		WebElement input = temp.findElement(By.xpath("div[@class=\"Pdi_formTxt__Uz6Zb\"]/textarea"));
+		WebElement input = temp.findElement(By.xpath("div[@class=\"Pdi_formTxt__pc+xe\"]/textarea"));
 		input.clear();
 		input.sendKeys(value);
 	}

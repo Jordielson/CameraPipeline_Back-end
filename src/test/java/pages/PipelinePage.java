@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.Select;
 
 public class PipelinePage {
 
-	@FindBy(xpath = "//*[@class=\"styles_labelMain__z9DFn\"]/label")
+	@FindBy(xpath = "//*[@class=\"styles_labelMain__zvIvs\"]/label")
 	private WebElement textoPadrao;
 	
 	@FindBy(xpath = "//input[@id=\"pipeline-name\"]")
@@ -37,7 +37,7 @@ public class PipelinePage {
 	@FindBy(xpath = "//nav/div[1]/h6")
 	private WebElement botaoVoltarPipeline;
 	
-	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 styles_listPipeline__4lUxZ list-group\"]/div[@class=\"styles_list__wTMpi list-group-item list-group-item-light\"]")
+	@FindBy(xpath = "//*[@class=\"mx-4 mt-4 mb-1 styles_listPipeline__-AKEa list-group\"]/div[@class=\"styles_list__fMXT9 list-group-item list-group-item-light\"]")
 	private List<WebElement> pipelines;
 	
 	@FindBy(xpath = "//*[@class=\"pipeline-save d-flex justify-content-end\"]/div/div/input")

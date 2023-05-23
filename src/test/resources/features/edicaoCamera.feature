@@ -28,8 +28,8 @@ Funcionalidade: Validar a aplicação de pipeline em cameras
 	Entao EC encerrar Alerta
   Entao EC devo estar na terceira etapa
 	Entao EC clicar no botão Salvar
-	Então EC verificar processamento salvo
 	Entao sistema notifica PipelineAplicadaEmCamera_EdicaoCameraPage
+	Então EC verificar processamento salvo
 	Entao EC clicar no botão Reiniciar
   Entao EC devo estar na primeira etapa
 	
@@ -49,8 +49,8 @@ Funcionalidade: Validar a aplicação de pipeline em cameras
 	Entao EC encerrar Alerta
   Entao EC devo estar na terceira etapa
 	Entao EC clicar no botão Salvar
-	Então EC verificar processamento salvo
 	Entao sistema notifica PipelineAplicadaEmCamera_EdicaoCameraPage
+	Então EC verificar processamento salvo
 	Entao EC clicar no botão Reiniciar
 	Entao EC selecionar camera "Camera test_Pipeline Test"
 	Entao EC clicar no botão Proximo
@@ -74,8 +74,8 @@ Funcionalidade: Validar a aplicação de pipeline em cameras
 	Entao EC encerrar Alerta
   Entao EC devo estar na terceira etapa
 	Entao EC clicar no botão Salvar
-	Então EC verificar processamento salvo
 	Entao sistema notifica PipelineAplicadaEmCamera_EdicaoCameraPage
+	Então EC verificar processamento salvo
 	Entao EC clicar no botão Reiniciar
 	Entao EC selecionar camera "Camera test"
 	Entao EC clicar no botão Proximo

@@ -58,7 +58,7 @@ public class GuiaStep {
 		switch (titulo) {
 		case "visão_geral":
 
-			textTitulo = "Câmera Pipeline";
+			textTitulo = "Imagem Pipeline";
 			break;
 
 		case "pipelines":

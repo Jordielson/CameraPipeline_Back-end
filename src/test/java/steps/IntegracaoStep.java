@@ -106,7 +106,7 @@ public class IntegracaoStep extends MainSteps {
 			
 			ModelPDI mscolor = new ModelPDI();
 			mscolor.setName("Color");
-			mscolor.setURL("http://127.0.0.1:5000/api/color");
+			mscolor.setURL("http://127.0.0.1:5000/api/color/");
 			mscolor.setDescription("Descricao de Serviço");
 			mscolor.setParameters(List.of(parameterColor));
 
@@ -124,7 +124,7 @@ public class IntegracaoStep extends MainSteps {
 			
 			ModelPDI mseffect = new ModelPDI();
 			mseffect.setName("Effect");
-			mseffect.setURL("http://127.0.0.1:5000/api/apply-effect");
+			mseffect.setURL("http://127.0.0.1:5000/api/apply-effect/");
 			mseffect.setDescription("Estilo de efeito");
 			mseffect.setParameters(List.of(parameterEffect));
 
@@ -159,7 +159,7 @@ public class IntegracaoStep extends MainSteps {
 
 			ModelPDI mscrop = new ModelPDI();
 			mscrop.setName("Color");
-			mscrop.setURL("http://127.0.0.1:5000/api/apply-effect");
+			mscrop.setURL("http://127.0.0.1:5000/api/apply-effect/");
 			mscrop.setDescription("Estilo de efeito");
 			mscrop.setParameters(List.of(position_x, position_y, width, height));
 

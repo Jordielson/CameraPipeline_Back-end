@@ -261,6 +261,7 @@ public class NotificacaoStep extends MainSteps{
 						for(WebElement e : esperado) {
 							 if(!e.getAttribute("innerText").equals("Não foi possivel renderizar a pré-visualização")) {
 								 erroRecuperado = e.getAttribute("innerText");
+								 return;
 							 }else {
 								 WebElement botaoFechar = e.findElement(By.xpath("../../../button"));
 								 botaoFechar.click();

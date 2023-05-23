@@ -7,28 +7,28 @@ import org.openqa.selenium.support.FindBy;
 
 public class EdicaoImagemPage {
 	
-	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/*[position()=1]")
+	@FindBy(xpath = "//*[@class=\"image_stepContent__Ab0mE\"]/div/*[position()=1]")
 	private WebElement tituloLabel;
 
-	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/input[2]")
+	@FindBy(xpath = "//*[@class=\"image_stepContent__Ab0mE\"]/div/input[2]")
 	private WebElement campoURLFile;
 
-	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/input[1]")
+	@FindBy(xpath = "//*[@class=\"image_stepContent__Ab0mE\"]/div/input[1]")
 	private WebElement campoFile;
 
-	@FindBy(xpath = "//*[@class=\"image_buttons__Ut1An\"]/button[contains(text(), \"PRÓXIMO >>\")]")
+	@FindBy(xpath = "//*[@class=\"image_buttons__bx36y\"]/button[contains(text(), \"PRÓXIMO >>\")]")
 	private WebElement botaoProximo;
 	
-	@FindBy(xpath = "//*[@class=\"image_buttons__Ut1An\"]/button[contains(text(), \"<< VOLTAR\")]")
+	@FindBy(xpath = "//*[@class=\"image_buttons__bx36y\"]/button[contains(text(), \"<< VOLTAR\")]")
 	private WebElement botaoVoltar;
 	
-	@FindBy(xpath = "//*[@class=\"image_buttons__Ut1An\"]/button[contains(text(), \"REINICIAR\")]")
+	@FindBy(xpath = "//*[@class=\"image_buttons__bx36y\"]/button[contains(text(), \"REINICIAR\")]")
 	private WebElement botaoReiniciar;
 
-	@FindBy(xpath = "//*[@class=\"image_stepdownload__QWaVR\"]/div/button[contains(text(), \"Baixar\")]")
+	@FindBy(xpath = "//*[@class=\"image_stepdownload__-Rj2f\"]/div/button[contains(text(), \"Baixar\")]")
 	private WebElement botaoBaixar;
 
-	@FindBy(xpath = "//*[@class=\"image_stepContent__bGGiG\"]/div/div/button")
+	@FindBy(xpath = "//*[@class=\"image_stepContent__Ab0mE\"]/div/div/button")
 	private List<WebElement> pipelines;
 	
 	

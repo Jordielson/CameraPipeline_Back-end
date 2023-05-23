@@ -11,6 +11,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
 
 public class ConfigInit {
@@ -21,19 +22,18 @@ public class ConfigInit {
 	}
 
 	public static void acessarSistema() {
-		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriverV107.exe");
-		driver = new ChromeDriver();
+		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriverV113.exe");
+		driver = new ChromeDriver(gerarChromeOptions());
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
 		driver.get("http://localhost:3000");
 		
 //		threadCapturarNotificacoesDispensaveis();
 	}
 
 	public static void acessarSistema(String URL) {
-		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriverV107.exe");
-		driver = new ChromeDriver();
+		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriverV113.exe");
+		driver = new ChromeDriver(gerarChromeOptions());
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
@@ -41,6 +41,13 @@ public class ConfigInit {
 		
 //		threadCapturarNotificacoesDispensaveis();
 
+	}
+	
+	private static ChromeOptions gerarChromeOptions() {
+		ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.addArguments("--start-maximized");
+		chromeOptions.addArguments("--remote-allow-origins=*");
+		return chromeOptions;
 	}
 
 	public static void alterarJanela(String URL) {
